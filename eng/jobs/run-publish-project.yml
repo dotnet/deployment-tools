@@ -23,7 +23,7 @@ jobs:
 
   variables:
   # Only get the secret variable groups if the def has the official name. Reduce dev build def risk.
-  - ${{ if eq(variables['Build.DefinitionName'], 'dotnet-core-setup') }}:
+  - ${{ if eq(variables['Build.DefinitionName'], 'dotnet-deployment-tools') }}:
     # Used for publishing individual leg assets to azure blob storage
     - ${{ if eq(parameters.dependency.channel.public, 'true') }}:
       - group: DotNet-DotNetCli-Storage
@@ -64,7 +64,7 @@ jobs:
         /p:GitHubAuthToken=$(_GitHubAuthToken)
         /p:VersionsRepoOwner=$(_VersionsRepoOwner)
         /p:VersionsRepo=$(_VersionsRepo)
-        /p:VersionsRepoPath=build-info/dotnet/core-setup/$(FullBranchName)
+        /p:VersionsRepoPath=build-info/dotnet/deployment-tools/$(FullBranchName)
 
   - ${{ if ne(parameters.dependency.channel.public, 'true') }}:
     - name: _DefaultAzureAccountName

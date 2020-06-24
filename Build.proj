@@ -23,10 +23,6 @@
 
   <Import Project="$(RepositoryEngineeringDir)SubsetValidation.targets" />
 
-  <!-- Upfront restore hooks -->
-  <Import Project="$(RepositoryEngineeringDir)restore\docs.targets" Condition="'$(DotNetBuildFromSource)' != 'true'" />
-  <Import Project="$(RepositoryEngineeringDir)restore\optimizationData.targets" Condition="'$(DotNetBuildFromSource)' != 'true' and '$(EnableNgenOptimization)' == 'true'" />
-
   <Target Name="BuildLocalTasks"
           BeforeTargets="Restore">
     <MSBuild Projects="$(RepoTasksDir)tasks.proj"
@@ -35,7 +31,7 @@
 
   <Target Name="RestoreWithoutStaticGraph"
           BeforeTargets="Restore">
-    <MSBuild Projects="@(LibrariesRestoreProject);@(DepprojProjectToBuild);@(PkgprojProjectToBuild);@(BundleProjectToBuild)"
+    <MSBuild Projects="@(DepprojProjectToBuild);@(PkgprojProjectToBuild);@(BundleProjectToBuild)"
              Properties="MSBuildRestoreSessionId=$([System.Guid]::NewGuid());RestoreUseStaticGraphEvaluation=false"
              Targets="Restore" />
   </Target>

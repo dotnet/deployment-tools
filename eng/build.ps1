@@ -13,8 +13,6 @@ Param(
   [switch]$testnobuild,
   [ValidateSet("x86","x64","arm","arm64","wasm")][string[]][Alias('a')]$arch = @([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString().ToLowerInvariant()),
   [Parameter(Position=0)][string][Alias('s')]$subset,
-  [ValidateSet("Debug","Release","Checked")][string][Alias('rc')]$runtimeConfiguration,
-  [ValidateSet("Debug","Release")][string][Alias('lc')]$librariesConfiguration,
   [Parameter(ValueFromRemainingArguments=$true)][String[]]$properties
 )
 
@@ -30,14 +28,8 @@ function Get-Help() {
   Write-Host "                                 Pass a comma-separated list to build for multiple configurations."
   Write-Host "                                 [Default: Debug]"
   Write-Host "  -help (-h)                     Print help and exit."
-  Write-Host "  -librariesConfiguration (-lc)  Libraries build configuration: Debug or Release."
-  Write-Host "                                 [Default: Debug]"
   Write-Host "  -os                            Target operating system: Windows_NT, Linux, OSX, or Browser."
   Write-Host "                                 [Default: Your machine's OS.]"
-  Write-Host "  -runtimeConfiguration (-rc)    Runtime build configuration: Debug, Release or Checked."
-  Write-Host "                                 Checked is exclusive to the CLR runtime. It is the same as Debug, except code is"
-  Write-Host "                                 compiled with optimizations enabled."
-  Write-Host "                                 [Default: Debug]"
   Write-Host "  -subset (-s)                   Build a subset, print available subsets with -subset help."
   Write-Host "                                 '-subset' can be omitted if the subset is given as the first argument."
   Write-Host "                                 [Default: Builds the entire repo.]"
@@ -78,24 +70,8 @@ function Get-Help() {
 
   Write-Host "Here are some quick examples. These assume you are on a Windows x64 machine:"
   Write-Host ""
-  Write-Host "* Build CoreCLR for Windows x64 on Release configuration:"
-  Write-Host ".\build.cmd clr -c release"
-  Write-Host ""
-  Write-Host "* Cross-compile CoreCLR runtime for Windows ARM64 on Release configuration."
-  Write-Host ".\build.cmd clr.runtime -arch arm64 -c release"
-  Write-Host ""
-  Write-Host "* Build Debug libraries with a Release runtime for Windows x64."
-  Write-Host ".\build.cmd clr+libs -rc release"
-  Write-Host ""
-  Write-Host "* Build Release libraries and their tests with a Checked runtime for Windows x64, and run the tests."
-  Write-Host ".\build.cmd clr+libs+libs.tests -rc checked -lc release -test"
-  Write-Host ""
-  Write-Host "* Build Mono runtime for Windows x64 on Release configuration."
-  Write-Host ".\build.cmd mono -c release"
-  Write-Host ""
-  Write-Host "It's important to mention that to build Mono for the first time,"
-  Write-Host "you need to build the CLR and Libs subsets beforehand."
-  Write-Host "This is done automatically if a full build is performed at first."
+  Write-Host "* Build ClickOnce tools for Windows x64 on Release configuration:"
+  Write-Host ".\build.cmd clickonce -c release"
   Write-Host ""
   Write-Host "For more information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
 }
@@ -115,8 +91,8 @@ if ($vs) {
 
   if (-Not (Test-Path $vs)) {
     $solution = $vs
-    # Search for the solution in libraries
-    $vs = Split-Path $PSScriptRoot -Parent | Join-Path -ChildPath "src\libraries" | Join-Path -ChildPath $vs | Join-Path -ChildPath "$vs.sln"
+    # Search for the solution in clickonce
+    $vs = Split-Path $PSScriptRoot -Parent | Join-Path -ChildPath "src\clickonce" | Join-Path -ChildPath $vs | Join-Path -ChildPath "$vs.sln"
     if (-Not (Test-Path $vs)) {
       $vs = $solution
       # Search for the solution in installer
@@ -143,12 +119,6 @@ if ($vs) {
   # Put our local dotnet.exe on PATH first so Visual Studio knows which one to use
   $env:PATH=($env:DOTNET_ROOT + ";" + $env:PATH);
 
-  if ($runtimeConfiguration)
-  {
-    # Respect the RuntimeConfiguration variable for building inside VS with different runtime configurations
-    $env:RUNTIMECONFIGURATION=$runtimeConfiguration
-  }
-  
   # Restore the solution to workaround https://github.com/dotnet/runtime/issues/32205
   Invoke-Expression "& dotnet restore $vs"
 
@@ -173,8 +143,6 @@ foreach ($argument in $PSBoundParameters.Keys)
 {
   switch($argument)
   {
-    "runtimeConfiguration"   { $arguments += " /p:RuntimeConfiguration=$((Get-Culture).TextInfo.ToTitleCase($($PSBoundParameters[$argument])))" }
-    "librariesConfiguration" { $arguments += " /p:LibrariesConfiguration=$((Get-Culture).TextInfo.ToTitleCase($($PSBoundParameters[$argument])))" }
     "framework"              { $arguments += " /p:BuildTargetFramework=$($PSBoundParameters[$argument].ToLowerInvariant())" }
     "os"                     { $arguments += " /p:TargetOS=$($PSBoundParameters[$argument])" }
     "allconfigurations"      { $arguments += " /p:BuildAllConfigurations=true" }

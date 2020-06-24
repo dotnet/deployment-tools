@@ -17,27 +17,25 @@ set __IncrementalNativeBuild=0
 
 :Arg_Loop
 if [%1] == [] goto :ToolsVersion
-if /i [%1] == [Release]     ( set CMAKE_BUILD_TYPE=Release&&shift&goto Arg_Loop)
-if /i [%1] == [Debug]       ( set CMAKE_BUILD_TYPE=Debug&&shift&goto Arg_Loop)
+if /i [%1] == [Release]        ( set CMAKE_BUILD_TYPE=Release&&shift&goto Arg_Loop)
+if /i [%1] == [Debug]          ( set CMAKE_BUILD_TYPE=Debug&&shift&goto Arg_Loop)
 
-if /i [%1] == [AnyCPU]      ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
-if /i [%1] == [x86]         ( set __BuildArch=x86&&set __VCBuildArch=x86&&shift&goto Arg_Loop)
-if /i [%1] == [arm]         ( set __BuildArch=arm&&set __VCBuildArch=x86_arm&&shift&goto Arg_Loop)
-if /i [%1] == [x64]         ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
-if /i [%1] == [amd64]       ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
-if /i [%1] == [arm64]       ( set __BuildArch=arm64&&set __VCBuildArch=x86_arm64&&shift&goto Arg_Loop)
+if /i [%1] == [AnyCPU]         ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
+if /i [%1] == [x86]            ( set __BuildArch=x86&&set __VCBuildArch=x86&&shift&goto Arg_Loop)
+if /i [%1] == [arm]            ( set __BuildArch=arm&&set __VCBuildArch=x86_arm&&shift&goto Arg_Loop)
+if /i [%1] == [x64]            ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
+if /i [%1] == [amd64]          ( set __BuildArch=x64&&set __VCBuildArch=x86_amd64&&shift&goto Arg_Loop)
+if /i [%1] == [arm64]          ( set __BuildArch=arm64&&set __VCBuildArch=x86_arm64&&shift&goto Arg_Loop)
 
-if /i [%1] == [portable]    ( set __PortableBuild=1&&shift&goto Arg_Loop)
-if /i [%1] == [rid]         ( set __TargetRid=%2&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [toolsetDir]  ( set "__ToolsetDir=%2"&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [hostver]     (set __HostVersion=%2&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [apphostver]  (set __AppHostVersion=%2&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [fxrver]      (set __HostFxrVersion=%2&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [policyver]   (set __HostPolicyVersion=%2&&shift&&shift&goto Arg_Loop)
-if /i [%1] == [commit]      (set __CommitSha=%2&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [portable]       ( set __PortableBuild=1&&shift&goto Arg_Loop)
+if /i [%1] == [rid]            ( set __TargetRid=%2&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [toolsetDir]     ( set "__ToolsetDir=%2"&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [nativever]      ( set __NativeVersion=%2&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [netcorepkgver]  ( set __NetCorePkgVersion=%2&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [commit]         ( set __CommitSha=%2&&shift&&shift&goto Arg_Loop)
 
 if /i [%1] == [incremental-native-build] ( set __IncrementalNativeBuild=1&&shift&goto Arg_Loop)
-if /i [%1] == [rootDir]     ( set __rootDir=%2&&shift&&shift&goto Arg_Loop)
+if /i [%1] == [rootDir]        ( set __rootDir=%2&&shift&&shift&goto Arg_Loop)
 
 shift
 goto :Arg_Loop
@@ -102,9 +100,9 @@ if %__CMakeBinDir% == "" (
 )
 
 if %__IntermediatesDir% == "" (
-    set "__IntermediatesDir=%__objDir%\%__TargetRid%.%CMAKE_BUILD_TYPE%\corehost"
+    set "__IntermediatesDir=%__objDir%\%__TargetRid%.%CMAKE_BUILD_TYPE%\native"
 )
-set "__ResourcesDir=%__objDir%\%__TargetRid%.%CMAKE_BUILD_TYPE%\hostResourceFiles"
+set "__ResourcesDir=%__objDir%\%__TargetRid%.%CMAKE_BUILD_TYPE%\nativeResourceFiles"
 set "__CMakeBinDir=%__CMakeBinDir:\=/%"
 set "__IntermediatesDir=%__IntermediatesDir:\=/%"
 
@@ -127,9 +125,9 @@ exit /b 1
 :GenVSSolution
 :: Regenerate the VS solution
 
-echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__HostVersion% %__AppHostVersion% %__HostFxrVersion% %__HostPolicyVersion% %__PortableBuild%"
+echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% %__PortableBuild%"
 pushd "%__IntermediatesDir%"
-call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__HostVersion% %__AppHostVersion% %__HostFxrVersion% %__HostPolicyVersion% %__PortableBuild%
+call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% %__PortableBuild%
 popd
 
 :CheckForProj

@@ -29,21 +29,9 @@
     <SigningToolsDir>$(InstallerProjectRoot)signing\</SigningToolsDir>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <HostMachineInfoProps>$(ArtifactsObjDir)HostMachineInfo.props</HostMachineInfoProps>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <SharedFrameworkName>Microsoft.NETCore.App</SharedFrameworkName>
-    <NETCoreAppFrameworkIdentifier>.NETCoreApp</NETCoreAppFrameworkIdentifier>
-    <NETCoreAppFrameworkMoniker>$(NETCoreAppFrameworkIdentifier),Version=v$(NETCoreAppFrameworkVersion)</NETCoreAppFrameworkMoniker>
-    <NETCoreAppFrameworkBrandName>.NET Core $(NETCoreAppFrameworkVersion)</NETCoreAppFrameworkBrandName>
-  </PropertyGroup>
-
   <!-- Platform detection -->
   <PropertyGroup>
     <RunningOnUnix Condition="'$(OS)'!='Windows_NT'">true</RunningOnUnix>
-
     <RunningOnCore Condition="'$(MSBuildRuntimeType)' == 'core'">true</RunningOnCore>
   </PropertyGroup>
 
@@ -78,13 +66,6 @@
     <DefineConstants>$(DefineConstants),TRACE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <ExeSuffix Condition="'$(TargetOS)' == 'Windows_NT'">.exe</ExeSuffix>
-  </PropertyGroup>
-
-  <Import Project="$(HostMachineInfoProps)"
-          Condition="Exists('$(HostMachineInfoProps)')" />
-
   <PropertyGroup Condition="'$(OutputRid)' == '' and '$(HostMachineRid)' != ''">
     <OutputRid>$(HostMachineRid.Remove($(HostMachineRid.LastIndexOf('-'))))-$(TargetArchitecture)</OutputRid>
   </PropertyGroup>
@@ -111,7 +92,6 @@
     <OSPlatformConfig>$(OutputRid).$(Configuration)</OSPlatformConfig>
 
     <BaseOutputRootPath>$(ArtifactsBinDir)$(OSPlatformConfig)\</BaseOutputRootPath>
-    <CrossGenRootPath>$(BaseOutputRootPath)crossgen\</CrossGenRootPath>
 
     <IntermediateOutputRootPath Condition="'$(IntermediateOutputRootPath)' == ''">$(ArtifactsObjDir)$(OSPlatformConfig)\</IntermediateOutputRootPath>
 
@@ -120,38 +100,10 @@
 
     <AssetOutputPath Condition="'$(AssetOutputPath)'==''">$(ArtifactsShippingPackagesDir)</AssetOutputPath>
     <SymbolPackageOutputPath Condition="'$(SymbolPackageOutputPath)'==''">$(ArtifactsShippingPackagesDir)</SymbolPackageOutputPath>
-
-    <!-- Use '/' instead of '\': used directly by WiX which doesn't accept trailing '\'. -->
-    <SharedFrameworkPublishDir>$(IntermediateOutputRootPath)sharedFrameworkPublish/</SharedFrameworkPublishDir>
-    <SharedFrameworkPublishSymbolsDir>$(IntermediateOutputRootPath)sharedFrameworkPublish.symbols\</SharedFrameworkPublishSymbolsDir>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DisableCrossgen>false</DisableCrossgen>
-    <!-- Disable cross-gen on FreeBSD for now. This can be revisited when we have full support. -->
-    <DisableCrossgen Condition="'$(TargetOS)'=='FreeBSD'">true</DisableCrossgen>
     <OutputVersionBadge>$(AssetOutputPath)sharedfx_$(OutputRid)_$(Configuration)_version_badge.svg</OutputVersionBadge>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DotnetHostString>dotnet-host-</DotnetHostString>
-    <DotnetHostFxrString>dotnet-hostfxr-</DotnetHostFxrString>
-    <DotnetRuntimeString>dotnet-runtime-</DotnetRuntimeString>
-    <DotnetRuntimeDependenciesPackageString>dotnet-runtime-deps-</DotnetRuntimeDependenciesPackageString>
-
-    <CombinedInstallerStart>$(AssetOutputPath)$(DotnetRuntimeString)</CombinedInstallerStart>
-    <SharedHostInstallerStart>$(AssetOutputPath)$(DotnetHostString)</SharedHostInstallerStart>
-    <HostFxrInstallerStart>$(AssetOutputPath)$(DotnetHostFxrString)</HostFxrInstallerStart>
-    <SharedFrameworkInstallerStart>$(AssetOutputPath)$(DotnetRuntimeString)</SharedFrameworkInstallerStart>
-    <DotnetRuntimeDependenciesPackageInstallerStart>$(AssetOutputPath)$(DotnetRuntimeDependenciesPackageString)</DotnetRuntimeDependenciesPackageInstallerStart>
-
-    <!-- OSX specific intermediate package suffix . OSX specific intermediate packages are suffixed with -internal to avoid name collision for bundle package (dotnet-runtime-*)
-         and runtime ( earlier as dotnet-sharedframework-*)	-->
-    <InstallerStartSuffix Condition="'$(TargetOS)' == 'OSX'">internal</InstallerStartSuffix>
-    <SharedHostInstallerStart Condition="'$(TargetOS)' == 'OSX'">$(SharedHostInstallerStart)$(InstallerStartSuffix)-</SharedHostInstallerStart>
-    <HostFxrInstallerStart Condition="'$(TargetOS)' == 'OSX'">$(HostFxrInstallerStart)$(InstallerStartSuffix)-</HostFxrInstallerStart>
-    <SharedFrameworkInstallerStart Condition="'$(TargetOS)' == 'OSX'">$(SharedFrameworkInstallerStart)$(InstallerStartSuffix)-</SharedFrameworkInstallerStart>
-
   </PropertyGroup>
 
   <!-- Set up handling of build warnings -->
@@ -275,12 +227,6 @@
   <PropertyGroup>
     <CompressedFileExtension Condition="'$(TargetOS)' == 'Windows_NT'">.zip</CompressedFileExtension>
     <CompressedFileExtension Condition="'$(TargetOS)' != 'Windows_NT'">.tar.gz</CompressedFileExtension>
-    <InstallerExtension Condition="'$(TargetOS)' == 'Windows_NT'">.msi</InstallerExtension>
-    <InstallerExtension Condition="'$(TargetOS)' == 'OSX'">.pkg</InstallerExtension>
-    <InstallerExtension Condition="'$(TargetsDebian)' == 'true' or '$(TargetsUbuntu)' == 'true' or '$(TargetsLinuxMint)' == 'true' or '$(HostMachineRidTargetsDebianPackages)' == 'true'">.deb</InstallerExtension>
-    <InstallerExtension Condition="'$(TargetsRhel)' == 'true' or '$(TargetsCentos)' == 'true' or '$(TargetsOpensuse)' == 'true' or '$(TargetsFedora)' == 'true' or '$(TargetsOracle)' == 'true' or '$(TargetsSles)' == 'true' or '$(HostMachineRidTargetsRpmPackages)' == 'true'">.rpm</InstallerExtension>
-    <CombinedInstallerExtension Condition="'$(TargetOS)' == 'Windows_NT'">.exe</CombinedInstallerExtension>
-    <CombinedInstallerExtension Condition="'$(TargetOS)' != 'Windows_NT'">$(InstallerExtension)</CombinedInstallerExtension>
   </PropertyGroup>
 
   <!-- Use actual publishable (non-dummy) package name produced by the build system for this RID -->
@@ -297,10 +243,6 @@
     <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 
-    <!-- We don't use any of MSBuild's resolution logic for resolving the framework, so just set these two properties to any folder that exists to skip
-         the GenerateReferenceAssemblyPaths task (not target) and to prevent it from outputting a warning (MSB3644). -->
-    <_TargetFrameworkDirectories>$(MSBuildThisFileDirectory)documentation</_TargetFrameworkDirectories>
-    <_FullFrameworkReferenceAssemblyPaths>$(MSBuildThisFileDirectory)documentation</_FullFrameworkReferenceAssemblyPaths>
     <!-- We do not want to target a portable profile.
          TODO: Make this the default in buildtools so this is not necessary. -->
     <TargetFrameworkProfile></TargetFrameworkProfile>
@@ -324,13 +266,6 @@
     <StaticLibPrefix>lib</StaticLibPrefix>
     <StaticLibSuffix>.a</StaticLibSuffix>
     <StaticLibSuffix Condition="'$(TargetOS)' == 'Windows_NT'">.lib</StaticLibSuffix>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <CrossGenSymbolExtension>.map</CrossGenSymbolExtension>
-    <CrossGenSymbolExtension Condition="'$(TargetOS)' == 'Windows_NT'">.ni.pdb</CrossGenSymbolExtension>
-    <!-- OSX doesn't have crossgen symbols, yet -->
-    <CrossGenSymbolExtension Condition="'$(TargetOS)' == 'OSX'"></CrossGenSymbolExtension>
   </PropertyGroup>
 
 </Project>
