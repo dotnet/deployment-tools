@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-usage_list=("-nativever <Natibe binary version>: Version of native binaries.")
+usage_list=("-nativever <Native binary version>: Version of native binaries.")
 usage_list+=("-commithash <Git commit hash>: Current commit hash of the repo at build time.")
 
 set -e

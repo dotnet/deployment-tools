@@ -71,7 +71,7 @@
     <SubsetName Include="ClickOnce" Description="ClickOnce tools" />
 
     <!-- Installer -->
-    <SubsetName Include="Installers" Description="Generates additional installers. This produces the shared frameworks and their installers." />
+    <SubsetName Include="Installers" Description="Generates installers. This produces installers for deployment tools." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -93,7 +93,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(_subset.Contains('+installers+'))">
-    <InstallerProjectToBuild Include="$(InstallerProjectRoot)**\*.proj" BuildInParallel="false" />
+    <InstallerProjectToBuild Include="$(InstallerProjectRoot)**\*.proj" BuildInParallel="true" />
     <ProjectToBuild Include="@(InstallerProjectToBuild)" Pack="true" Category="installer" />
   </ItemGroup>
 

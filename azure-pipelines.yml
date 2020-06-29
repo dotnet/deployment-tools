@@ -9,6 +9,7 @@ trigger:
 pr:
 - master
 - release/*
+- internal/release/*
 
 
 name: $(Date:yyyyMMdd)$(Rev:.r)

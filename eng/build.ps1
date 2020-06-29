@@ -73,6 +73,9 @@ function Get-Help() {
   Write-Host "* Build ClickOnce tools for Windows x64 on Release configuration:"
   Write-Host ".\build.cmd clickonce -c release"
   Write-Host ""
+  Write-Host "* Build ClickOnce tools and installers for Windows x64 on Release configuration:"
+  Write-Host ".\build.cmd clickonce+installer -c release"
+  Write-Host ""
   Write-Host "For more information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
 }
 

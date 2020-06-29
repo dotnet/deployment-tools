@@ -18,18 +18,11 @@
           DependsOnTargets="
             GetProductVersions;
             GenerateNativeVersionFile;
-            BuildCoreHostWindows" />
+            BuildNativeProjects" />
 
-  <Target Name="BuildCoreHostWindows"
+  <Target Name="BuildNativeProjects"
           Condition="'$(TargetOS)' == 'Windows_NT'"
           DependsOnTargets="GetLatestCommitHash">
-
-    <!-- Generate Version files -->
-    <ItemGroup>
-      <!--NativeFiles Include="Sample App">
-       <FileDescription>Sample App</FileDescription>
-      </NativeFiles-->
-    </ItemGroup>
 
     <MSBuild
       Projects="$(MSBuildProjectFullPath)"

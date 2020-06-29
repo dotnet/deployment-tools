@@ -10,7 +10,6 @@
 
   <!-- Get artifact locations to sign. -->
   <Import Project="$(RepositoryEngineeringDir)Configurations.props" />
-  <Import Project="$(RepositoryEngineeringDir)liveBuilds.targets" />
 
   <!-- We need  this to be inside a target to workaround: https://github.com/microsoft/msbuild/issues/5445 -->
   <Target Name="PrepareItemsToSign" BeforeTargets="Sign">
@@ -32,8 +31,6 @@
 
     <ItemGroup Condition="'$(SignBinaries)' == 'true'">
 
-      <!-- Sign ClickOnce binaries. -->
-      <!--ItemsToSign Include="$(ArtifactsBinDir)Mage/**/*.dll" /-->
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignMsiFiles)' == 'true'">

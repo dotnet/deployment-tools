@@ -102,10 +102,6 @@
     <SymbolPackageOutputPath Condition="'$(SymbolPackageOutputPath)'==''">$(ArtifactsShippingPackagesDir)</SymbolPackageOutputPath>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputVersionBadge>$(AssetOutputPath)sharedfx_$(OutputRid)_$(Configuration)_version_badge.svg</OutputVersionBadge>
-  </PropertyGroup>
-
   <!-- Set up handling of build warnings -->
   <PropertyGroup>
     <WarningLevel>4</WarningLevel>

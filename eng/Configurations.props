@@ -45,7 +45,6 @@
     <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('SOLARIS'))">Solaris</TargetOS>
     <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSUnixLike())">Linux</TargetOS>
     <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('WINDOWS'))">Windows_NT</TargetOS>
-    <ClickOnceTargetOS Condition="'$(ClickOnceTargetOS)' == ''">$(TargetOS)</ClickOnceTargetOS>
   </PropertyGroup>
 
   <PropertyGroup>

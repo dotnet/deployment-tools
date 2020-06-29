@@ -1,4 +1,4 @@
-Contribution to .NET Deployment-Tools
+Contribution to .NET Deployment Tools
 =====================
 
 You can contribute to .NET Deployment-Tools with issues and PRs. Simply filing issues for problems you encounter is a great way to contribute. Contributing implementations is greatly appreciated.
