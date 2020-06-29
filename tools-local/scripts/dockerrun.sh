@@ -78,8 +78,8 @@ if [ -z "$DOCKERFILE" ]; then
     fi
 fi
 
-[ -z "$DOTNET_BUILD_CONTAINER_TAG" ] && DOTNET_BUILD_CONTAINER_TAG="dotnet-coresetup-build"
-[ -z "$DOTNET_BUILD_CONTAINER_NAME" ] && DOTNET_BUILD_CONTAINER_NAME="dotnet-coresetup-build-container"
+[ -z "$DOTNET_BUILD_CONTAINER_TAG" ] && DOTNET_BUILD_CONTAINER_TAG="dotnet-deploymenttools-build"
+[ -z "$DOTNET_BUILD_CONTAINER_NAME" ] && DOTNET_BUILD_CONTAINER_NAME="dotnet-deploymenttools-build-container"
 [ -z "$DOCKER_HOST_SHARE_DIR" ] && DOCKER_HOST_SHARE_DIR="$(pwd)"
 
 # Make container names CI-specific if we're running in CI

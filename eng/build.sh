@@ -26,16 +26,10 @@ usage()
   echo "                                  compiled with optimizations enabled."
   echo "                                  [Default: Debug]"
   echo "  --help (-h)                     Print help and exit."
-  echo "  --librariesConfiguration (-lc)  Libraries build configuration: Debug or Release."
-  echo "                                  [Default: Debug]"
   echo "  --os                            Target operating system: Windows_NT, Linux, FreeBSD, OSX, tvOS, iOS, Android,"
   echo "                                  Browser, NetBSD, illumos or Solaris."
   echo "                                  [Default: Your machine's OS.]"
   echo "  --projects <value>              Project or solution file(s) to build."
-  echo "  --runtimeConfiguration (-rc)    Runtime build configuration: Debug, Release or Checked."
-  echo "                                  Checked is exclusive to the CLR runtime. It is the same as Debug, except code is"
-  echo "                                  compiled with optimizations enabled."
-  echo "                                  [Default: Debug]"
   echo "  --subset (-s)                   Build a subset, print available subsets with -subset help."
   echo "                                 '--subset' can be omitted if the subset is given as the first argument."
   echo "                                  [Default: Builds the entire repo.]"
@@ -82,34 +76,10 @@ usage()
 
   echo "Here are some quick examples. These assume you are on a Linux x64 machine:"
   echo ""
-  echo "* Build CoreCLR for Linux x64 on Release configuration:"
-  echo "./build.sh clr -c release"
+  echo "There are no projects that build for Linux at the moment - these are just examples."
   echo ""
-  echo "* Build Debug libraries with a Release runtime for Linux x64."
-  echo "./build.sh clr+libs -rc release"
-  echo ""
-  echo "* Build Release libraries and their tests with a Checked runtime for Linux x64, and run the tests."
-  echo "./build.sh clr+libs+libs.tests -rc checked -lc release -test"
-  echo ""
-  echo "* Build CoreCLR for Linux x64 on Debug configuration using Clang 9."
-  echo "./build.sh clr -clang9"
-  echo ""
-  echo "* Build CoreCLR for Linux x64 on Debug configuration using GCC 8.4."
-  echo "./build.sh clr -gcc8.4"
-  echo ""
-  echo "* Cross-compile CoreCLR runtime for Linux ARM64 on Release configuration."
-  echo "./build.sh clr.runtime -arch arm64 -c release -cross"
-  echo ""
-  echo "However, for this example, you need to already have ROOTFS_DIR set up."
-  echo "Further information on this can be found here:"
-  echo "https://github.com/dotnet/runtime/blob/master/docs/workflow/building/coreclr/linux-instructions.md"
-  echo ""
-  echo "* Build Mono runtime for Linux x64 on Release configuration."
-  echo "./build.sh mono -c release"
-  echo ""
-  echo "It's important to mention that to build Mono for the first time,"
-  echo "you need to build the CLR and Libs subsets beforehand."
-  echo "This is done automatically if a full build is performed at first."
+  echo "* Build ClickOnce for Linux x64 on Release configuration:"
+  echo "./build.sh clickonce -c release"
   echo ""
   echo "For more general information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
 }
@@ -294,46 +264,6 @@ while [[ $# > 0 ]]; do
      -coverage)
       arguments="$arguments /p:Coverage=true"
       shift 1
-      ;;
-
-     -runtimeconfiguration|-rc)
-      if [ -z ${2+x} ]; then
-        echo "No runtime configuration supplied. See help (--help) for supported runtime configurations." 1>&2
-        exit 1
-      fi
-      passedRuntimeConf="$(echo "$2" | awk '{print tolower($0)}')"
-      case "$passedRuntimeConf" in
-        debug|release|checked)
-          val="$(tr '[:lower:]' '[:upper:]' <<< ${passedRuntimeConf:0:1})${passedRuntimeConf:1}"
-          ;;
-        *)
-          echo "Unsupported runtime configuration '$2'."
-          echo "The allowed values are Debug, Release, and Checked."
-          exit 1
-          ;;
-      esac
-      arguments="$arguments /p:RuntimeConfiguration=$val"
-      shift 2
-      ;;
-
-     -librariesconfiguration|-lc)
-      if [ -z ${2+x} ]; then
-        echo "No libraries configuration supplied. See help (--help) for supported libraries configurations." 1>&2
-        exit 1
-      fi
-      passedLibConf="$(echo "$2" | awk '{print tolower($0)}')"
-      case "$passedLibConf" in
-        debug|release)
-          val="$(tr '[:lower:]' '[:upper:]' <<< ${passedLibConf:0:1})${passedLibConf:1}"
-          ;;
-        *)
-          echo "Unsupported libraries configuration '$2'."
-          echo "The allowed values are Debug and Release."
-          exit 1
-          ;;
-      esac
-      arguments="$arguments /p:LibrariesConfiguration=$val"
-      shift 2
       ;;
 
      -cross)

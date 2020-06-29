@@ -40,8 +40,8 @@ jobs:
       ${{ if ne(parameters.name, 'FreeBSD_x64')}}:
         RunArguments: >-
           docker run --privileged --rm
-          -v "$(Build.SourcesDirectory):/root/coresetup"
-          -w="/root/coresetup"
+          -v "$(Build.SourcesDirectory):/root/deploymenttools"
+          -w="/root/deploymenttools"
           $(PreserveNuGetAuthDockerArgs)
           ${{ parameters.additionalRunArgs }}
           ${{ parameters.dockerImage }}
@@ -51,11 +51,11 @@ jobs:
 
       ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         BuildScript: ./eng/install-nuget-credprovider-then-build.sh
-        MSBuildScript: /root/coresetup/eng/install-nuget-credprovider-then-msbuild.sh
+        MSBuildScript: /root/deploymenttools/eng/install-nuget-credprovider-then-msbuild.sh
 
       ${{ if not(and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'))) }}:
         BuildScript: ./build.sh
-        MSBuildScript: /root/coresetup/eng/common/msbuild.sh
+        MSBuildScript: /root/deploymenttools/eng/common/msbuild.sh
 
       CommonMSBuildArgs: >-
         /p:Configuration=$(_BuildConfig)
@@ -89,9 +89,9 @@ jobs:
 
       DockerRunMSBuild: >-
         docker run
-        -v $(Build.SourcesDirectory):/root/coresetup
+        -v $(Build.SourcesDirectory):/root/deploymenttools
         -v $(Build.StagingDirectory)/sharedFrameworkPublish/:/root/sharedFrameworkPublish/
-        -w=/root/coresetup
+        -w=/root/deploymenttools
         $(PreserveNuGetAuthDockerArgs)
 
     steps:

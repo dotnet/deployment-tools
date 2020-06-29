@@ -1,10 +1,7 @@
-# .NET Runtime
+# .NET Deployment Tools
 
-[![Build Status](https://dnceng.visualstudio.com/public/_apis/build/status/dotnet/runtime/runtime?branchName=master)](https://dnceng.visualstudio.com/public/_build/latest?definitionId=686&branchName=master)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dotnet/runtime)
-
-This repo contains the code to build the .NET runtime, libraries and shared host (`dotnet`) installers for
-all supported platforms, as well as the sources to .NET runtime and libraries.
+This repo contains the code to build the .NET deployment tools and installers for
+all supported platforms, as well as the sources to .NET deployment tools.
 
 ## What is .NET?
 
@@ -12,7 +9,6 @@ Official Starting Page: https://dotnet.microsoft.com/
 
 * [How to use .NET](https://docs.microsoft.com/dotnet/core/get-started) (with VS, VS Code, command-line CLI)
   * [Install official releases](https://dotnet.microsoft.com/download)
-  * [Install daily builds](https://github.com/dotnet/installer#installers-and-binaries)
   * [Documentation](https://docs.microsoft.com/dotnet/core) (Get Started, Tutorials, Porting from .NET Framework, API reference, ...)
     * [Deploying apps](https://docs.microsoft.com/dotnet/core/deploying)
   * [Supported OS versions](https://github.com/dotnet/core/blob/master/os-lifecycle-policy.md)
@@ -35,7 +31,7 @@ Also see info about related [Microsoft .NET Core and ASP.NET Core Bug Bounty Pro
 
 ## Filing issues
 
-This repo should contain issues that are tied to the runtime, the class libraries and frameworks, the installation of the `dotnet` binary (sometimes known as the `muxer`) and installation of the .NET runtime and libraries.
+This repo should contain issues that are tied to .NET deployment tools and its installation packages.
 
 For other issues, please use the following repos:
 
@@ -51,7 +47,7 @@ For other issues, please use the following repos:
 
 ## .NET Foundation
 
-.NET Runtime is a [.NET Foundation](https://www.dotnetfoundation.org/projects) project.
+.NET Deployment Tools is a [.NET Foundation](https://www.dotnetfoundation.org/projects) project.
 
 There are many .NET related projects on GitHub.
 
@@ -64,4 +60,4 @@ General .NET OSS discussions: [.NET Foundation forums](https://forums.dotnetfoun
 
 ## License
 
-.NET (including the runtime repo) is licensed under the [MIT](LICENSE.TXT) license.
+.NET (including the deployment-tools repo) is licensed under the [MIT](LICENSE.TXT) license.

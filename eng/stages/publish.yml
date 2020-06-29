@@ -16,7 +16,7 @@ stages:
     # quotes inside the string so that it passes through to MSBuild without script interference.
     symbolPublishingAdditionalParameters: "'-warnAsError:$false'"
     publishInstallersAndChecksums: true
-    # Enable SDL validation, passing through values from the 'core-setup-sdl-validation' group.
+    # Enable SDL validation, passing through values from the 'deployment-tools-sdl-validation' group.
     SDLValidationParameters:
       enable: true
       artifactNames:
