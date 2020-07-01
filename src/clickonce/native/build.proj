@@ -48,7 +48,7 @@
       warning in the native build.
     -->
     <Message Text="$(MSBuildProjectDirectory)\build.cmd $(BuildArgs)" Importance="High"/>
-    <!--Exec Command="$(MSBuildProjectDirectory)\build.cmd $(BuildArgs)" IgnoreStandardErrorWarningFormat="true"/-->
+    <Exec Command="$(MSBuildProjectDirectory)\build.cmd $(BuildArgs)" IgnoreStandardErrorWarningFormat="true"/>
   </Target>
 
   <Target Name="PrependWindowsHeaderIncludeToVersionHeaderFile"
