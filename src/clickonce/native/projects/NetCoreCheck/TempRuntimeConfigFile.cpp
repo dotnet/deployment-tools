@@ -12,24 +12,24 @@
 DWORD WriteFile(LPCWSTR filePath, LPCWSTR fileText);
 
 // Globals
-extern Logger* g_log;
+extern Logger g_log;
 
 DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath)
 {
     if (!GetModuleFileName(NULL, runtimeConfigPath, MAX_PATH))
     {
-        g_log->Log(TEXT("Couldn't get module name."));
+        g_log.Log(TEXT("Couldn't get module name."));
         return ::GetLastError();
     }
 
     PathRemoveFileSpec(runtimeConfigPath);
     if (!PathAppend(runtimeConfigPath, TEXT("Test.runtimeconfig.json")))
     {
-        g_log->Log(TEXT("Couldn't append file."));
+        g_log.Log(TEXT("Couldn't append file."));
         return EXIT_FAILURE_TEMPRTJSONPATH;
     }
 
-    g_log->Log(TEXT("Temporary runtime config file path: '%s'."), runtimeConfigPath);
+    g_log.Log(TEXT("Temporary runtime config file path: '%s'."), runtimeConfigPath);
     return 0;
 }
 
@@ -39,7 +39,7 @@ DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkNa
     {
         if (!DeleteFile(runtimeConfigPath))
         {
-            g_log->Log(TEXT("Failed to delete existing file '%s'."), runtimeConfigPath);
+            g_log.Log(TEXT("Failed to delete existing file '%s'."), runtimeConfigPath);
             return EXIT_FAILURE_TEMPRTJSONFile;
         }
     }
@@ -47,11 +47,11 @@ DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkNa
     WCHAR fileText[MAX_PATH];
     if (swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_FORMAT_STR, frameworkName, frameworkVersion) <= 0)
     {
-        g_log->Log(TEXT("Failed to format file text."));
+        g_log.Log(TEXT("Failed to format file text."));
         return EXIT_FAILURE_TEMPRTJSONFile;
     }
 
-    g_log->Log(TEXT("Temp runtime config file text: '%s'."), fileText);
+    g_log.Log(TEXT("Temp runtime config file text: '%s'."), fileText);
     return WriteFile(runtimeConfigPath, fileText);
 }
 
@@ -61,7 +61,7 @@ DWORD WriteFile(LPCWSTR filePath, LPCWSTR fileText)
     DWORD ret = ::_tfopen_s(&file, filePath, L"a+");
     if (0 != ret)
     {
-        g_log->Log(TEXT("Open file failed : '%d'."), ret);
+        g_log.Log(TEXT("Open file failed : '%d'."), ret);
         return ret;
     }
 

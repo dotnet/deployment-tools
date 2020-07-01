@@ -6,58 +6,39 @@
 
 #define DEFAULT_LOG_FILE_NAME_FORMAT L"dd_NetCoreCheck_%I64u.log"
 
-extern Logger* g_log;
-
-void Logger::CreateLog(LPCWSTR pwszLogFile)
-{
-    if (pwszLogFile)
-    {
-        g_log = new Logger(pwszLogFile);
-    }
-    else
-    {
-        g_log = new Logger();
-    }
-}
-
-void Logger::CloseLog()
-{
-    if (g_log)
-    {
-        delete g_log;
-    }
-}
+extern Logger g_log;
 
 Logger::Logger() throw() : m_file(NULL)
 {
-    WCHAR logFilePath[MAX_PATH];
-
-    // Use default log-file path under %TEMP%.
-    DWORD len = ::GetTempPath(MAX_PATH, logFilePath);
-    if (len != 0)
-    {
-        if (logFilePath[len - 1] != L'\\')
-        {
-            ::_tcscat_s(logFilePath, MAX_PATH, TEXT("\\"));
-        }
-
-        WCHAR fileName[MAX_PATH];
-        ::_stprintf_s(fileName, MAX_PATH, DEFAULT_LOG_FILE_NAME_FORMAT, GetTickCount64());
-        ::_tcscat_s(logFilePath, MAX_PATH, fileName);
-
-        Initialize(logFilePath);
-    }
-}
-
-Logger::Logger(LPCWSTR filePath) throw() : m_file(NULL)
-{
-    // If log path was passed in as a parameter, use it
-    Initialize(filePath);
+    
 }
 
 void Logger::Initialize(LPCWSTR filePath)
 {
-    ::_tfopen_s(&m_file, (LPCWSTR)filePath, L"a+");
+    WCHAR logFilePath[MAX_PATH];
+    if (filePath)
+    {
+        // If log path was passed in as a parameter, use it
+        wcscpy(logFilePath, filePath);
+    }
+    else
+    {
+        // Use default log-file path under %TEMP%.
+        DWORD len = ::GetTempPath(MAX_PATH, logFilePath);
+        if (len != 0)
+        {
+            if (logFilePath[len - 1] != L'\\')
+            {
+                ::_tcscat_s(logFilePath, MAX_PATH, TEXT("\\"));
+            }
+
+            WCHAR fileName[MAX_PATH];
+            ::_stprintf_s(fileName, MAX_PATH, DEFAULT_LOG_FILE_NAME_FORMAT, GetTickCount64());
+            ::_tcscat_s(logFilePath, MAX_PATH, fileName);
+        }
+    }
+
+    ::_tfopen_s(&m_file, (LPCWSTR)logFilePath, L"a+");
     Log(L"============= NetCoreCheck Start ===============");
 }
 
@@ -81,7 +62,7 @@ void Logger::Log(LPCWSTR format, ...) const throw()
     }
 
     // Start the log line with a timestamp
-    const size_t dateTimeCharCount = 12;
+    const size_t dateTimeCharCount = ARRAYSIZE(TEXT("07/01/20"));
     WCHAR date[dateTimeCharCount] = { TEXT('\0') };
     WCHAR time[dateTimeCharCount] = { TEXT('\0') };
     ::_tstrdate_s(date, dateTimeCharCount);

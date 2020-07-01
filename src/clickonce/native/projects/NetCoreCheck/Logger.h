@@ -11,17 +11,12 @@
 class Logger
 {
 public:
-    void Log(LPCWSTR pszFormat, ...) const throw();
+    void Initialize(LPCWSTR logFilePath);
+    void Log(LPCWSTR pszFormat, ...) const noexcept;
 
-    // Static methods to create and close the logger
-    static void CreateLog(LPCWSTR logFilePath);
-    static void CloseLog();
-
-private:
-    Logger(void) throw();
-    Logger(LPCWSTR logFilePath) throw();
+    Logger(void) noexcept;
     ~Logger(void) noexcept;
 
-    void Initialize(LPCWSTR logFilePath);
+private:
     FILE* m_file;
 };
