@@ -8,9 +8,8 @@
 
 extern Logger g_log;
 
-Logger::Logger() throw() : m_file(NULL)
-{
-    
+Logger::Logger() noexcept : m_file(NULL)
+{    
 }
 
 void Logger::Initialize(LPCWSTR filePath)
@@ -52,7 +51,7 @@ Logger::~Logger(void) noexcept
     }
 }
 
-void Logger::Log(LPCWSTR format, ...) const throw()
+void Logger::Log(LPCWSTR format, ...) const noexcept
 {
     if (!m_file)
     {

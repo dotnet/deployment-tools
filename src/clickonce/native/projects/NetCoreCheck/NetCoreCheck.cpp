@@ -9,6 +9,8 @@
 #include "..\hostfxr.h"
 #include "..\nethost.h"
 
+#include <vector>
+
 // Forward declarations
 void* GetExport(HMODULE h, const char* name);
 int Exit(int ret);
@@ -121,17 +123,10 @@ void* GetExport(HMODULE h, const char* name)
     {
         DWORD err = ::GetLastError();
         const size_t size = strlen(name) + 1;
-        WCHAR* wName = new WCHAR[size];
-        if (wName)
-        {
-            mbstowcs(wName, name, size);
-            g_log.Log(TEXT("Failed to load library '%s', error = '%d'"), wName, err);
-            delete wName;
-        }
-        else
-        {
-            g_log.Log(TEXT("Failed to load library, error = '%d'"), err);
-        }
+        std::vector<WCHAR> wName;
+        wName.resize(size);
+        mbstowcs(wName.data(), name, size);
+        g_log.Log(TEXT("Failed to load library '%s', error = '%d'"), wName.data(), err);
     }
     
     return address;
