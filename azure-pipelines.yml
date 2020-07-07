@@ -40,7 +40,7 @@ variables:
     - name: SignType
       value: $[ coalesce(variables.OfficialSignType, 'real') ]
     # Values for SDLValidationParameters
-    - group: deployment-tools-sdl-validation
+    - group: core-setup-sdl-validation
 
 stages:
 - stage: Build
