@@ -68,7 +68,7 @@ jobs:
           Token: $(dn-bot-dnceng-artifact-feeds-rw)
 
     - script: >-
-        build.cmd -ci -test
+        build.cmd -subset clickonce+installer -ci -test
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
       displayName: Build
