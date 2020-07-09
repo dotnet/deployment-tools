@@ -8,8 +8,6 @@ set(DOTNET_PROJECT_NAME "NetCoreCheck")
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release"
     CACHE STRING "Configuration types" FORCE)
 
-set(SKIP_VERSIONING 1)
-
 set(SOURCES
     ./Logger.cpp
     ./NetCoreCheck.cpp
