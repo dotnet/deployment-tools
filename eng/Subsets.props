@@ -55,7 +55,7 @@
 
   <PropertyGroup>
     <DefaultClickOnceSubsets>clickonce</DefaultClickOnceSubsets>
-    <DefaultInstallerSubsets>installers</DefaultInstallerSubsets>
+    <DefaultInstallerSubsets>installer</DefaultInstallerSubsets>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -71,7 +71,7 @@
     <SubsetName Include="ClickOnce" Description="ClickOnce tools" />
 
     <!-- Installer -->
-    <SubsetName Include="Installers" Description="Generates installers. This produces installers for deployment tools." />
+    <SubsetName Include="Installer" Description="Generates installers. This produces installers for deployment tools." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -92,7 +92,7 @@
     <ProjectToBuild Include="@(ClickOnceProjectToBuild)" BuildInParallel="true" Pack="true" Category="clickonce" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(_subset.Contains('+installers+'))">
+  <ItemGroup Condition="$(_subset.Contains('+installer+'))">
     <InstallerProjectToBuild Include="$(InstallerProjectRoot)**\*.proj" BuildInParallel="true" />
     <ProjectToBuild Include="@(InstallerProjectToBuild)" Pack="true" Category="installer" />
   </ItemGroup>
