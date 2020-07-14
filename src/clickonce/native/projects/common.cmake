@@ -5,9 +5,7 @@
 project(${DOTNET_PROJECT_NAME})
 
 if(CLR_CMAKE_HOST_WIN32)
-    add_compile_options($<$<CONFIG:RelWithDebInfo>:/MT>)
-    add_compile_options($<$<CONFIG:Release>:/MT>)
-    add_compile_options($<$<CONFIG:Debug>:/MTd>)
+    add_compile_options(/MT)
 else()
     add_compile_options(-fvisibility=hidden)
 endif()

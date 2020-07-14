@@ -22,6 +22,7 @@ add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
 add_definitions(-DFEATURE_APPHOST=1)
 add_definitions(-DNETHOST_USE_AS_STATIC)
+remove_definitions(-D_DEBUG)
 
 target_link_libraries(NetCoreCheck
         shlwapi.lib
