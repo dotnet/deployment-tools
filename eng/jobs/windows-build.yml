@@ -73,6 +73,12 @@ jobs:
         $(MsbuildSigningArguments)
       displayName: Build
 
+    - script: >-
+        build.cmd -subset clickonce+installer -ci -pack
+        $(CommonMSBuildArgs)
+        $(MsbuildSigningArguments)
+      displayName: Package
+
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
       - task: NuGetToolInstaller@1
         displayName: 'Install NuGet.exe'

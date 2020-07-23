@@ -8,6 +8,8 @@ stages:
   parameters:
     dependsOn:
     - PrepareForPublish
+    validateDependsOn:
+    - PrepareForPublish
     # Symbol validation is not ready yet. https://github.com/dotnet/arcade/issues/2871
     enableSymbolValidation: false
     # SourceLink validation doesn't work in dev builds: tries to pull from GitHub. https://github.com/dotnet/arcade/issues/3604

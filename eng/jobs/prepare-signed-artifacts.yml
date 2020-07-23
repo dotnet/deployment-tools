@@ -36,7 +36,7 @@ jobs:
 
   - script: >-
       build.cmd -ci
-      -projects $(Build.SourcesDirectory)\publish\prepare-artifacts.proj
+      -subset installer.publish
       /p:Configuration=Release
       /p:PublishRidAgnosticPackagesFromJobName=${{ parameters.PublishRidAgnosticPackagesFromJobName }}
       /p:SignType=$(SignType)

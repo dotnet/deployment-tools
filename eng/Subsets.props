@@ -55,7 +55,7 @@
 
   <PropertyGroup>
     <DefaultClickOnceSubsets>clickonce</DefaultClickOnceSubsets>
-    <DefaultInstallerSubsets>installer</DefaultInstallerSubsets>
+    <DefaultInstallerSubsets>installer.pkgprojs</DefaultInstallerSubsets>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -72,6 +72,8 @@
 
     <!-- Installer -->
     <SubsetName Include="Installer" Description="Generates installers. This produces installers for deployment tools." />
+    <SubsetName Include="Installer.PkgProjs" Description="The packaging projects. These produce NETCoreApp assets: NuGet packages, installers, zips, and Linux packages." />
+    <SubsetName Include="Installer.Publish" OnDemand="true" Description="Builds the installer publish infrastructure." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -86,15 +88,21 @@
 
   <!-- ClickOnce sets -->
   <ItemGroup Condition="$(_subset.Contains('+clickonce+'))">
-    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.csproj" SignPhase="Binaries" />
+    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.csproj" Pack="true" SignPhase="Binaries" />
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.vcxproj" SignPhase="Binaries" />
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.proj" SignPhase="Binaries" />
-    <ProjectToBuild Include="@(ClickOnceProjectToBuild)" BuildInParallel="true" Pack="true" Category="clickonce" />
+    <ClickOncePkgprojProjectToBuild Include="$(ClickOnceProjectRoot)pkg\projects\**\*.pkgproj" SignPhase="MsiFiles" BuildInParallel="false" />
+    <ProjectToBuild Include="@(ClickOnceProjectToBuild)" BuildInParallel="true" Category="clickonce" />
+    <ProjectToBuild Include="@(ClickOncePkgprojProjectToBuild)" Pack="true" Category="clickonce" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(_subset.Contains('+installer+'))">
-    <InstallerProjectToBuild Include="$(InstallerProjectRoot)**\*.proj" BuildInParallel="true" />
-    <ProjectToBuild Include="@(InstallerProjectToBuild)" Pack="true" Category="installer" />
+  <ItemGroup Condition="$(_subset.Contains('+installer.pkgprojs+'))">
+    <InstallerPkgprojProjectToBuild Include="$(InstallerProjectRoot)pkg\projects\**\*.pkgproj" SignPhase="MsiFiles" BuildInParallel="false" />
+    <ProjectToBuild Include="@(InstallerPkgprojProjectToBuild)" Pack="true" Category="installer" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(_subset.Contains('+installer.publish+'))">
+    <ProjectToBuild Include="$(InstallerProjectRoot)publish\prepare-artifacts.proj" Pack="true" BuildInParallel="false" Category="installer" />
   </ItemGroup>
 
   <!-- Set default configurations. -->
