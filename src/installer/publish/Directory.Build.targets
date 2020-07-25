@@ -32,10 +32,12 @@
         Filter out the RID-specific (Runtime) nupkgs and RID-agnostic nupkgs. RID-specific packages
         are published from every job. RID-agnostic nupkgs are built with the same ID/version by
         every job, so one specific job's outputs must be picked to sign and publish.
+
+        Publish all packages from every job - update patterns in RuntimeNupkgFile item-group, if this changes.
       -->
       <RuntimeNupkgFile
         Include="
-          $(DownloadDirectory)**\runtime.*.nupkg;
+          $(DownloadDirectory)**\*.nupkg;
           $(DownloadDirectory)**\*.Runtime.*.nupkg;
           $(DownloadDirectory)**\*.App.Host.*.nupkg;
           $(DownloadDirectory)**\VS.Redist.Common.*.nupkg"
