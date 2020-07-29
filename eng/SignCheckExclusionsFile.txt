@@ -6,3 +6,4 @@
 ;; Examples:
 ;;  *apphost.exe;;Template, https://github.com/dotnet/core-setup/pull/7549
 ;;  *apphosttemplateapphostexe.exe;;Template, https://github.com/dotnet/core-setup/pull/7549
+*launcher.exe;;Template

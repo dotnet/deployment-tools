@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Launcher</AssemblyName>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Deployment" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Shared\NativeMethods.cs" />
+  </ItemGroup>
+</Project>
