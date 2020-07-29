@@ -34,7 +34,7 @@ namespace Microsoft.Deployment.Launcher
 
             try
             {
-                hModule = NativeMethods.LoadLibraryExW(path, IntPtr.Zero, NativeMethods.LOAD_LIBRARY_AS_DATAFILE);
+                hModule = NativeMethods.Kernel32.LoadLibraryExW(path, IntPtr.Zero, NativeMethods.Kernel32.LOAD_LIBRARY_AS_DATAFILE);
                 if (hModule != IntPtr.Zero)
                 {
                     binaryToLaunch = GetResourceString(hModule, type, name);
@@ -44,7 +44,7 @@ namespace Microsoft.Deployment.Launcher
             {
                 if (hModule != IntPtr.Zero)
                 {
-                    NativeMethods.FreeLibrary(hModule);
+                    NativeMethods.Kernel32.FreeLibrary(hModule);
                 }
             }
 
@@ -61,25 +61,25 @@ namespace Microsoft.Deployment.Launcher
         private static string GetResourceString(IntPtr hModule, IntPtr pType, string pName)
         {
             string value = string.Empty;
-            IntPtr hResInfo = NativeMethods.FindResource(hModule, pName, pType);
+            IntPtr hResInfo = NativeMethods.Kernel32.FindResource(hModule, pName, pType);
             if (hResInfo == IntPtr.Zero)
             {
                 throw new LauncherException(Constants.ErrorResourceMissing, pName);
             }
 
-            IntPtr hResource = NativeMethods.LoadResource(hModule, hResInfo);
+            IntPtr hResource = NativeMethods.Kernel32.LoadResource(hModule, hResInfo);
             if (hResource == IntPtr.Zero)
             {
                 throw new LauncherException(Constants.ErrorResourceFailedToLoad, pName);
             }
 
-            IntPtr hResLock = NativeMethods.LockResource(hResource);
+            IntPtr hResLock = NativeMethods.Kernel32.LockResource(hResource);
             if (hResLock == IntPtr.Zero)
             {
                 throw new LauncherException(Constants.ErrorResourceFailedToLock, pName);
             }
 
-            uint bufsize = NativeMethods.SizeofResource(hModule, hResInfo);
+            uint bufsize = NativeMethods.Kernel32.SizeofResource(hModule, hResInfo);
             byte[] buffer = new byte[bufsize];
 
             Marshal.Copy(hResource, buffer, 0, buffer.Length);

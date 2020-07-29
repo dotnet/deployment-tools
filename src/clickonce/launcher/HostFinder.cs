@@ -101,8 +101,8 @@ namespace Microsoft.Deployment.Launcher
         /// <returns></returns>
         private static string GetProcessorArchitectureFromAssembly(string path)
         {
-            Guid riid = GetGuidOfType(typeof(NativeMethods.IReferenceIdentity));
-            NativeMethods.IReferenceIdentity refid = (NativeMethods.IReferenceIdentity)NativeMethods.GetAssemblyIdentityFromFile(path, ref riid);
+            Guid riid = GetGuidOfType(typeof(NativeMethods.Clr.IReferenceIdentity));
+            NativeMethods.Clr.IReferenceIdentity refid = (NativeMethods.Clr.IReferenceIdentity)NativeMethods.Clr.GetAssemblyIdentityFromFile(path, ref riid);
             if (refid == null)
             {
                 throw new LauncherException(Constants.ErrorApplicationAssemblyIdentity, path);

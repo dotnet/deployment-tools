@@ -16,10 +16,10 @@ namespace Microsoft.Deployment.Launcher
         [STAThread]
         static void Main()
         {
+            StartLoggingIfConfigured();
+
             try
             {
-                StartLoggingIfConfigured();
-
                 // Allow running as a ClickOnce app only.
                 if (false == ApplicationDeployment.IsNetworkDeployed)
                 {

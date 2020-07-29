@@ -10,7 +10,7 @@ namespace Microsoft.Deployment.Launcher
         public static readonly string LauncherLogFilePathRegistryString = "LauncherLogFilePath";
 
         // Error messages
-        public static readonly string ErrorApplicationFilenameCannotBeEmpty = "Filenname cannot be empty.";
+        public static readonly string ErrorApplicationFilenameCannotBeEmpty = "Filename cannot be empty.";
         public static readonly string ErrorApplicationFilenameCannotIncludeAPath = "Filename cannot include a path.";
         public static readonly string ErrorApplicationAssemblyIdentity = "Cannot obtain assembly identity from application binary: {0}";
         public static readonly string ErrorInvalidStartProcessWithRetryParameters = "Invalid StartProcessWithRetry() parameters.";
