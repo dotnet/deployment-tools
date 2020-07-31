@@ -36,10 +36,11 @@
       <ProductionVersion Condition="'$(ProductionVersion)' == ''">$(ProductBandVersion).$(PatchVersion)</ProductionVersion>
       <ProductVersion>$(ProductionVersion)$(ProductVersionSuffix)</ProductVersion>
 
+      <SharedFrameworkNugetVersion>$(ProductVersion)</SharedFrameworkNugetVersion>
       <NuGetVersion>$(SharedFrameworkNugetVersion)</NuGetVersion>
       <NativeVersion>$(ProductVersion)</NativeVersion>
 
-      <InstallersRelativePath>Runtime/$(SharedFrameworkNugetVersion)/</InstallersRelativePath>
+      <InstallersRelativePath>DeploymentTools/$(SharedFrameworkNugetVersion)/</InstallersRelativePath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(OutputRid)' != ''">
