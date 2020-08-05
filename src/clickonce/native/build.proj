@@ -18,7 +18,8 @@
           DependsOnTargets="
             GetProductVersions;
             GenerateNativeVersionFile;
-            BuildNativeProjects" />
+            BuildNativeProjects;
+            CopyNativePDBsToSymStore" />
 
   <Target Name="BuildNativeProjects"
           Condition="'$(TargetOS)' == 'Windows_NT'"
@@ -63,6 +64,28 @@
       File="$(NativeVersionFile)"
       Lines="$(IncludeStatementLine);$(NativeVersionFileContents)"
       Overwrite="true" />
+  </Target>
+
+  <!--
+    Copy native PDBs to $(ArtifactsSymStoreDirectory) for publishing to symbols server.
+    We need to this because regular DeployToSymStore target doesn't run unless the project
+    is managed and uses default Build target.
+  -->
+  <Target Name="CopyNativePDBsToSymStore"
+          Condition="'$(ContinuousIntegrationBuild)' == 'true' and '$(OS)' == 'Windows_NT'">
+    <ItemGroup>
+      <NativePDB Include="$(BaseOutputRootPath)\**\*.pdb"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <ArtifactsSymStoreRidDirectory>$(ArtifactsSymStoreDirectory)$(OutputRid)</ArtifactsSymStoreRidDirectory>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(ArtifactsSymStoreRidDirectory)"/>
+
+    <Copy SourceFiles="@(NativePDB)"
+          DestinationFiles="@(NativePDB->'$(ArtifactsSymStoreRidDirectory)\%(RecursiveDir)%(Filename)%(Extension)')"
+          UseHardlinksIfPossible="true"/>
   </Target>
 
 </Project>

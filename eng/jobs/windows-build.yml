@@ -32,6 +32,7 @@ jobs:
         /p:OfficialBuildId=$(OfficialBuildId)
         /p:TargetArchitecture=${{ parameters.targetArchitecture }}
         /p:PortableBuild=true
+        /p:ContinuousIntegrationBuild=true
         /p:SkipTests=${{ parameters.skipTests }}
       MsbuildSigningArguments: >-
         /p:CertificateId=400
