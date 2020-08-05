@@ -34,12 +34,6 @@ jobs:
       artifactName: IntermediateUnsignedArtifacts
       downloadPath: $(Build.SourcesDirectory)\artifacts\PackageDownload
 
-  - task: DownloadBuildArtifacts@0
-    displayName: Download Symbols
-    inputs:
-      artifactName: Symbols
-      downloadPath: $(Build.SourcesDirectory)\artifacts\SymbolsDownload
-
   - script: >-
       build.cmd -ci
       -subset installer.publish

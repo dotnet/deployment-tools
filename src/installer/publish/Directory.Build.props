@@ -18,7 +18,6 @@
 
     <ChecksumExtension>.sha512</ChecksumExtension>
     <DownloadDirectory>$(ArtifactsDir)PackageDownload/</DownloadDirectory>
-    <SymbolsDownloadDirectory>$(ArtifactsDir)SymbolsDowload/</SymbolsDownloadDirectory>
 
     <!-- Allow dev builds to set a custom blob feed, or default to dotnet-core. -->
     <PackagesUrl Condition="'$(PackagesUrl)' == ''">$(PublishBlobFeedUrl)</PackagesUrl>

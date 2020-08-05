@@ -26,20 +26,20 @@ steps:
 # Upload build outputs as build artifacts only if internal and not PR, to save storage space.
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - task: CopyFiles@2
-    displayName: Prepare job-specific Symbols subdirectory
+    displayName: Prepare job-specific PdbArtifacts subdirectory
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/artifacts/SymStore/$(_BuildConfig)'
       Contents: |
         **/*
-      TargetFolder: '$(Build.StagingDirectory)/Symbols/${{ parameters.name }}'
+      TargetFolder: '$(Build.StagingDirectory)/PdbArtifacts/${{ parameters.name }}'
       CleanTargetFolder: true
     condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish Symbols
+    displayName: Publish PdbArtifacts
     inputs:
-      pathToPublish: '$(Build.StagingDirectory)/Symbols'
-      artifactName: Symbols
+      pathToPublish: '$(Build.StagingDirectory)/PdbArtifacts'
+      artifactName: PdbArtifacts
       artifactType: container
     condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
 

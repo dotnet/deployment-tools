@@ -66,10 +66,6 @@
         Condition="Exists('%(Identity)')" />
 
       <UploadToBlobStorageFile Include="@(SymbolNupkgToPublishFile)" />
-
-      <DownloadedSymbolFile Include="$(SymbolsDownloadDirectory)**\*.pdb" />
-      <SymbolToPublishFile Include="@(DownloadedSymbolFile)" />
-
     </ItemGroup>
   </Target>
 
