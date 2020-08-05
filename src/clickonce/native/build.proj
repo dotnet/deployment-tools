@@ -77,10 +77,14 @@
       <NativePDB Include="$(BaseOutputRootPath)\**\*.pdb"/>
     </ItemGroup>
 
-    <MakeDir Directories="$(ArtifactsSymStoreDirectory)"/>
+    <PropertyGroup>
+      <ArtifactsSymStoreRidDirectory>$(ArtifactsSymStoreDirectory)$(OutputRid)</ArtifactsSymStoreRidDirectory>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(ArtifactsSymStoreRidDirectory)"/>
 
     <Copy SourceFiles="@(NativePDB)"
-          DestinationFiles="@(NativePDB->'$(ArtifactsSymStoreDirectory)%(RecursiveDir)%(Filename)%(Extension)')"
+          DestinationFiles="@(NativePDB->'$(ArtifactsSymStoreRidDirectory)\%(RecursiveDir)%(Filename)%(Extension)')"
           UseHardlinksIfPossible="true"/>
   </Target>
 
