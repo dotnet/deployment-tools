@@ -33,21 +33,18 @@
         are published from every job. RID-agnostic nupkgs are built with the same ID/version by
         every job, so one specific job's outputs must be picked to sign and publish.
 
-        Publish all packages from every job - update patterns in RuntimeNupkgFile item-group, if this changes.
+        Publish all packages from every job - update patterns in RidSpecificNupkgFile item-group, if this changes.
       -->
-      <RuntimeNupkgFile
+      <RidSpecificNupkgFile
         Include="
-          $(DownloadDirectory)**\*.nupkg;
-          $(DownloadDirectory)**\*.Runtime.*.nupkg;
-          $(DownloadDirectory)**\*.App.Host.*.nupkg;
-          $(DownloadDirectory)**\VS.Redist.Common.*.nupkg"
+          $(DownloadDirectory)**\*.nupkg"
         Exclude="@(DownloadedSymbolNupkgFile)" />
 
       <RidAgnosticNupkgToPublishFile
         Include="$(DownloadDirectory)*\$(PublishRidAgnosticPackagesFromJobName)\**\*.nupkg"
-        Exclude="@(RuntimeNupkgFile);@(DownloadedSymbolNupkgFile)" />
+        Exclude="@(RidSpecificNupkgFile);@(DownloadedSymbolNupkgFile)" />
 
-      <NupkgToPublishFile Include="@(RuntimeNupkgFile);@(RidAgnosticNupkgToPublishFile)" />
+      <NupkgToPublishFile Include="@(RidSpecificNupkgFile);@(RidAgnosticNupkgToPublishFile)" />
 
       <UploadToBlobStorageFile Include="@(NupkgToPublishFile)" />
 
