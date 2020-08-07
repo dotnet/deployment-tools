@@ -1,11 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <IsPackable Condition="'$(TargetArchitecture)' == 'x86'">true</IsPackable>
+    <IsShipping>false</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
+    <PackageId>VS.Redist.Common.NetCore.Launcher</PackageId>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AssemblyName>Launcher</AssemblyName>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net45</TargetFrameworks>
+    <TargetFramework>net45</TargetFramework>
     <NoWin32Manifest>true</NoWin32Manifest>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="System.Deployment" />
   </ItemGroup>

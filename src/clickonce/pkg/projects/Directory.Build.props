@@ -4,7 +4,6 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <RequireLicenseAcceptance Condition="'$(RequireLicenseAcceptance)' == ''">false</RequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
