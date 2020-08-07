@@ -39,14 +39,6 @@ jobs:
         /p:DotNetSignType=$(SignType)
       TargetArchitecture: ${{ parameters.targetArchitecture }}
 
-      ShouldSign: false
-      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-        ShouldSign: true
-
-      ShouldSignBinaries: false
-      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-        ShouldSignBinaries: true
-
     steps:
 
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
@@ -76,12 +68,20 @@ jobs:
         env:
           Token: $(dn-bot-dnceng-artifact-feeds-rw)
 
-    - script: >-
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - script: >-
         build.cmd -subset clickonce+installer -ci -test
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
-        /p:Sign=$(ShouldSign) /p:SignBinaries=$(ShouldSignBinaries)
-      displayName: Build
+        /p:Sign=true /p:SignBinaries=true
+        displayName: Build and Sign Binaries
+
+    - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+      - script: >-
+        build.cmd -subset clickonce+installer -ci -test
+        $(CommonMSBuildArgs)
+        $(MsbuildSigningArguments)
+        displayName: Build
 
     - script: >-
         build.cmd -subset clickonce+installer -ci -pack
