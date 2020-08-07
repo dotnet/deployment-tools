@@ -68,11 +68,20 @@ jobs:
         env:
           Token: $(dn-bot-dnceng-artifact-feeds-rw)
 
-    - script: >-
-        build.cmd -subset clickonce+installer -ci -test
-        $(CommonMSBuildArgs)
-        $(MsbuildSigningArguments)
-      displayName: Build
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - script: >-
+          build.cmd -subset clickonce+installer -ci -test
+          $(CommonMSBuildArgs)
+          $(MsbuildSigningArguments)
+          /p:Sign=true /p:SignBinaries=true
+        displayName: Build and Sign Binaries
+
+    - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+      - script: >-
+          build.cmd -subset clickonce+installer -ci -test
+          $(CommonMSBuildArgs)
+          $(MsbuildSigningArguments)
+        displayName: Build
 
     - script: >-
         build.cmd -subset clickonce+installer -ci -pack

@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignBinaries)' == 'true'">
-
+      <ItemsToSign Include="$(ArtifactsBinDir)$(__DistroRid).$(Configuration)\**\netcorecheck.exe" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignMsiFiles)' == 'true'">
