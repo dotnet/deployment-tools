@@ -72,6 +72,7 @@ jobs:
         build.cmd -subset clickonce+installer -ci -test
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
+        /p:Sign=true /p:SignBinaries=true
       displayName: Build
 
     - script: >-
