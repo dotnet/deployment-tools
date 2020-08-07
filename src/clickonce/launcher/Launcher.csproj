@@ -5,6 +5,11 @@
     <IsShippingPackage>false</IsShippingPackage>
     <PackageId>VS.Redist.Common.NetCore.Launcher</PackageId>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <!--
+      Suppress warnings/errors about missing dependencies. Launcher is a template binary
+      and never used during build.
+    -->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <PropertyGroup>
