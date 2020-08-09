@@ -25,8 +25,8 @@
       <BundleInstallerEngineArtifact Include="$(ArtifactsPackagesDir)**/*engine.exe" />
       <BundleInstallerExeArtifact Include="$(ArtifactsPackagesDir)**/*.exe" />
 
-      <!-- launcher is not signed, by design. -->
-      <FileSignInfo Include="launcher.exe" CertificateName="None" />
+      <!-- Launcher is not signed, by design. -->
+      <FileSignInfo Include="Launcher.exe" CertificateName="None" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignBinaries)' == 'true'">
