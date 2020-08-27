@@ -18,6 +18,7 @@
     <TargetFramework>net45</TargetFramework>
     <NoWin32Manifest>true</NoWin32Manifest>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
