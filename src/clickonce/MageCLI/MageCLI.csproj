@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <BinplaceSymbols>true</BinplaceSymbols>
+    <AssemblyName>mage.net</AssemblyName>
+    <OutputType>EXE</OutputType>
+    <SignAssemblyAttribute>true</SignAssemblyAttribute>
+    <RCSuppressManifest>true</RCSuppressManifest>
+    <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
+    <TargetFramework>net4.8</TargetFramework>
+    <PlatformSpecificBuild>true</PlatformSpecificBuild>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.6.0" />
+  </ItemGroup>
+</Project>
