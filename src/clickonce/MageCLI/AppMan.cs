@@ -3,16 +3,12 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Collections;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
 
-namespace Utilities
+namespace Microsoft.Deployment.Utilities
 {
     /// <summary>
     /// Helper methods.
@@ -146,18 +142,12 @@ namespace Utilities
             // Set the source path for the new references
             manifest.SourcePath = fromDirectory;
 
-            if (updateProgress != null)
-            {
-                updateProgress(sender, new UpdateProgressEventArgs(Action.Begin, ""));
-            }
+            updateProgress?.Invoke(sender, new UpdateProgressEventArgs(Action.Begin, ""));
 
             // Recursively search fromDirectory to get new references
             AddReferences(manifest, addDeploy, fromDirectory, fromDirectory, "", filesToIgnore, lockedFileReporter, sender, updateProgress, overwrite, errors);
 
-            if (updateProgress != null)
-            {
-                updateProgress(sender, new UpdateProgressEventArgs(Action.SearchComplete, ""));
-            }
+            updateProgress?.Invoke(sender, new UpdateProgressEventArgs(Action.SearchComplete, ""));
         }
 
         public delegate bool OverwriteEventHandler(string fileName);
@@ -237,7 +227,7 @@ namespace Utilities
         /// <param name="updateProgress">UpdateProgress event handler</param>
         /// <param name="overwrite">Overwrite event handler</param>
         /// <param name="errors">List of errors</param>
-        public static void AddReferences(ApplicationManifest manifest,
+        private static void AddReferences(ApplicationManifest manifest,
             bool addDeploy,
             string root, string searchDirectory, string relativePath,
             List<string> filesToIgnore,
@@ -262,6 +252,13 @@ namespace Utilities
             if (addDeploy)
             {
                 files = AppendDeploy(filesToIgnore, files, overwrite, errors);
+            }
+
+            bool launcherBasedDeployment = false;
+            string launcherPath = addDeploy ? Path.Combine(root, LauncherUtil.LauncherFilename + ".deploy") : Path.Combine(root, LauncherUtil.LauncherFilename);
+            if (File.Exists(launcherPath))
+            {
+                launcherBasedDeployment = true;
             }
 
             List<BaseReference> assembliesToRemove = new List<BaseReference>();
@@ -314,17 +311,25 @@ namespace Utilities
                 // the file is an assembly or just a regular sort of file.
 
                 AssemblyIdentity assembly = null;
-                try 
+
+                // If this is a Launcher-based deployment, all files except Launcher should be added as simple files
+                // Launcher-based deployments are used for .NET (Core) apps - assembly identity cannot be positively
+                // obtained from all types of .NET (Core) assemblies, requiring us to use simple file references.
+                if (string.Equals(filePath, launcherPath, StringComparison.OrdinalIgnoreCase) ||
+                    !launcherBasedDeployment)
                 {
-                    assembly = AssemblyIdentity.FromFile(filePath);
-                } 
-                catch (BadImageFormatException) 
-                {
-                    // The file does not have a manifest in it
-                } 
-                catch (System.Net.WebException) 
-                {
-                    // Internet connection might not be available
+                    try
+                    {
+                        assembly = AssemblyIdentity.FromFile(filePath);
+                    }
+                    catch (BadImageFormatException)
+                    {
+                        // The file does not have a manifest in it
+                    }
+                    catch (System.Net.WebException)
+                    {
+                        // Internet connection might not be available
+                    }
                 }
 
                 bool isAssembly = (assembly != null);
@@ -340,8 +345,7 @@ namespace Utilities
                 }
                 catch (System.Exception)
                 {
-                    if (lockedFileReporter != null)
-                        lockedFileReporter(filePath);
+                    lockedFileReporter?.Invoke(filePath);
                     continue;
                 }
 
@@ -352,8 +356,11 @@ namespace Utilities
                 {
                     if (!CollectionContains(manifest.AssemblyReferences, codebase, assembliesToRemove))
                     {
-                        AssemblyReference newref = new AssemblyReference();
-                        newref.TargetPath = codebase;
+                        AssemblyReference newref = new AssemblyReference
+                        {
+                            TargetPath = codebase
+                        };
+
                         manifest.AssemblyReferences.Add(newref);
                         action = Action.Added;
                         
@@ -375,8 +382,10 @@ namespace Utilities
                 {
                     if (!CollectionContains(manifest.FileReferences, codebase, filesToRemove))
                     {
-                        FileReference newref = new FileReference();
-                        newref.TargetPath = codebase;
+                        FileReference newref = new FileReference
+                        {
+                            TargetPath = codebase
+                        };
                         manifest.FileReferences.Add(newref);
                         action = Action.Added;
                     }
@@ -699,10 +708,7 @@ namespace Utilities
 
             Utilities.AppMan.UpdateReferenceInfo(manifest, fromDirectory, sender, updateProgress, targetFrameworkVersion);
 
-            if (updateProgress != null)
-            {
-                updateProgress(sender, new UpdateProgressEventArgs(Action.Complete, "", errors));
-            }
+            updateProgress?.Invoke(sender, new UpdateProgressEventArgs(Action.Complete, "", errors));
         }
 
 

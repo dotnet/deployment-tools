@@ -15,6 +15,7 @@ namespace Microsoft.Deployment.Utilities
         internal static class Kernel32
         {
             public const UInt32 LOAD_LIBRARY_AS_DATAFILE = 0x00000002;
+            public const int ERROR_SHARING_VIOLATION = -2147024864;
 
             [DllImport(nameof(Kernel32), CharSet = CharSet.Unicode, SetLastError = true)]
             public static extern IntPtr BeginUpdateResourceW(String fileName, bool deleteExistingResource);

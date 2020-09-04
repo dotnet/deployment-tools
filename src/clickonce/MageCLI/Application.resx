@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationManifestMissingHostInBrowserTag" xml:space="preserve">
-    <value>The application manifest specified does not include the HostInBrowser tag required for a Windows Presentation Foundation Browser Application.</value>
+  <data name="ApplicationManifestCannotHaveHostInBrowserTag" xml:space="preserve">
+    <value>The specified application manifest includes unsupported HostInBrowser tag.</value>
   </data>
   <data name="DeployManifestNotSigned" xml:space="preserve">
     <value>Deployment manifest is not signed - "{0}"</value>
@@ -139,12 +139,13 @@
   -Sign &lt;file_name&gt;	          -s
   -ClearApplicationCache	  -cc
   -Verify &lt;manifest_file_name&gt;    -ver
+  -AddLauncher &lt;binary_to_launch&gt; -al
   -Help [verbose]		  -h -?
 
 
 
 Options
-  -Algorithm &lt;sha256RSA|sha1RSA&gt;    -a
+  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -162,12 +163,12 @@ Options
   -ProviderURL &lt;url&gt; 	            -pu
   -Publisher &lt;publisher_name&gt;       -pub
   -SupportURL &lt;support_url&gt;         -s
+  -TargetDirectory &lt;path&gt;	    -td
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
-  -WPFBrowserApp &lt;true|false&gt;       -wpf
 
 Use "mage -help verbose" for more detailed help</value>
   </data>
@@ -199,6 +200,11 @@ Use "mage -help verbose" for more detailed help</value>
       Example:
         -Verify MyApp.manifest
   
+  -AddLauncher &lt;binary_to_launch&gt;    -al
+      Adds Launcher to target directory and sets its binary to launch.
+      Example:
+        -AddLauncher myapp.dll -TargetDirectory bin/release
+
   -ClearApplicationCache  -cc
       Clear the downloaded application cache of all online-only applications. 
 
@@ -210,10 +216,10 @@ Use "mage -help verbose" for more detailed help</value>
 
 Options:
 
-  -Algorithm &lt;sha256RSA|sha1RSA&gt;  -a
+  -Algorithm &lt;sha256RSA&gt;      -a
       Specifies the algorithm to generate digests.
       Example:
-         -Algorithm sha1RSA
+         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -317,6 +323,11 @@ Options:
       Example:
         -SupportURL http://www.whatever.net/application/support
 
+  -TargetDirectory &lt;path&gt;	  -td
+      Specifies the directory to which to add the Launcher.
+      Example:
+        -TargetDirectory bin/release
+
   -ToFile &lt;file_name&gt;     -t
       Specifies the name of the file to save the output of a sign, new, or 
       update command.
@@ -341,17 +352,14 @@ Options:
       Specifies the version of the application whose manifest is being 
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
-        -Version 1.2.3.2112
-
-  -WPFBrowserApp &lt;true|false&gt;       -wpf
-      Specifies whether the application is a Windows Presentation Foundation Browser Application or not.</value>
+        -Version 1.2.3.2112</value>
   </data>
   <data name="InternalError" xml:space="preserve">
     <value>Internal error, please try again.</value>
     <comment>trailing space is added at run-time</comment>
   </data>
   <data name="InvalidAlgorithmValue" xml:space="preserve">
-    <value>Algorithm has to be sha1RSA or sha256RSA. Specified - "{0}".</value>
+    <value>Algorithm has to be sha256RSA. Specified - "{0}".</value>
   </data>
   <data name="InvalidCertFile" xml:space="preserve">
     <value>Cert file is not of proper format - "{0}"</value>
@@ -364,6 +372,9 @@ Options:
   </data>
   <data name="VerifyIsExclusive" xml:space="preserve">
     <value>'verify' command can't be combined with any other command.</value>
+  </data>
+  <data name="AddLauncherIsExclusive" xml:space="preserve">
+    <value>'addlauncher' command can't be combined with any other command.</value>
   </data>
   <data name="InvalidCertUsage" xml:space="preserve">
     <value>This certificate cannot be used for signing - "{0}"</value>
@@ -392,13 +403,8 @@ Options:
   <data name="InvalidKeyFile" xml:space="preserve">
     <value>Key file is not of proper format - "{0}"</value>
   </data>
-  <data name="InvalidOption" xml:space="preserve">
-    <value>The "{0}" option can only be used with the following types of files:</value>
-    <comment>trailing space is added at run-time</comment>
-  </data>
-  <data name="InvalidOptionConjuction" xml:space="preserve">
-    <value> ,</value>
-    <comment>If two types are allowed, this will be inserted between the first and second type</comment>
+  <data name="FileTypeSpecificOption" xml:space="preserve">
+    <value>The "{0}" option can only be used with the following type of files: "{1}"</value>
   </data>
   <data name="InvalidPassword" xml:space="preserve">
     <value>Cert password is incorrect - "{0}"</value>
@@ -413,11 +419,20 @@ Options:
   <data name="InvalidRequiredUpdate" xml:space="preserve">
     <value>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</value>
   </data>
-  <data name="InvalidSignOption" xml:space="preserve">
+  <data name="InvalidNonManifestOption" xml:space="preserve">
     <value>The "{0}" option can only be used with the -Update or -New commands.</value>
+  </data>
+  <data name="InvalidAddLauncherOption" xml:space="preserve">
+    <value>The "{0}" option can not be used with -AddLauncher command.</value>
+  </data>
+  <data name="InvalidNonAddLauncherOption" xml:space="preserve">
+    <value>The "{0}" option can only be used with -AddLauncher command.</value>
   </data>
   <data name="InvalidTrustLevel" xml:space="preserve">
     <value>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</value>
+  </data>
+  <data name="TrustLevelsNotSupportedOnNETCore" xml:space="preserve">
+    <value>Setting trust level is not supported on .NET Core</value>
   </data>
   <data name="InvalidUrl" xml:space="preserve">
     <value>The URL is not of the proper format - "{0}"</value>
@@ -427,12 +442,6 @@ Options:
   </data>
   <data name="InvalidVersion" xml:space="preserve">
     <value>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</value>
-  </data>
-  <data name="InvalidWPFBrowserApp" xml:space="preserve">
-    <value>The -WPFBrowserApp option must be "true", "false", "t", or "f" - "{0}"</value>
-  </data>
-  <data name="InvalidWPFBrowserAppInstallCombination" xml:space="preserve">
-    <value>The WPFBrowserApp and Install options cannot be set to true at the same time</value>
   </data>
   <data name="LockedFile" xml:space="preserve">
     <value>Not including locked file {0}</value>
@@ -445,6 +454,9 @@ Options:
   </data>
   <data name="MissingPassword" xml:space="preserve">
     <value>Missing Password option, this is required when using the CertFile option.</value>
+  </data>
+  <data name="MissingAddLauncherOption" xml:space="preserve">
+    <value>Missing {0} option, it is required with AddLauncher command.</value>
   </data>
   <data name="MissingUseApplicationManifestForTrustInfo" xml:space="preserve">
     <value>When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</value>
@@ -463,8 +475,8 @@ Options:
     <value>No output file was specified.  Please use -ToFile &lt;filename&gt;.</value>
   </data>
   <data name="NoVerb" xml:space="preserve">
-    <value>The first argument must be one of the following: -New, -Update, -Sign, -Verify</value>
-    <comment>"-New, -Update, -Sign, -Verify" are command names and should not be translated</comment>
+    <value>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</value>
+    <comment>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</comment>
  </data>
   <data name="TooManyKeysSpecified" xml:space="preserve">
     <value>Only one of -KeyFile, -CertFile, or -CertHash can be used.</value>
@@ -534,5 +546,23 @@ Options:
   </data>
   <data name="SignatureValidatedSuccessfully" xml:space="preserve">
     <value>Manifest has a valid signature.</value>
+  </data>
+  <data name="MissingLauncherTemplate" xml:space="preserve">
+    <value>Launcher template "{0}" does not exist.</value>
+  </data>
+  <data name="FailedToUpdateLauncherResources" xml:space="preserve">
+    <value>Failed to update Launcher resources.</value>
+  </data>
+  <data name="FailedToAddLauncher" xml:space="preserve">
+    <value>Failed to add Launcher.</value>
+  </data>
+  <data name="InvalidBinaryToLaunch" xml:space="preserve">
+    <value>Binary to launch cannot include a path, it can only be a filename - {0}.</value>
+  </data>
+  <data name="MissingBinaryToLaunch" xml:space="preserve">
+    <value>Binary to launch cannot be empty.</value>
+  </data>
+  <data name="LauncherSuccessfullyAdded" xml:space="preserve">
+    <value>Launcher successfully added.</value>
   </data>
 </root>

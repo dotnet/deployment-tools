@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Deployment.Internal.CodeSigning;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -14,11 +15,11 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Xml;
-using CommandLineParser;
 using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
-using System.Diagnostics.CodeAnalysis;
+using Microsoft.Deployment.CommandLineParser;
+using Microsoft.Deployment.Utilities;
 
-namespace MageCLI
+namespace Microsoft.Deployment.MageCLI
 {
     /// <summary>
     /// Validation and execution of commands.
@@ -57,6 +58,7 @@ namespace MageCLI
             SignDeploymentManifest = 8192,
             CleanApplicationCache = 16384,
             VerifyManifest = 32768,
+            AddLauncher = 65536,
         }
 
         /// <summary>
@@ -75,7 +77,8 @@ namespace MageCLI
 
         public enum DigestAlgorithmValue
         {
-            sha256RSA, sha1RSA
+            // Supporting only sha256
+            sha256RSA
         }
 
         /// <summary>
@@ -150,9 +153,6 @@ namespace MageCLI
         [CommandLineArgument(LongName = "IconFile", ShortName = "if")]
         public string iconFile = null;
 
-        [CommandLineArgument(LongName = "WPFBrowserApp", ShortName = "wpf")]
-        public string isWPFBrowserAppString = null;
-
         [CommandLineArgument(LongName = "Publisher", ShortName = "pub")]
         public string publisherName = null;
 
@@ -162,13 +162,16 @@ namespace MageCLI
         [CommandLineArgument(LongName = "Algorithm", ShortName = "a")]
         public string digestAlgorithmValue = null;
 
+        [CommandLineArgument(LongName = "TargetDirectory", ShortName = "td")]
+        public string targetDirectory = null;
+
 #endregion
 
 
         /// <summary>
         /// Algorithm used to calculate the digest hashes inside a manifest
         /// </summary>
-        private DigestAlgorithmValue algorithm = DigestAlgorithmValue.sha1RSA;
+        private DigestAlgorithmValue algorithm = DigestAlgorithmValue.sha256RSA;
 
         /// <summary>
         /// Application version object, parsed from applicationVersionString member
@@ -206,11 +209,6 @@ namespace MageCLI
         private TriStateBool useApplicationManifestForTrustInfo = TriStateBool.Undefined;
 
         /// <summary>
-        /// Determines whether a WPF application is browser-hosted or not.
-        /// </summary>
-        private TriStateBool isWPFBrowserApp = TriStateBool.Undefined;
-
-        /// <summary>
         /// This object is cached between CanExecute(), where it is opened and
         /// tested for validity, and Execute(), where it actually gets used.
         /// </summary>
@@ -230,6 +228,11 @@ namespace MageCLI
         /// are legal.
         /// </summary>
         private bool signVerb = false;
+
+        /// <summary>
+        /// Name of the binary to be launched by Launcher.
+        /// </summary>
+        private string binaryToLaunch = null;
 
         /// <summary>
         /// Initialize member variables with command-line arguments.
@@ -253,7 +256,7 @@ namespace MageCLI
             }
             else
             {
-                operations |= Operations.LaunchGUI;
+                operations |= Operations.ShowHelp;
                 return;
             }
 
@@ -306,6 +309,11 @@ namespace MageCLI
                             case "verify":
                             case "ver":
                                 operations |= Operations.VerifyManifest;
+                                break;
+
+                            case "addlauncher":
+                            case "al":
+                                operations |= Operations.AddLauncher;
                                 break;
 
                             case "help":
@@ -383,6 +391,18 @@ namespace MageCLI
                 inputPath = noun;
             }
 
+            // If add launcher operation was selected, the next parameter must be the name of the app to launch
+            if (Requested(Operations.AddLauncher))
+            {
+                if (noun == null)
+                {
+                    Application.PrintErrorMessage(ErrorMessages.MissingBinaryToLaunch, "");
+                    return;
+                }
+
+                binaryToLaunch = noun;
+            }
+
             // The rest of the command-line grammar is handled by command-line
             // parsing utility.
             CommandLineArgumentParser parser = new CommandLineArgumentParser(GetType(), new ErrorReporter(Console.Error.WriteLine));
@@ -411,45 +431,6 @@ namespace MageCLI
         }
 
         /// <summary>
-        /// Resolve assembly-load requests manually.  This was added for 
-        /// Microsoft.Build.Tasks.dll, which is located in the framework install 
-        /// directory.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        private static System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Assembly result = default;
-
-            try
-            {
-                // Get the framework install directory
-                Assembly asm = Assembly.GetAssembly(typeof(Assembly));
-                string dir = Path.GetDirectoryName(new Uri(asm.CodeBase).LocalPath);
-                dir += "\\";
-
-                // Microsoft.Build.Tasks.dll has a detailed assembly name, e.g. 
-                // "Microsoft.Build.Tasks, Version=0.0.0.0, Culture=Neutral, PublicKeyToken=b03fxyz"
-                // So, parse out the first bit (before the comma) and use that for the DLL name.
-                int i = args.Name.IndexOf(',');
-                if (i != -1)
-                {
-                    string fileName = args.Name.Substring(0, i) + ".dll";
-                    string path = Path.Combine(dir, fileName);
-                    result = Assembly.LoadFrom(path);
-                }
-            }
-            catch (System.Exception)
-            {
-                // Fall back to default resolution mechanism
-                result = default;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Determines whether or not the requested operations can be executed 
         /// with the given parameters.
         /// </summary>
@@ -460,7 +441,8 @@ namespace MageCLI
 
             // Make sure that one of the required verbs was present     
             if (!(Requested(Operations.GenerateSomething) || Requested(Operations.UpdateSomething)
-                || Requested(Operations.SignSomething) || Requested(Operations.VerifyManifest)))
+                || Requested(Operations.SignSomething) || Requested(Operations.VerifyManifest)
+                || Requested(Operations.AddLauncher)))
             {
                 Application.PrintErrorMessage(ErrorMessages.NoVerb);
                 result = false;
@@ -470,6 +452,13 @@ namespace MageCLI
             if (Requested(Operations.VerifyManifest) && (Operations.VerifyManifest != operations))
             {
                 Application.PrintErrorMessage(ErrorMessages.VerifyIsExclusive);
+                return false;
+            }
+
+            // Add Launcher operation is exclusive
+            if (Requested(Operations.AddLauncher) && (Operations.AddLauncher != operations))
+            {
+                Application.PrintErrorMessage(ErrorMessages.AddLauncherIsExclusive);
                 return false;
             }
 
@@ -491,29 +480,6 @@ namespace MageCLI
                 result = false;
             }
 
-            // Validate the WPFBrowserApp option, if given
-            if (isWPFBrowserAppString != null)
-            {
-                String bh = isWPFBrowserAppString.ToLower(CultureInfo.InvariantCulture);
-                switch (bh)
-                {
-                    case "true":
-                    case "t":
-                        isWPFBrowserApp = TriStateBool.True;
-                        break;
-
-                    case "false":
-                    case "f":
-                        isWPFBrowserApp = TriStateBool.False;
-                        break;
-
-                    default:
-                        result = false;
-                        Application.PrintErrorMessage(ErrorMessages.InvalidWPFBrowserApp, isWPFBrowserAppString);
-                        break;
-                }
-            }
-
             // If doing something with deployment manifest, validate the application manifest path
             if (Requested(Operations.GenerateDeploymentManifest) || Requested(Operations.UpdateDeploymentManifest))
             {
@@ -529,10 +495,10 @@ namespace MageCLI
                         }
                         else
                         {
-                            // Make sure the application manifest includes the HostInBrowser tag when -WPFBrowserApp true is used
-                            if (isWPFBrowserApp == TriStateBool.True && !cachedAppManifest.HostInBrowser)
+                            // Make sure the application manifest does not include the HostInBrowser tag
+                            if (cachedAppManifest.HostInBrowser)
                             {
-                                Application.PrintErrorMessage(ErrorMessages.ApplicationManifestMissingHostInBrowserTag);
+                                Application.PrintErrorMessage(ErrorMessages.ApplicationManifestCannotHaveHostInBrowserTag);
                                 result = false;
                             }
                         }
@@ -545,7 +511,7 @@ namespace MageCLI
                 }
             }
 
-            if (outputPath == null)
+            if (outputPath == null && !Requested(Operations.AddLauncher))
             {
                 // If a command-line operation was requested, and no output file 
                 // was specified, use default filename.
@@ -556,14 +522,7 @@ namespace MageCLI
 
                 if (Requested(Operations.GenerateDeploymentManifest))
                 {
-                    if (isWPFBrowserApp == TriStateBool.True)
-                    {
-                        outputPath = "deploy.xbap";
-                    }
-                    else
-                    {
-                        outputPath = "deploy.application";
-                    }
+                    outputPath = "deploy.application";
                 }
 
                 // Still null?
@@ -639,18 +598,15 @@ namespace MageCLI
                 }
             }
 
-            // The default is sha1 for backward compatibility
-            algorithm = DigestAlgorithmValue.sha1RSA;
+            // The default is sha256
+            algorithm = DigestAlgorithmValue.sha256RSA;
 
             if (digestAlgorithmValue != null)
             {
+                // Supporting only sha256
                 if (digestAlgorithmValue.Equals(DigestAlgorithmValue.sha256RSA.ToString(), StringComparison.InvariantCultureIgnoreCase))
                 {
                     algorithm = DigestAlgorithmValue.sha256RSA;
-                }
-                else if (digestAlgorithmValue.Equals(DigestAlgorithmValue.sha1RSA.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    algorithm = DigestAlgorithmValue.sha1RSA;
                 }
                 else
                 {
@@ -690,6 +646,10 @@ namespace MageCLI
             // Validate the trust level, if given
             if (trustLevelString != null)
             {
+#if RUNTIME_TYPE_NETCORE
+                result = false;
+                Application.PrintErrorMessage(ErrorMessages.TrustLevelsNotSupportedOnNETCore);
+#else
                 trustLevelString = trustLevelString.ToLower(CultureInfo.InvariantCulture);
 
                 if (trustLevelString == TrustLevels.Internet.ToString().ToLower(CultureInfo.InvariantCulture))
@@ -709,6 +669,7 @@ namespace MageCLI
                     result = false;
                     Application.PrintErrorMessage(ErrorMessages.InvalidTrustLevel, trustLevelString);
                 }
+#endif
             }
 
             // Validate the application code base, if given
@@ -835,13 +796,6 @@ namespace MageCLI
                 }
             }
 
-            // Make sure the Install / WPFBrowserApp combination is allowed.
-            if (isWPFBrowserApp == TriStateBool.True && install == TriStateBool.True)
-            {
-                result = false;
-                Application.PrintErrorMessage(ErrorMessages.InvalidWPFBrowserAppInstallCombination);
-            }
-
             if ((Requested(Operations.GenerateApplicationManifest) || Requested(Operations.UpdateApplicationManifest)) &&
                 useApplicationManifestForTrustInfo != TriStateBool.True)
             {
@@ -853,6 +807,15 @@ namespace MageCLI
                 if (!string.IsNullOrEmpty(supportUrl))
                 {
                     Application.PrintErrorMessage(ErrorMessages.MissingUseApplicationManifestForTrustInfo, "SupportURL");
+                    result = false;
+                }
+            }
+
+            if (Requested(Operations.AddLauncher))
+            {
+                if (string.IsNullOrEmpty(targetDirectory))
+                {
+                    Application.PrintErrorMessage(ErrorMessages.MissingAddLauncherOption, "TargetDirectory");
                     result = false;
                 }
             }
@@ -879,21 +842,9 @@ namespace MageCLI
             }
             else
             {
-                // setup assembly hook
-                SetupAssemblyHook();
-
                 // continue with the execution process
                 return CanExecuteInner();
             }
-        }
-
-        /// <summary>
-        /// Set up the Assembly event handler. Done this way due to security events fired otherwise.
-        /// </summary>
-        private void SetupAssemblyHook()
-        {
-            // Intercept assembly resolution events
-            System.AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
         }
 
         /// <summary>
@@ -901,159 +852,113 @@ namespace MageCLI
         /// </summary>
         private bool CheckForInvalidParameters()
         {
-            bool result = true;
+            int errors = 0;
 
-            if (Requested(Operations.GenerateApplicationManifest) || Requested(Operations.UpdateApplicationManifest))
+            if (Requested(Operations.GenerateApplicationManifest) ||
+                Requested(Operations.UpdateApplicationManifest) ||
+                Requested(Operations.AddLauncher))
             {
-                if (applicationManifestPath != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("AppManifest", "Deployment", null);
-                    result = false;
-                }
-
-                if (applicationCodeBase != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("AppCodeBase", "Deployment", null);
-                    result = false;
-                }
-
-                if (applicationProviderUrl != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("AppProviderUrl", "Deployment", null);
-                    result = false;
-                }
-
-                if (isRequiredUpdateString != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("RequiredUpdate", "Deployment", null);
-                    result = false;
-                }
-
-                if (installString != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("Install", "Deployment", null);
-                    result = false;
-                }
-
-                if (includeDeploymentProviderUrlString != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("IncludeProviderURL", "Deployment", null);
-                    result = false;
-                }
+                errors += CheckForFileTypeSpecificOption("Deployment", "AppManifest", applicationManifestPath);
+                errors += CheckForFileTypeSpecificOption("Deployment", "AppCodeBase", applicationCodeBase);
+                errors += CheckForFileTypeSpecificOption("Deployment", "AppProviderUrl", applicationProviderUrl);
+                errors += CheckForFileTypeSpecificOption("Deployment", "RequiredUpdate", isRequiredUpdateString);
+                errors += CheckForFileTypeSpecificOption("Deployment", "Install", installString);
+                errors += CheckForFileTypeSpecificOption("Deployment", "IncludeProviderURL", includeDeploymentProviderUrlString);
             }
 
-            if (Requested(Operations.GenerateDeploymentManifest) || Requested(Operations.UpdateDeploymentManifest))
+            if (Requested(Operations.GenerateDeploymentManifest) ||
+                Requested(Operations.UpdateDeploymentManifest) ||
+                Requested(Operations.AddLauncher))
             {
-                if (fromDirectory != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("FromDirectory", "Application", null);
-                    result = false;
-                }
+                errors += CheckForFileTypeSpecificOption("Application", "FromDirectory", fromDirectory);
+                errors += CheckForFileTypeSpecificOption("Application", "TrustLevel", trustLevelString);
+                errors += CheckForFileTypeSpecificOption("Application", "IconFile", iconFile);
+            }
 
-                if (trustLevelString != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("TrustLevel", "Application", null);
-                    result = false;
-                }
-            
-                if (iconFile != null)
-                {
-                    Application.PrintInvalidOptionErrorMessage("IconFile", "Application", null);
-                    result = false;
-                }
+            if (Requested(Operations.AddLauncher))
+            {
+                errors += CheckForInvalidLauncherOption("ToFile", outputPath);
+                errors += CheckForInvalidLauncherOption("CertFile", certPath);
+                errors += CheckForInvalidLauncherOption("CertHash", certHash);
+                errors += CheckForInvalidLauncherOption("Password", certPassword);
+                errors += CheckForInvalidLauncherOption("TimeStampUri", timestamp);
+                errors += CheckForInvalidLauncherOption("KeyContainer", keyContainer);
+                errors += CheckForInvalidLauncherOption("CryptoProvider", cryptoProviderName);
+                errors += CheckForInvalidLauncherOption("Publisher", publisherName);
+                errors += CheckForInvalidLauncherOption("SupportUrl", supportUrl);
+                errors += CheckForInvalidLauncherOption("Algorithm", digestAlgorithmValue);
             }
 
             // A signing operation can be caused by the -sign verb, or with 
             // -keyfile, -certhash, etc.  The following tests are applicable
             // when the verb is given, but not when the options are given.
-            if (signVerb)
+            // The same options are not applicable when adding launcher.
+            if (signVerb || Requested(Operations.AddLauncher))
             {
-                if (applicationVersionString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "Version");
-                }
-
-                if (applicationName != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "Name");
-                }
-
-                if (processorString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "Processor");
-                }
-
-                if (fromDirectory != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "FromDirectory");
-                }
-
-                if (trustLevelString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "TrustLevel");
-                }
-
-                if (applicationManifestPath != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "AppManifest");
-                }
-
-                if (applicationCodeBase != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "AppCodeBase");
-                }
-
-                if (applicationProviderUrl != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "AppProviderUrl");
-                }
-
-                if (isRequiredUpdateString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "RequiredUpdate");
-                }
-
-                if (applicationVersionString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "Version");
-                }
-
-                if (includeDeploymentProviderUrlString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "IncludeProviderURL");
-                }
-
-                if (useApplicationManifestForTrustInfoString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "UseManifestForTrust");
-                }
-
-                if (iconFile != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "IconFile");
-                }
-
-                if (isWPFBrowserAppString != null)
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidSignOption, "WPFBrowserApp");
-                }
+                errors += CheckForInvalidNonManifestOption("Version", applicationVersionString);
+                errors += CheckForInvalidNonManifestOption("Name", applicationName);
+                errors += CheckForInvalidNonManifestOption("Processor", processorString);
+                errors += CheckForInvalidNonManifestOption("FromDirectory", fromDirectory);
+                errors += CheckForInvalidNonManifestOption("TrustLevel", trustLevelString);
+                errors += CheckForInvalidNonManifestOption("AppManifest", applicationManifestPath);
+                errors += CheckForInvalidNonManifestOption("AppCodeBase", applicationCodeBase);
+                errors += CheckForInvalidNonManifestOption("AppProviderUrl", applicationProviderUrl);
+                errors += CheckForInvalidNonManifestOption("RequiredUpdate", isRequiredUpdateString);
+                errors += CheckForInvalidNonManifestOption("IncludeProviderURL", includeDeploymentProviderUrlString);
+                errors += CheckForInvalidNonManifestOption("UseManifestForTrust", useApplicationManifestForTrustInfoString);
+                errors += CheckForInvalidNonManifestOption("IconFile", iconFile);
             }
 
-            return result;
+            if (!Requested(Operations.AddLauncher))
+            {
+                errors += CheckForInvalidNonLauncherOption("TargetDirectory", targetDirectory);
+            }
+
+            return errors == 0;
+        }
+
+        int CheckForFileTypeSpecificOption(string manifestType, string name, string value)
+        {
+            if (value != null)
+            {
+                Application.PrintErrorMessage(ErrorMessages.FileTypeSpecificOption, name, manifestType);
+                return 1;
+            }
+
+            return 0;
+        }
+
+        int CheckForInvalidLauncherOption(string name, string value)
+        {
+            if (value != null)
+            {
+                Application.PrintErrorMessage(ErrorMessages.InvalidAddLauncherOption, name);
+                return 1;
+            }
+
+            return 0;
+        }
+
+        int CheckForInvalidNonManifestOption(string name, string value)
+        {
+            if (value != null)
+            {
+                Application.PrintErrorMessage(ErrorMessages.InvalidNonManifestOption, name);
+                return 1;
+            }
+
+            return 0;
+        }
+
+        int CheckForInvalidNonLauncherOption(string name, string value)
+        {
+            if (value != null)
+            {
+                Application.PrintErrorMessage(ErrorMessages.InvalidNonAddLauncherOption, name);
+                return 1;
+            }
+
+            return 0;
         }
 
         /// <summary>
@@ -1389,7 +1294,7 @@ namespace MageCLI
                 }
             }
 
-            // Choose hashing algorithm - SHA-256 for v4.5, SHA-1 for anything else
+            // Choose hashing algorithm - SHA256 for v4.5, which is the only supported algorithm now.
             string targetFrameworkVersion = "v4.0";
             if (algorithm == DigestAlgorithmValue.sha256RSA)
             {
@@ -1400,18 +1305,18 @@ namespace MageCLI
             if (Requested(Operations.GenerateApplicationManifest))
             {
                 applicationName += ".exe";
-                manifest = Mage.GenerateApplicationManifest(filesToIgnore, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, isWPFBrowserApp, publisherName, supportUrl, targetFrameworkVersion);
+                manifest = Mage.GenerateApplicationManifest(filesToIgnore, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl, targetFrameworkVersion);
             }
             else if (Requested(Operations.GenerateDeploymentManifest))
             {
                 applicationName += ".app";
-                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, isWPFBrowserApp, publisherName, supportUrl, targetFrameworkVersion);
+                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, targetFrameworkVersion);
             }
 
             // Update operations
             if (Requested(Operations.UpdateApplicationManifest))
             {
-                Mage.UpdateApplicationManifest(filesToIgnore, cachedAppManifest, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, isWPFBrowserApp, publisherName, supportUrl, targetFrameworkVersion);
+                Mage.UpdateApplicationManifest(filesToIgnore, cachedAppManifest, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl, targetFrameworkVersion);
                 manifest = cachedAppManifest;
             }
             else if (Requested(Operations.UpdateDeploymentManifest))
@@ -1466,15 +1371,9 @@ namespace MageCLI
             // Save the manifest or license
             if (manifest != null)
             {
-                // The framework version is used as an indication of which algorithm to use for 
-                // generating the digests in the manifest. The default is SHA256 for v4.5 and we
-                // change that only if SHA1 was specified.
+                // Framework version is used for determining which algorithm to use for
+                // generating manifest digests. For v4.5+, sha256 is used.
                 string frameworkVersion = "v4.5";
-                if (algorithm == DigestAlgorithmValue.sha1RSA)
-                {
-                    frameworkVersion = "v4.0";
-                }
-                
                 ManifestWriter.WriteManifest(manifest, outputPath, frameworkVersion);
             }
 
@@ -1513,11 +1412,6 @@ namespace MageCLI
                 Application.PrintVerboseHelpMessage();
                 return;
             }
-            else if (Requested(Operations.LaunchGUI))
-            {
-                LaunchGUI();
-                return;
-            }
             else if (Requested(Operations.CleanApplicationCache))
             {
                 try
@@ -1535,6 +1429,14 @@ namespace MageCLI
             else if (Requested(Operations.VerifyManifest))
             {
                 ExecuteManifestVerification();
+                return;
+            }
+            else if (Requested(Operations.AddLauncher))
+            {
+                if (LauncherUtil.AddLauncher(targetDirectory, binaryToLaunch))
+                {
+                    Application.PrintOutputMessage("", Application.Resources.GetString("LauncherSuccessfullyAdded"));
+                }
                 return;
             }
 
@@ -1562,19 +1464,28 @@ namespace MageCLI
             CryptoConfig.AddAlgorithm(typeof(RSAPKCS1SHA256SignatureDescription),
                 Sha256SignatureMethodUri);
 
+#if RUNTIME_TYPE_NETCORE
+            CryptoConfig.AddAlgorithm(typeof(SHA256Managed),
+                Sha256DigestMethod);
+#else
             CryptoConfig.AddAlgorithm(typeof(SHA256Cng),
                 Sha256DigestMethod);
+#endif
 
             try
             {
                 // Load the manifest as an XML file.
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.PreserveWhitespace = true;
+                XmlDocument xmlDoc = new XmlDocument
+                {
+                    PreserveWhitespace = true
+                };
                 xmlDoc.Load(inputPath);
                 using (StreamReader streamReader = new StreamReader(inputPath))
                 {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    settings.DtdProcessing = DtdProcessing.Parse;
+                    XmlReaderSettings settings = new XmlReaderSettings
+                    {
+                        DtdProcessing = DtdProcessing.Parse
+                    };
                     using (XmlReader reader = XmlReader.Create(streamReader, settings, (new UriBuilder(inputPath)).ToString()))
                     {
                         xmlDoc.Load(reader);
@@ -1669,6 +1580,7 @@ namespace MageCLI
         private void Validate(Manifest manifest)
         {
             bool bOutputMessages = false;
+            int suppressedWarningMessageCount = 0;
 
             // Validates the output. We will usually get warnings in the
             // command line version.
@@ -1679,9 +1591,20 @@ namespace MageCLI
 
                 manifest.Validate();
 
+                bool launcherBasedDeployment =
+                    string.Equals(manifest.EntryPoint.TargetPath.ToLower(), LauncherUtil.LauncherFilename.ToLower(), StringComparison.OrdinalIgnoreCase);
+
                 // Prints out all the information.
                 foreach (OutputMessage msg in manifest.OutputMessages)
                 {
+                    // Suppress expected warning messages
+                    if (msg.Type == OutputMessageType.Warning &&
+                        ShouldSuppressWarningMessage(msg, launcherBasedDeployment))
+                    {
+                        suppressedWarningMessageCount++;
+                        continue;
+                    }
+
                     string resultMessage;
                     switch (msg.Type)
                     {
@@ -1699,7 +1622,7 @@ namespace MageCLI
                     Console.WriteLine(resultMessage + " " + msg.Text);
                 }
 
-                bOutputMessages = manifest.OutputMessages.ErrorCount + manifest.OutputMessages.WarningCount > 0;
+                bOutputMessages = manifest.OutputMessages.ErrorCount + manifest.OutputMessages.WarningCount - suppressedWarningMessageCount > 0;
             }
 
             string OutputText = null;
@@ -1722,26 +1645,22 @@ namespace MageCLI
             }
         }
 
-        private void LaunchGUI()
+        private bool ShouldSuppressWarningMessage(OutputMessage msg, bool launcherBasedDeployment)
         {
-            const string executableFileName = "MageUI.exe";
-            try
+            if (launcherBasedDeployment &&
+                (msg.Name == "GenerateManifest.AssemblyAsFile"))
             {
-                System.Diagnostics.Process proc = new System.Diagnostics.Process();
+                // Suppress all AssemblyAsFile warnings for launcher-based deployments.
+                //
+                // Deployment of .NET (Core) applications includes all .NET (Core) files
+                // as simple files, not assembly references. Entry point of deployment is Launcher
+                // which is a .NET FX application, as ClickOnce runtime requires
+                // a managed EXE as the entry point.
 
-                proc.StartInfo.FileName = executableFileName;
-                proc.StartInfo.Arguments = "";
-                proc.StartInfo.CreateNoWindow = false;
-                proc.StartInfo.UseShellExecute = false;
-                proc.StartInfo.RedirectStandardError = false;
-                proc.StartInfo.RedirectStandardOutput = false;
+                return true;
+            }
 
-                proc.Start();
-            }
-            catch (System.Exception)
-            {
-                Application.PrintErrorMessage(ErrorMessages.UnableToStartGUI, executableFileName);
-            }
+            return false;
         }
     }
 }

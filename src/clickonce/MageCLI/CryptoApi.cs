@@ -1,18 +1,18 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-namespace Mage
-{
-    using System;
-    using System.Runtime.ConstrainedExecution;
-    using System.Runtime.InteropServices;
-    using System.Security;
-    using System.Security.Cryptography;
-    using System.Security.Permissions;
-    using System.Text;
-    using Microsoft.Win32.SafeHandles;
-    using _FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
+using System;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Cryptography;
+using System.Security.Permissions;
+using System.Text;
+using Microsoft.Win32.SafeHandles;
+using _FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
+namespace Microsoft.Deployment.Utilities
+{
     internal abstract class CAPIBase
     {
         //
@@ -39,7 +39,6 @@ namespace Mage
         internal const int S_OK        = 0;
         internal const int S_FALSE     = 1;
         internal const string szOID_RSA_SHA256RSA   = "1.2.840.113549.1.1.11";
-        internal const string szOID_RSA_SHA1RSA = "1.2.840.113549.1.1.5";
 
         // dwFlags definitions for CryptAcquireContext
         internal const uint CRYPT_VERIFYCONTEXT     = 0xF0000000;

@@ -6,11 +6,29 @@
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
     <RCSuppressManifest>true</RCSuppressManifest>
     <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
-    <TargetFramework>net4.8</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <PlatformSpecificBuild>true</PlatformSpecificBuild>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+  <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+    <DefineConstants>$(DefineConstants);RUNTIME_TYPE_NETCORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.6.0" />
+    <Compile Include="..\Shared\NativeMethods.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Application.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Condition="$(TargetFramework.StartsWith('net4'))" Include="$(IntermediateOutputPath)\MageCLI.Application.resources">
+      <LogicalName>Microsoft.Deployment.MageCLI.Application.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildTasksCoreVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
   </ItemGroup>
 </Project>

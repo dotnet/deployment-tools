@@ -4,11 +4,9 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
-namespace Utilities
+namespace Microsoft.Deployment.Utilities
 {
     /// <summary>
     /// Constants
@@ -43,7 +41,7 @@ namespace Utilities
         /// </summary>
         /// <param name="codebase"></param>
         /// <returns></returns>
-        public static void ValidateCodebase(string codebase)
+        private static void ValidateCodebase(string codebase)
         {
             try
             {
@@ -60,7 +58,7 @@ namespace Utilities
         /// Validates the URL.
         /// </summary>
         /// <param name="url"></param>
-        public static void ValidateUrl(string url)
+        private static void ValidateUrl(string url)
         {
             // This will throw if codebase isn't a legal URI
             Uri uri = new Uri(url);
@@ -152,7 +150,7 @@ namespace Utilities
         /// <returns>Publisher name</returns>
         internal static string GetRegisteredOrganization()
         {
-            string result = "";
+            string result = string.Empty;
 
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", false))
             {
@@ -161,7 +159,7 @@ namespace Utilities
                     result = key.GetValue("RegisteredOrganization") as string;
                     if (result == null)
                     {
-                        result = "";
+                        result = string.Empty;
                     }
                 }
             }

@@ -3,22 +3,17 @@
 
 using System;
 using System.IO;
-using System.Xml;
-using System.Resources;
-using System.Reflection;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Win32;
 using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
-using Utilities;
+using Microsoft.Deployment.Utilities;
 
+#if !RUNTIME_TYPE_NETCORE
+using System.Diagnostics;
+#endif
 
-
-namespace MageCLI
+namespace Microsoft.Deployment.MageCLI
 {
     /// <summary>
     /// Processor types
@@ -26,7 +21,7 @@ namespace MageCLI
     internal enum Processors
     {
         // Note that the LAST constant MUST be "Undefined"
-        msil, x86, amd64, ia64, Undefined
+        msil, x86, amd64, Undefined
     }
 
     /// <summary>
@@ -63,7 +58,7 @@ namespace MageCLI
         /// <returns>ApplicationManifest object</returns>
         public static ApplicationManifest GenerateApplicationManifest(List<string> filesToIgnore, string nameArgument, string appName, Version version,
             Processors processor, Command.TrustLevels trustLevel, string fromDirectory, 
-            string iconFile, TriStateBool useApplicationManifestForTrustInfo, TriStateBool isWPFBrowserApp, string publisherName, string supportUrl, string targetFrameworkVersion)
+            string iconFile, TriStateBool useApplicationManifestForTrustInfo, string publisherName, string supportUrl, string targetFrameworkVersion)
         {
             ApplicationManifest manifest = new ApplicationManifest();
 
@@ -93,7 +88,7 @@ namespace MageCLI
 
             UpdateApplicationManifest(filesToIgnore, manifest, nameArgument, appName, version,
                 processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, 
-                isWPFBrowserApp, publisherName, supportUrl, targetFrameworkVersion);
+                publisherName, supportUrl, targetFrameworkVersion);
 
             return manifest;
         }
@@ -120,18 +115,19 @@ namespace MageCLI
             string appName, Version version, Processors processor,
             ApplicationManifest applicationManifest, string applicationManifestPath, string appCodeBase,
             string appProviderUrl, string minVersion, TriStateBool install, TriStateBool includeDeploymentProviderUrl,
-            TriStateBool isWPFBrowserApp, string publisherName, string supportUrl, string targetFrameworkVersion)
+            string publisherName, string supportUrl, string targetFrameworkVersion)
         {
-            string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            FileVersionInfo vi = FileVersionInfo.GetVersionInfo(path);
-            string productVersion = vi.ProductVersion;
-            Version frameworkVersion = new Version(productVersion);
-            Version shortVersion = new Version(frameworkVersion.Major, frameworkVersion.Minor);
+            /*
+              Mage running on Core cannot obtain .NET FX version for targeting.
+              Set default minimum version to v4.5, that Launcher targets,
+              which is a good default for .NET FX Mage as well.
 
+              As always, version can be modified in deployment manifest, if needed.
+            */
+            Version shortVersion = new Version(4, 5);
             string frameworkIdentifier = ".NETFramework";
-            string clientProfile = "Client";
 
-            DeployManifest manifest = new DeployManifest((new FrameworkName(frameworkIdentifier, shortVersion, clientProfile)).FullName);
+            DeployManifest manifest = new DeployManifest((new FrameworkName(frameworkIdentifier, shortVersion)).FullName);
 
             // Set default manifest publish options
             if (install == TriStateBool.True)
@@ -193,7 +189,7 @@ namespace MageCLI
         /// <param name="supportUrl">Support URL</param>
         /// <param name="targetFrameworkVersion">Target Framework version</param>
         public static void UpdateApplicationManifest(List<string> filesToIgnore, ApplicationManifest manifest, string nameArgument, string appName, Version version, Processors processor, Command.TrustLevels trustLevel, string fromDirectory,
-            string iconFile, TriStateBool useApplicationManifestForTrustInfo, TriStateBool isWPFBrowserApp, string publisherName, string supportUrl, string targetFrameworkVersion)
+            string iconFile, TriStateBool useApplicationManifestForTrustInfo, string publisherName, string supportUrl, string targetFrameworkVersion)
         {
             if (appName != null)
             {
@@ -220,19 +216,23 @@ namespace MageCLI
                 manifest.AssemblyIdentity.Culture = defaultCulture;
             }
 
+#if RUNTIME_TYPE_NETCORE
+            // TrustInfo is always Full-trust on .NET (Core)
+            if (manifest.TrustInfo == null)
+            {
+                // TrustInfo object is initialized as Full-trust for all apps running on .NET (Core)
+                manifest.TrustInfo = new Microsoft.Build.Tasks.Deployment.ManifestUtilities.TrustInfo();
+            }
+#else
             if (trustLevel != Command.TrustLevels.None)
             {
                 SetTrustLevel(manifest, trustLevel);
             }
+#endif
 
             if (iconFile != null)
             {
                 manifest.IconFile = iconFile;
-            }
-
-            if (isWPFBrowserApp != TriStateBool.Undefined)
-            {
-                manifest.HostInBrowser = (isWPFBrowserApp == TriStateBool.True) ? true : false;
             }
 
             if (useApplicationManifestForTrustInfo == TriStateBool.True)
@@ -484,8 +484,10 @@ namespace MageCLI
             }
 
             // Create a new assembly reference for the application manifest
-            AssemblyReference ar = new AssemblyReference(applicationManifestPath);            
-            ar.AssemblyIdentity = applicationManifest.AssemblyIdentity;
+            AssemblyReference ar = new AssemblyReference(applicationManifestPath)
+            {
+                AssemblyIdentity = applicationManifest.AssemblyIdentity
+            };
 
             // Update the deployment manifest
             deploymentManifest.AssemblyReferences.Clear();
@@ -521,12 +523,15 @@ namespace MageCLI
             }
             else
             {
-                ar = new AssemblyReference(appCodeBase);
-                ar.TargetPath = appCodeBase;
+                ar = new AssemblyReference(appCodeBase)
+                {
+                    TargetPath = appCodeBase
+                };
                 collection.Add(ar);
             }
         }
 
+#if !RUNTIME_TYPE_NETCORE
         /// <summary>
         /// Set the application's trust information
         /// </summary>
@@ -550,5 +555,6 @@ namespace MageCLI
                 }
             }
         }
+#endif
     }
 }

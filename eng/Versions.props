@@ -83,6 +83,8 @@
     <SystemWindowsExtensionsTestDataVersion>5.0.0-beta.20258.1</SystemWindowsExtensionsTestDataVersion>
     <!-- Standard dependencies -->
     <NETStandardLibraryVersion>2.2.0-prerelease.19564.1</NETStandardLibraryVersion>
+    <!-- MSBuild dependencies -->
+    <MicrosoftBuildTasksCoreVersion>16.8.0-preview-20453-01</MicrosoftBuildTasksCoreVersion>
     <!-- dotnet-optimization dependencies -->
     <optimizationwindows_ntx64IBCCoreFxVersion>99.99.99-master-20200228.3</optimizationwindows_ntx64IBCCoreFxVersion>
     <optimizationlinuxx64IBCCoreFxVersion>99.99.99-master-20200228.3</optimizationlinuxx64IBCCoreFxVersion>

@@ -1,16 +1,16 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-namespace CommandLineParser
-{
-    using System;
-    using System.Diagnostics;
-    using System.Reflection;
-    using System.Collections;
-    using System.Globalization;
-    using System.IO;
-    using System.Text;
+using System;
+using System.Diagnostics;
+using System.Reflection;
+using System.Collections;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
+namespace Microsoft.Deployment.CommandLineParser
+{
     /// <summary>
     /// A delegate used in error reporting.
     /// </summary>

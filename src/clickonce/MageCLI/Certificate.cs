@@ -7,11 +7,10 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Mage;
 using Microsoft.Win32.SafeHandles;
 using System.Collections.Generic;
 
-namespace Utilities
+namespace Microsoft.Deployment.Utilities
 {
     /// <summary>
     /// Common certificate operations
@@ -69,11 +68,10 @@ namespace Utilities
         internal static IEnumerable<ProviderAndType> CryptEnumRsaProviders()
         {
             uint dwType = 0;
-            StringBuilder pszName;
 
             for (uint dwIndex = 0; ; dwIndex++)
             {
-                int errorCode = CryptEnumProviders(dwIndex, ref dwType, out pszName);
+                int errorCode = CryptEnumProviders(dwIndex, ref dwType, out StringBuilder pszName);
                 if (0 == errorCode)
                 {
                     if (dwType == Certificate.PROV_RSA_FULL || dwType == Certificate.PROV_RSA_AES ||
@@ -105,8 +103,7 @@ namespace Utilities
                 }
             }
 
-            SafeNCryptProviderHandle hProvider;
-            if (0 == NCryptMethods.NCryptOpenStorageProvider(out hProvider, providerName))
+            if (0 == NCryptMethods.NCryptOpenStorageProvider(out SafeNCryptProviderHandle hProvider, providerName))
             {
                 hProvider.Dispose();
                 return 0;
@@ -185,8 +182,7 @@ namespace Utilities
 
             if (String.Compare(extension.Oid.Value, szOID_ENHANCED_KEY_USAGE, true, CultureInfo.InvariantCulture) == 0)
             {
-                X509EnhancedKeyUsageExtension enhancedextension = extension as X509EnhancedKeyUsageExtension;
-                if (enhancedextension != null)
+                if (extension is X509EnhancedKeyUsageExtension enhancedextension)
                 {
                     foreach (Oid enhancedOid in enhancedextension.EnhancedKeyUsages)
                     {
@@ -261,13 +257,16 @@ namespace Utilities
                     if (providerType != 0)
                     {
                         CspParameters parameters;
-                        parameters = new CspParameters();
-                        parameters.ProviderName = cryptoProviderName;
-                        parameters.ProviderType = providerType;
-                        parameters.KeyContainerName = keyContainerName;
-                        parameters.KeyNumber = (int)KeyNumber.Signature;
-                        // Make sure key creation is not attempted.
-                        parameters.Flags = CspProviderFlags.UseExistingKey;
+                        parameters = new CspParameters
+                        {
+                            ProviderName = cryptoProviderName,
+                            ProviderType = providerType,
+                            KeyContainerName = keyContainerName,
+                            KeyNumber = (int)KeyNumber.Signature,
+                            // Make sure key creation is not attempted.
+                            Flags = CspProviderFlags.UseExistingKey
+                        };
+
                         if (IsMachineCryptKey(cryptoProviderName, (uint)providerType, keyContainerName))
                         {
                             // Search only Machine key store for this private key, if not set we search only user store.
@@ -278,12 +277,14 @@ namespace Utilities
                     }
                     else
                     {
-                        CAPI.CRYPT_KEY_PROV_INFO keyProvInfo = new CAPI.CRYPT_KEY_PROV_INFO();
-                        keyProvInfo.pwszProvName = cryptoProviderName;
-                        keyProvInfo.pwszContainerName = keyContainerName;
-                        keyProvInfo.dwProvType = (uint)providerType;
-                        keyProvInfo.dwKeySpec = (int)KeyNumber.Signature;
-                        keyProvInfo.dwFlags = IsMachineNCryptKey(cryptoProviderName, keyContainerName)? NCryptMethods.NCRYPT_MACHINE_KEY_FLAG : (uint)0;
+                        CAPI.CRYPT_KEY_PROV_INFO keyProvInfo = new CAPI.CRYPT_KEY_PROV_INFO
+                        {
+                            pwszProvName = cryptoProviderName,
+                            pwszContainerName = keyContainerName,
+                            dwProvType = (uint)providerType,
+                            dwKeySpec = (int)KeyNumber.Signature,
+                            dwFlags = IsMachineNCryptKey(cryptoProviderName, keyContainerName) ? NCryptMethods.NCRYPT_MACHINE_KEY_FLAG : (uint)0
+                        };
 
                         using (SafeLocalAllocHandle pKeyProvInfo = CAPI.LocalAlloc(CAPI.LPTR, (uint)Marshal.SizeOf(typeof(CAPI.CRYPT_KEY_PROV_INFO))))
                         {
@@ -317,8 +318,7 @@ namespace Utilities
         /// <returns>True or false</returns>
         internal static bool IsMachineNCryptKey(string providerName, string keyContainer)
         {
-            SafeNCryptProviderHandle hProvider;
-            if (0 == NCryptMethods.NCryptOpenStorageProvider(out hProvider, providerName))
+            if (0 == NCryptMethods.NCryptOpenStorageProvider(out SafeNCryptProviderHandle hProvider, providerName))
             {
                 using (hProvider)
                 {
@@ -407,14 +407,13 @@ namespace Utilities
             int flags = getMachineKeys ? NCryptMethods.NCRYPT_MACHINE_KEY_FLAG : 0;
             unsafe
             {
-                NCryptMethods.NCryptKeyName* keyName;
                 void* enumState = null;
                 int status;
 
                 while (true)
                 {
                     // Potentially display a UI.
-                    status = NCryptMethods.NCryptEnumKeys(hProvider, null, out keyName, ref enumState, flags);
+                    status = NCryptMethods.NCryptEnumKeys(hProvider, null, out NCryptMethods.NCryptKeyName* keyName, ref enumState, flags);
                     if (status == NCryptMethods.NTE_NO_MORE_ITEMS
                         || status == NCryptMethods.NTE_BAD_FLAGS     // some providers don't support Machine keys
                         || status == NCryptMethods.SCARD_E_NO_READERS_AVAILABLE
