@@ -57,7 +57,6 @@ namespace Microsoft.Deployment.Utilities
                     Application.PrintErrorMessage(ErrorMessages.FailedToUpdateLauncherResources, "");
                     return false;
                 }
-
             }
             catch (Exception)
             {
