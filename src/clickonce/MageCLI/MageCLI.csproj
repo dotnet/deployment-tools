@@ -19,7 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Application.resx">
-      <LogicalName>$(AssemblyName).Application.resources</LogicalName>
+      <LogicalName>Microsoft.Deployment.MageCLI.Application.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Condition="$(TargetFramework.StartsWith('net4'))" Include="$(IntermediateOutputPath)\MageCLI.Application.resources">
