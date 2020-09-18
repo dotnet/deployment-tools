@@ -20,8 +20,25 @@ Official Starting Page: https://dotnet.microsoft.com/
 We welcome contributions! Many people all over the world have helped make this project better.
 
 * [Contributing](CONTRIBUTING.md) explains what kinds of changes we welcome
-- [Workflow Instructions](docs/workflow/README.md) explains how to build and test
 * [Get Up and Running on .NET Core](docs/project/dogfooding.md) explains how to get nightly builds of the runtime and its libraries to test them in your own projects.
+
+## Building
+
+To build the whole repo:
+
+`build`
+
+To build just specific subsets, i.e. `clickonce`:
+
+`build -subset clickonce`
+
+After you've built binaries, you can create packages, by running the following:
+
+`build -pack`
+
+## Localization
+
+You can turn on localized builds via the `/p:LocalizedBuild=true` command line argument.
 
 ## Reporting security issues and security bugs
 
