@@ -74,6 +74,7 @@ jobs:
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
           /p:Sign=true /p:SignBinaries=true
+          /p:LocalizedBuild=true
         displayName: Build and Sign Binaries
 
     - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
@@ -81,6 +82,7 @@ jobs:
           build.cmd -subset clickonce+installer -ci -test
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
+          /p:LocalizedBuild=true
         displayName: Build
 
     - script: >-

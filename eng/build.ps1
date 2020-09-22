@@ -12,7 +12,7 @@ Param(
   [string]$testscope,
   [switch]$testnobuild,
   [ValidateSet("x86","x64","arm","arm64","wasm")][string[]][Alias('a')]$arch = @([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString().ToLowerInvariant()),
-  [Parameter(Position=0)][string][Alias('s')]$subset,
+  [string][Alias('s')]$subset,
   [Parameter(ValueFromRemainingArguments=$true)][String[]]$properties
 )
 
@@ -31,7 +31,6 @@ function Get-Help() {
   Write-Host "  -os                            Target operating system: Windows_NT, Linux, OSX, or Browser."
   Write-Host "                                 [Default: Your machine's OS.]"
   Write-Host "  -subset (-s)                   Build a subset, print available subsets with -subset help."
-  Write-Host "                                 '-subset' can be omitted if the subset is given as the first argument."
   Write-Host "                                 [Default: Builds the entire repo.]"
   Write-Host "  -verbosity (-v)                MSBuild verbosity: q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]."
   Write-Host "                                 [Default: Minimal]"
@@ -71,10 +70,10 @@ function Get-Help() {
   Write-Host "Here are some quick examples. These assume you are on a Windows x64 machine:"
   Write-Host ""
   Write-Host "* Build ClickOnce tools for Windows x64 on Release configuration:"
-  Write-Host ".\build.cmd clickonce -c release"
+  Write-Host ".\build.cmd -subset clickonce -c release"
   Write-Host ""
   Write-Host "* Build ClickOnce tools and installers for Windows x64 on Release configuration:"
-  Write-Host ".\build.cmd clickonce+installer -c release"
+  Write-Host ".\build.cmd -subset clickonce+installer -c release"
   Write-Host ""
   Write-Host "For more information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
 }
@@ -146,6 +145,7 @@ foreach ($argument in $PSBoundParameters.Keys)
 {
   switch($argument)
   {
+    "subset"                 { $arguments += " /p:Subset=$($PSBoundParameters[$argument].ToLowerInvariant())" }
     "framework"              { $arguments += " /p:BuildTargetFramework=$($PSBoundParameters[$argument].ToLowerInvariant())" }
     "os"                     { $arguments += " /p:TargetOS=$($PSBoundParameters[$argument])" }
     "allconfigurations"      { $arguments += " /p:BuildAllConfigurations=true" }

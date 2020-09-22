@@ -31,7 +31,6 @@ usage()
   echo "                                  [Default: Your machine's OS.]"
   echo "  --projects <value>              Project or solution file(s) to build."
   echo "  --subset (-s)                   Build a subset, print available subsets with -subset help."
-  echo "                                 '--subset' can be omitted if the subset is given as the first argument."
   echo "                                  [Default: Builds the entire repo.]"
   echo "  --verbosity (-v)                MSBuild verbosity: q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]."
   echo "                                  [Default: Minimal]"
@@ -79,7 +78,7 @@ usage()
   echo "There are no projects that build for Linux at the moment - these are just examples."
   echo ""
   echo "* Build ClickOnce for Linux x64 on Release configuration:"
-  echo "./build.sh clickonce -c release"
+  echo "./build.sh -subset clickonce -c release"
   echo ""
   echo "For more general information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
 }

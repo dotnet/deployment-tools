@@ -3,13 +3,8 @@
 
 using System;
 using System.Resources;
-using System.Reflection;
-using System.Diagnostics;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
 
-namespace MageCLI
+namespace Microsoft.Deployment.MageCLI
 {
     /// <summary>
     /// Contains the entry point and a few error-reporting methods useful
@@ -35,7 +30,7 @@ namespace MageCLI
         static int Main(string[] args)
         {            
             ProcessExitCodes result = ProcessExitCodes.Success;
-                    
+
             try
             {
                 // Parse command line arguments
@@ -178,28 +173,6 @@ namespace MageCLI
         }
 
         /// <summary>
-        /// Prints the message about invalid options.
-        /// 'The option "$option" can only be used with the following file types: "$type1"[, "$type2"]'
-        /// </summary>
-        /// <param name="option">The option the user has given (as a literal string, not a resource)</param>
-        /// <param name="allowed1">The file type to which that option applies (literal, not resource)</param>
-        /// <param name="allowed2">Second file type (may be null)</param>
-        internal static void PrintInvalidOptionErrorMessage(string option, string allowed1, string allowed2)
-        {
-            string message;
-
-            message = string.Format(Resources.GetString("InvalidOption") + " ", option);
-            message += allowed1;
-            if (allowed2 != null)
-            {
-                message += Resources.GetString("InvalidOptionConjuction");
-                message += allowed2;
-            }
-
-            Console.WriteLine(message);
-        }
-
-        /// <summary>
         /// Prints an error message that has no replaceable parameter.
         /// </summary>
         /// <param name="error">error message ID</param>
@@ -209,23 +182,28 @@ namespace MageCLI
         }
 
         /// <summary>
-        /// Prints an error message with one replaceable parameter.
+        /// Prints an error message with one or two replaceable parameters.
         /// </summary>
         /// <param name="error">error message ID</param>
-        /// <param name="parameter">string to insert into the error message (may be 
-        /// null)</param>
-        internal static void PrintErrorMessage(ErrorMessages error, string parameter)
+        /// <param name="parameter1">string to insert into the error message (may be null)</param>
+        /// <param name="parameter2">string to insert into the error message (may be null)</param>
+        internal static void PrintErrorMessage(ErrorMessages error, string parameter1, string parameter2 = null)
         {
             string message;
 
-            if (null == parameter)
+            if (null == parameter1)
             {
                 message = Resources.GetString(error.ToString());
+            }
+            else if (null == parameter2)
+            {
+                message = Resources.GetString(error.ToString());
+                message = string.Format(message, parameter1);
             }
             else
             {
                 message = Resources.GetString(error.ToString());
-                message = string.Format(message, parameter);
+                message = string.Format(message, parameter1, parameter2);
             }
 
             Console.WriteLine(message);
@@ -253,6 +231,11 @@ namespace MageCLI
         /// Parameter not recognized - "foo"
         /// </summary>
         UnrecognizedParameter,
+
+        /// <summary>
+        /// Option can only be used with the specific file type
+        /// </summary>
+        FileTypeSpecificOption,
 
         /// <summary>
         /// File not found - "foo.manifest"
@@ -290,6 +273,11 @@ namespace MageCLI
         InvalidTrustLevel,
 
         /// <summary>
+        /// Setting trust level is not supported on .NET (Core)
+        /// </summary>
+        TrustLevelsNotSupportedOnNETCore,
+
+        /// <summary>
         /// Invalid file type, must be either "AppManifest", "DeployManifest", or "TrustLicense" - "Foo"
         /// </summary>
         InvalidFileType,
@@ -308,6 +296,11 @@ namespace MageCLI
         /// Missing Password option, this is required when using the CertFile option.
         /// </summary>
         MissingPassword,
+
+        /// <summary>
+        /// Missing option (filename), it is required with AddLauncher command.
+        /// </summary>
+        MissingAddLauncherOption,
 
         /// <summary>
         /// Only one type of signing method may be specified.
@@ -330,9 +323,19 @@ namespace MageCLI
         InvalidRequiredUpdate,
 
         /// <summary>
-        /// The "foo" option can only be used with the -New or -Update commands.
+        /// Specified option can not be used with -AddLauncher option.
         /// </summary>
-        InvalidSignOption,
+        InvalidAddLauncherOption,
+
+        /// <summary>
+        /// Specified option can only be used with -AddLauncher option.
+        /// </summary>
+        InvalidNonAddLauncherOption,
+
+        /// <summary>
+        /// Specified option can only be used with the -New or -Update commands.
+        /// </summary>
+        InvalidNonManifestOption,
 
         /// <summary>
         /// The -Sign command requires one of -KeyFile, -CertFile, or -CertHash.
@@ -355,7 +358,7 @@ namespace MageCLI
         InvalidUrl,
 
         /// <summary>
-        /// The first argument must be one of the following: -New, -Update, -Sign
+        /// The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher
         /// </summary>
         NoVerb,
 
@@ -388,7 +391,7 @@ namespace MageCLI
         UnableToStartGUI,
 
         /// <summary>
-        /// The -Algorithm option value must be "sha256RSA" or "sha1RSA" - "{0}"
+        /// The -Algorithm option value must be "sha256RSA" - "{0}"
         /// </summary>
         InvalidAlgorithmValue,
 
@@ -453,22 +456,12 @@ namespace MageCLI
         MissingDeploymentProviderUrl,
 
         /// <summary>
-        /// The -WPFBrowserApp option must be "true", "false", "t", or "f" - "{0}"
+        /// The specified application manifest includes unsupported HostInBrowser tag.
         /// </summary>
-        InvalidWPFBrowserApp,
+        ApplicationManifestCannotHaveHostInBrowserTag,
 
         /// <summary>
-        /// The WPFBrowserApp and Install options cannot be set to true at the same time
-        /// </summary>
-        InvalidWPFBrowserAppInstallCombination,
-
-        /// <summary>
-        /// The application manifest specified does not include the HostInBrowser tag required for a browser-hosted application
-        /// </summary>
-        ApplicationManifestMissingHostInBrowserTag,
-
-        /// <summary>
-        /// This certificate does not contain a private key - "{0}", if this is a public 
+        /// This certificate does not contain a private key - "{0}", if this is a public
         /// key certificate, please provide cryptographic service provider and key container names.
         /// </summary>
         MissingCspOrContainer,
@@ -477,6 +470,36 @@ namespace MageCLI
         /// 'verify' command can't be combined with any other command.
         /// </summary>
         VerifyIsExclusive,
+
+        /// <summary>
+        /// 'addlauncher' command can't be combined with any other command.
+        /// </summary>
+        AddLauncherIsExclusive,
+
+        /// <summary>
+        /// Launcher template "{0}" does not exist.
+        /// </summary>
+        MissingLauncherTemplate,
+
+        /// <summary>
+        /// Failed to update Launcher resources.
+        /// </summary>
+        FailedToUpdateLauncherResources,
+
+        /// <summary>
+        /// Failed to add Launcher.
+        /// </summary>
+        FailedToAddLauncher,
+
+        /// <summary>
+        /// Binary to launch can not include a path, it can only be a filename.
+        /// </summary>
+        InvalidBinaryToLaunch,
+
+        /// <summary>
+        /// Binary to launch cannot be empty.
+        /// </summary>
+        MissingBinaryToLaunch,
 
         /// <summary>
         /// The UseManifestForTrust argument needs to be set to true when generating/updating an application manifest
