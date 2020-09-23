@@ -722,7 +722,7 @@ Options:
       <trans-unit id="NewLicense">
         <source>New License</source>
         <target state="new">New License</target>
-        <note>This is the title string for new licenses.  See Mage.cs:432</note>
+        <note />
       </trans-unit>
       <trans-unit id="NoKeySpecified">
         <source>The -Sign command requires one of -CertFile, or -CertHash.</source>

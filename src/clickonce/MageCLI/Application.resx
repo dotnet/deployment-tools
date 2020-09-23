@@ -466,7 +466,6 @@ Options:
   </data>
   <data name="NewLicense" xml:space="preserve">
     <value>New License</value>
-    <comment>This is the title string for new licenses.  See Mage.cs:432</comment>
   </data>
   <data name="NoKeySpecified" xml:space="preserve">
     <value>The -Sign command requires one of -CertFile, or -CertHash.</value>
