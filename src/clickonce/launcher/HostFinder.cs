@@ -101,8 +101,7 @@ namespace Microsoft.Deployment.Launcher
         /// <returns></returns>
         private static string GetProcessorArchitectureFromAssembly(string path)
         {
-            // Defaults to "msil", to support failure scenarios, like GetAssemblyIdentityFromFile returning null
-            string processorArchitecture = "msil";
+            string processorArchitecture = string.Empty;
 
             try
             {
@@ -111,20 +110,18 @@ namespace Microsoft.Deployment.Launcher
                 if (refid != null)
                 {
                     processorArchitecture = refid.GetAttribute(null, "processorArchitecture");
-                    processorArchitecture =
-                        !string.IsNullOrEmpty(processorArchitecture) ?
-                        processorArchitecture.ToLowerInvariant() :
-                        "msil";
                 }
             }
             catch (Exception)
             {
                 // GetAssemblyIdentityFromFile throws an exception for architectures that don't exist in .NET FX, i.e. arm64.
-                // Fall back to "msil" to let host discovery process look for shared host in both 64-bit and 32-bit locations.
-                processorArchitecture = "msil";
             }
 
-            return processorArchitecture;
+            // Default to "msil", to support failure scenarios, like GetAssemblyIdentityFromFile returning null
+            // or encountering an unknown architecture.
+            return string.IsNullOrEmpty(processorArchitecture) ?
+                        "msil" :
+                        processorArchitecture.ToLowerInvariant();
         }
 
         private static Guid GetGuidOfType(Type type)
