@@ -95,24 +95,34 @@ namespace Microsoft.Deployment.Launcher
         }
 
         /// <summary>
-        /// Gets processor architecture from assembly metadata. Throws for non-managed binaries.
+        /// Gets processor architecture from assembly metadata.
         /// </summary>
         /// <param name="path">Assembly path</param>
         /// <returns></returns>
         private static string GetProcessorArchitectureFromAssembly(string path)
         {
-            Guid riid = GetGuidOfType(typeof(NativeMethods.Clr.IReferenceIdentity));
-            NativeMethods.Clr.IReferenceIdentity refid = (NativeMethods.Clr.IReferenceIdentity)NativeMethods.Clr.GetAssemblyIdentityFromFile(path, ref riid);
-            if (refid == null)
-            {
-                throw new LauncherException(Constants.ErrorApplicationAssemblyIdentity, path);
-            }
+            // Defaults to "msil", to support failure scenarios, like GetAssemblyIdentityFromFile returning null
+            string processorArchitecture = "msil";
 
-            string processorArchitecture = refid.GetAttribute(null, "processorArchitecture");
-            processorArchitecture =
-                !string.IsNullOrEmpty(processorArchitecture) ?
-                processorArchitecture.ToLowerInvariant() :
-                "msil";
+            try
+            {
+                Guid riid = GetGuidOfType(typeof(NativeMethods.Clr.IReferenceIdentity));
+                NativeMethods.Clr.IReferenceIdentity refid = (NativeMethods.Clr.IReferenceIdentity)NativeMethods.Clr.GetAssemblyIdentityFromFile(path, ref riid);
+                if (refid != null)
+                {
+                    processorArchitecture = refid.GetAttribute(null, "processorArchitecture");
+                    processorArchitecture =
+                        !string.IsNullOrEmpty(processorArchitecture) ?
+                        processorArchitecture.ToLowerInvariant() :
+                        "msil";
+                }
+            }
+            catch (Exception)
+            {
+                // GetAssemblyIdentityFromFile throws an exception for architectures that don't exist in .NET FX, i.e. arm64.
+                // Fall back to "msil" to let host discovery process look for shared host in both 64-bit and 32-bit locations.
+                processorArchitecture = "msil";
+            }
 
             return processorArchitecture;
         }
