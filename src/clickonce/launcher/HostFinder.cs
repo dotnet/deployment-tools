@@ -95,26 +95,33 @@ namespace Microsoft.Deployment.Launcher
         }
 
         /// <summary>
-        /// Gets processor architecture from assembly metadata. Throws for non-managed binaries.
+        /// Gets processor architecture from assembly metadata.
         /// </summary>
         /// <param name="path">Assembly path</param>
         /// <returns></returns>
         private static string GetProcessorArchitectureFromAssembly(string path)
         {
-            Guid riid = GetGuidOfType(typeof(NativeMethods.Clr.IReferenceIdentity));
-            NativeMethods.Clr.IReferenceIdentity refid = (NativeMethods.Clr.IReferenceIdentity)NativeMethods.Clr.GetAssemblyIdentityFromFile(path, ref riid);
-            if (refid == null)
+            string processorArchitecture = string.Empty;
+
+            try
             {
-                throw new LauncherException(Constants.ErrorApplicationAssemblyIdentity, path);
+                Guid riid = GetGuidOfType(typeof(NativeMethods.Clr.IReferenceIdentity));
+                NativeMethods.Clr.IReferenceIdentity refid = (NativeMethods.Clr.IReferenceIdentity)NativeMethods.Clr.GetAssemblyIdentityFromFile(path, ref riid);
+                if (refid != null)
+                {
+                    processorArchitecture = refid.GetAttribute(null, "processorArchitecture");
+                }
+            }
+            catch (Exception)
+            {
+                // GetAssemblyIdentityFromFile throws an exception for architectures that don't exist in .NET FX, i.e. arm64.
             }
 
-            string processorArchitecture = refid.GetAttribute(null, "processorArchitecture");
-            processorArchitecture =
-                !string.IsNullOrEmpty(processorArchitecture) ?
-                processorArchitecture.ToLowerInvariant() :
-                "msil";
-
-            return processorArchitecture;
+            // Default to "msil", to support failure scenarios, like GetAssemblyIdentityFromFile returning null
+            // or encountering an unknown architecture.
+            return string.IsNullOrEmpty(processorArchitecture) ?
+                        "msil" :
+                        processorArchitecture.ToLowerInvariant();
         }
 
         private static Guid GetGuidOfType(Type type)
