@@ -134,7 +134,7 @@ namespace Microsoft.Deployment.MageCLI
             {
                 manifest.Install = true;
                 manifest.UpdateEnabled = true;
-                manifest.UpdateMode = UpdateMode.Background;
+                manifest.UpdateMode = UpdateMode.Foreground;
             }
             else
             {
@@ -331,7 +331,7 @@ namespace Microsoft.Deployment.MageCLI
                 {
                     manifest.Install = true;
                     manifest.UpdateEnabled = true;
-                    manifest.UpdateMode = UpdateMode.Background;
+                    manifest.UpdateMode = UpdateMode.Foreground;
 
                     // We need to activate the set method on these fields since the XML
                     // representation might not be in sync with the propery value.
