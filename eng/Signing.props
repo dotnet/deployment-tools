@@ -27,6 +27,12 @@
 
       <!-- Launcher is not signed, by design. -->
       <FileSignInfo Include="Launcher.exe" CertificateName="None" />
+
+      <!-- Do not sign non-Microsoft binaries. -->
+      <FileSignInfo Include="MessagePack.dll" CertificateName="None" />
+      <FileSignInfo Include="MessagePack.Annotations.dll" CertificateName="None" />
+      <FileSignInfo Include="Nerdbank.Streams.dll" CertificateName="None" />
+
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignBinaries)' == 'true'">
