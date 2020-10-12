@@ -7,3 +7,6 @@
 ;;  *apphost.exe;;Template, https://github.com/dotnet/core-setup/pull/7549
 ;;  *apphosttemplateapphostexe.exe;;Template, https://github.com/dotnet/core-setup/pull/7549
 *launcher.exe;;Template
+*MessagePack.dll;;Non-Microsoft binary
+*MessagePack.Annotations.dll;;Non-Microsoft binary
+*Nerdbank.Streams.dll;;Non-Microsoft binary
