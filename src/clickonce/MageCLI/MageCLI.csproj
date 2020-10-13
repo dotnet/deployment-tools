@@ -16,7 +16,7 @@
     <PackAsTool>true</PackAsTool>
     <IsShipping>true</IsShipping>
     <IsShippingPackage>true</IsShippingPackage>
-    <PackageId>Microsoft.$(AssemblyName)</PackageId>
+    <PackageId>Microsoft.DotNet.Mage</PackageId>
     <ContentTargetFolders>tools/$(TargetFramework)/any</ContentTargetFolders>
   </PropertyGroup>
   <PropertyGroup Condition="!$(TargetFramework.StartsWith('net4'))">
