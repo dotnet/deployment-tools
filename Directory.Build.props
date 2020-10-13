@@ -58,7 +58,7 @@
       to find source code for debugging. It is also used to name the build output manifest for orchestrated builds.
     -->
     <GitHubRepositoryName>deployment-tools</GitHubRepositoryName>
-    <RepositoryUrl>git://github.com/dotnet/deployment-tools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/dotnet/deployment-tools</RepositoryUrl>
     <ProjectUrl>https://github.com/dotnet/deployment-tools</ProjectUrl>
     <LicenseUrl>https://github.com/dotnet/deployment-tools/blob/master/LICENSE.TXT</LicenseUrl>
     <LicenseFile>$(RepoRoot)LICENSE.TXT</LicenseFile>
