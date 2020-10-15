@@ -1,10 +1,10 @@
-# DotNet.Mage
+# dotnet-mage
 
-DotNet.Mage (currently known as Mage.NET) is open-sourced version of a familiar .NET FX tool Mage.
+dotnet-mage (currently known as Mage.NET) is open-sourced version of a familiar .NET FX tool Mage.
 
-It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20513.1
+It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20513.1`
 
-We are using 'Mage.NET' name in the document from here on out, as the current name of the tool. It will be updated to dotnet-mage before .NET 5 release. After that change, the tool would be used by running `dotnet-mage` or `dotnet mage`.
+We are using `Mage.NET` name in the document from here on out, as the current name of the tool. It will be updated to dotnet-mage before .NET 5 release. After that change, the tool would be used by running `dotnet-mage` or `dotnet mage`.
 
 Mage.NET supports all existing command-line options for the old Mage tool, with few exceptions:
 - no support for partial trust
@@ -15,12 +15,12 @@ For the full list of Mage command line options please visit https://docs.microso
 
 There is one new option, to add launcher. Here's the short documentation for this option:
 
-`
-  -AddLauncher <binary_to_launch>    -al
-      Adds Launcher to target directory and sets its binary to launch.
-      Example:
-        -AddLauncher myapp.dll -TargetDirectory bin/release
-`
+Adds Launcher to target directory and sets its binary to launch.
+
+`-AddLauncher <binary_to_launch>` or short `-al`
+
+Example:
+`-AddLauncher myapp.dll -TargetDirectory bin/release`
 
 Launcher is required for all .NET 5 (and .NET Core 3.1) apps in ClickOnce.
 
@@ -32,7 +32,7 @@ You can obtain all command-line options by running `Mage.NET` or for verbose hel
 
 * Install Mage.NET (DotNet.Mage) global tool:
 
-```dotnet tool install --global microsoft.dotnet.mage --version 5.0.0-rc.2.20513.1
+`dotnet tool install --global microsoft.dotnet.mage --version 5.0.0-rc.2.20513.1`
 
 ## Common usage scenario
 
@@ -47,12 +47,12 @@ Suppose that we have copied project output to a sub-folder `files` and our .NET 
 
 * Add Launcher
 
-```mage.net -al myapp.exe -td files
+`mage.net -al myapp.exe -td files`
 
 * Create application manifest
 
-```mage.net -new Application -t files\MyApp.manifest -fd files -v 1.0.0.1
+`mage.net -new Application -t files\MyApp.manifest -fd files -v 1.0.0.1`
 
 * Create deployment manifest
 
-```mage.net -new Deployment -Install true -pub "My Publisher" -v 1.0.0.1 -AppManifest files\MyApp.manifest -t MyApp.application
+`mage.net -new Deployment -Install true -pub "My Publisher" -v 1.0.0.1 -AppManifest files\MyApp.manifest -t MyApp.application`
