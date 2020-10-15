@@ -3,6 +3,10 @@
 This repo contains the code to build the .NET deployment tools and installers for
 all supported platforms, as well as the sources to .NET deployment tools.
 
+## Tools documentation
+
+* [DotNet.Mage](docs/dotnet.mage/readme.md) usage patterns for DotNet.Mage tool (currently called Mage.NET)
+
 ## What is .NET?
 
 Official Starting Page: https://dotnet.microsoft.com/
