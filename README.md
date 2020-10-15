@@ -5,7 +5,7 @@ all supported platforms, as well as the sources to .NET deployment tools.
 
 ## Tools documentation
 
-* [DotNet.Mage](documentation/dotnet.mage/readme.md) usage patterns for DotNet.Mage tool (currently called Mage.NET)
+* [DotNet.Mage](documentation/dotnet-mage/readme.md) usage patterns for DotNet.Mage tool (currently called Mage.NET)
 
 ## What is .NET?
 
