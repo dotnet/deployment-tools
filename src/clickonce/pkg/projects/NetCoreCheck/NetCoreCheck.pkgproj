@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Content Include="$(BaseOutputRootPath)/native/NetCoreCheck.exe" />
+    <Content Include="$(BaseOutputRootPath)/native/NetCoreCheckCA.dll" />
   </ItemGroup>
 
 </Project>

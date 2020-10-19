@@ -3,33 +3,48 @@
 // See the LICENSE file in the project root for more information.
 
 #include "TempRuntimeConfigFile.h"
-#include "Logger.h"
-#include "shlwapi.h"
 
-#define RUNTIMECONFIG_FORMAT_STR TEXT("{ \"runtimeOptions\": { \"framework\": { \"name\": \"%s\", \"version\": \"%s\" } } }")
+#define RUNTIMECONFIG_TEXT_FORMAT_STR TEXT("{ \"runtimeOptions\": { \"framework\": { \"name\": \"%s\", \"version\": \"%s\" } } }")
+#define RUNTIMECONFIG_NAME_FORMAT_STR TEXT("Test%I64u.runtimeconfig.json")
 
 // Forward declarations
 DWORD WriteFile(LPCWSTR filePath, LPCWSTR fileText);
 
 // Globals
-extern Logger g_log;
+extern Logger *g_log;
 
-DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath)
+DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath, bool useTempDirectory)
 {
-    if (!GetModuleFileName(NULL, runtimeConfigPath, MAX_PATH))
+    WCHAR fileName[MAX_PATH];
+    ::_stprintf_s(fileName, MAX_PATH, RUNTIMECONFIG_NAME_FORMAT_STR, GetTickCount64());
+
+    if (useTempDirectory)
     {
-        g_log.Log(TEXT("Couldn't get module name."));
-        return ::GetLastError();
+        DWORD len = ::GetTempPath(MAX_PATH, runtimeConfigPath);
+        if (len == 0)
+        {
+            g_log->Log(TEXT("Couldn't get temp path."));
+            return EXIT_FAILURE_TEMPRTJSONPATH;
+        }
+    }
+    else
+    {
+        if (!GetModuleFileName(NULL, runtimeConfigPath, MAX_PATH))
+        {
+            g_log->Log(TEXT("Couldn't get module name."));
+            return ::GetLastError();
+        }
+
+        PathRemoveFileSpec(runtimeConfigPath);
     }
 
-    PathRemoveFileSpec(runtimeConfigPath);
-    if (!PathAppend(runtimeConfigPath, TEXT("Test.runtimeconfig.json")))
+    if (!PathAppend(runtimeConfigPath, fileName))
     {
-        g_log.Log(TEXT("Couldn't append file."));
+        g_log->Log(TEXT("Couldn't append file."));
         return EXIT_FAILURE_TEMPRTJSONPATH;
     }
 
-    g_log.Log(TEXT("Temporary runtime config file path: '%s'."), runtimeConfigPath);
+    g_log->Log(TEXT("Temporary runtime config file path: '%s'."), runtimeConfigPath);
     return 0;
 }
 
@@ -39,19 +54,19 @@ DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkNa
     {
         if (!DeleteFile(runtimeConfigPath))
         {
-            g_log.Log(TEXT("Failed to delete existing file '%s'."), runtimeConfigPath);
+            g_log->Log(TEXT("Failed to delete existing file '%s'."), runtimeConfigPath);
             return EXIT_FAILURE_TEMPRTJSONFile;
         }
     }
 
     WCHAR fileText[MAX_PATH];
-    if (swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_FORMAT_STR, frameworkName, frameworkVersion) <= 0)
+    if (swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_TEXT_FORMAT_STR, frameworkName, frameworkVersion) <= 0)
     {
-        g_log.Log(TEXT("Failed to format file text."));
+        g_log->Log(TEXT("Failed to format file text."));
         return EXIT_FAILURE_TEMPRTJSONFile;
     }
 
-    g_log.Log(TEXT("Temp runtime config file text: '%s'."), fileText);
+    g_log->Log(TEXT("Temp runtime config file text: '%s'."), fileText);
     return WriteFile(runtimeConfigPath, fileText);
 }
 
@@ -61,7 +76,7 @@ DWORD WriteFile(LPCWSTR filePath, LPCWSTR fileText)
     DWORD ret = ::_tfopen_s(&file, filePath, L"a+");
     if (0 != ret)
     {
-        g_log.Log(TEXT("Open file failed : '%d'."), ret);
+        g_log->Log(TEXT("Open file failed : '%s'."), ret);
         return ret;
     }
 

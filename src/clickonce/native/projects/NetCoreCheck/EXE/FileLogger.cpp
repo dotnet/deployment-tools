@@ -2,17 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-#include "Logger.h"
+#include "FileLogger.h"
 
 #define DEFAULT_LOG_FILE_NAME_FORMAT L"dd_NetCoreCheck_%I64u.log"
 
-extern Logger g_log;
-
-Logger::Logger() noexcept : m_file(NULL)
-{    
+FileLogger::FileLogger() noexcept : m_file(NULL)
+{
 }
 
-void Logger::Initialize(LPCWSTR filePath)
+void FileLogger::Initialize(LPCWSTR filePath)
 {
     WCHAR logFilePath[MAX_PATH];
     if (filePath)
@@ -38,12 +36,12 @@ void Logger::Initialize(LPCWSTR filePath)
     }
 
     ::_tfopen_s(&m_file, (LPCWSTR)logFilePath, L"a+");
-    Log(L"============= NetCoreCheck Start ===============");
+    LogStart();
 }
 
-Logger::~Logger(void) noexcept
+FileLogger::~FileLogger(void) noexcept
 {
-    Log(L"=============  NetCoreCheck End  ===============");
+    LogEnd();
     if (m_file)
     {
         ::fclose(m_file);
@@ -51,7 +49,7 @@ Logger::~Logger(void) noexcept
     }
 }
 
-void Logger::Log(LPCWSTR format, ...) const noexcept
+void FileLogger::Log(LPCWSTR format, ...) const noexcept
 {
     if (!m_file)
     {

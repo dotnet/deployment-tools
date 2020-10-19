@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "NetCoreCheck.h"
+#include "..\NetCoreCheck.h"
 
-DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath, bool useTempDirectory);
-DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkName, LPCWSTR frameworkVersion);
+#include <strsafe.h>
+#include <msiquery.h>

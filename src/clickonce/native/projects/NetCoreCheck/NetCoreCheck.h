@@ -5,6 +5,11 @@
 #pragma once
 
 #include <Windows.h>
+#include <shlwapi.h>
+#include <tchar.h>
+#include <stdio.h>
+
+#include "Logger.h"
 
 // Return Codes
 #define EXIT_SUCCESS 0                                            // Required runtime is installed
@@ -16,3 +21,5 @@
 #define EXIT_FAILURE_INVALIDARGS    MAKE_NETCORECHECK_HRESULT(4)  // Invalid Arguments
 #define EXIT_FAILURE_TEMPRTJSONPATH MAKE_NETCORECHECK_HRESULT(5)  // Failed to construct temp json file path
 #define EXIT_FAILURE_TEMPRTJSONFile MAKE_NETCORECHECK_HRESULT(6)  // Failed to create temp json file
+
+int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR existingRuntimeConfigPath, bool useTempDirectory);
