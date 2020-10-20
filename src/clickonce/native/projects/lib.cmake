@@ -14,4 +14,6 @@ add_library(${DOTNET_PROJECT_NAME} SHARED ${SOURCES} ${RESOURCES})
 
 set_target_properties(${DOTNET_PROJECT_NAME} PROPERTIES MACOSX_RPATH TRUE)
 
+install_with_stripped_symbols(${DOTNET_PROJECT_NAME} TARGETS native)
+
 set_common_libs("lib")
