@@ -13,7 +13,7 @@ class MsiWrapper
 {
 public:
     void Log(LPCWSTR msg) const noexcept;
-    void LogFailure(HRESULT hr, LPCWSTR format, ...) const noexcept;
+    void LogFailure(HRESULT hrFailure, LPCWSTR format, ...) const noexcept;
     HRESULT GetProperty(LPCWSTR propertyName, LPWSTR* propertyValue);
     HRESULT SetProperty(LPCWSTR propertyName, LPCWSTR propertyValue);
 

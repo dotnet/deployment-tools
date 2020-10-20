@@ -25,8 +25,11 @@ void MsiLogger::Log(LPCWSTR format, ...) const noexcept
 
     va_list args;
     va_start(args, format);
-    StringCchVPrintfW(buffer, countof(buffer), format, args);
+    HRESULT hr = StringCchVPrintfW(buffer, countof(buffer), format, args);
     va_end(args);
 
-    m_msiWrapper->Log(buffer);
+    if (SUCCEEDED(hr) && m_msiWrapper)
+    {
+        m_msiWrapper->Log(buffer);
+    }
 }
