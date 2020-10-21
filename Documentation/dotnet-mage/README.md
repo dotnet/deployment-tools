@@ -65,4 +65,5 @@ Suppose that we have copied project output to a sub-folder `files` and our .NET 
 
 * Update deployment manifest
 
-`mage.net -update MyApp.Application -v 1.0.0.2 -AppManifest files\MyApp.manifest -t MyApp.application`
+`mage.net -update MyApp.Application -v 1.0.0.2 -AppManifest files\MyApp.manifest`
+
