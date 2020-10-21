@@ -7,14 +7,17 @@
 #include "NetCoreCheckCA.h"
 
 #define LOG_BUFFER 2048
-#define countof(ary) (sizeof(ary) / sizeof(ary[0]))
+#define FreeStr(s) if (s) { delete[] s; }
 
 class MsiWrapper
 {
 public:
     void Log(LPCWSTR msg) const noexcept;
-    void LogFailure(HRESULT hrFailure, LPCWSTR format, ...) const noexcept;
+    void LogFailure(HRESULT hr, LPCWSTR format, ...) const noexcept;
+
+    // Caller is responsible for freeing propertyValue
     HRESULT GetProperty(LPCWSTR propertyName, LPWSTR* propertyValue);
+
     HRESULT SetProperty(LPCWSTR propertyName, LPCWSTR propertyValue);
 
     MsiWrapper(MSIHANDLE msiHandle) noexcept;

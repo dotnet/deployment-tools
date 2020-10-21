@@ -33,7 +33,15 @@ HRESULT MsiWrapper::GetProperty(LPCWSTR propertyName, LPWSTR* propertyValue)
     }
 
     er = ::MsiGetPropertyW(m_msiHandle, propertyName, *propertyValue, (DWORD *)&count);
-    return er == ERROR_SUCCESS ? S_OK : HRESULT_FROM_WIN32(er);
+    if (er == ERROR_SUCCESS)
+    {
+        return S_OK;
+    }
+    else
+    {
+        FreeStr(*propertyValue);
+        return  HRESULT_FROM_WIN32(er);
+    }
 }
 
 HRESULT MsiWrapper::SetProperty(LPCWSTR propertyName, LPCWSTR propertyValue)
@@ -57,21 +65,16 @@ void MsiWrapper::Log(LPCWSTR msg) const noexcept
     }
 }
 
-void MsiWrapper::LogFailure(HRESULT hrFailure, LPCWSTR format, ...) const noexcept
+void MsiWrapper::LogFailure(HRESULT hr, LPCWSTR format, ...) const noexcept
 {
     WCHAR failureMessage[LOG_BUFFER];
 
     va_list args;
     va_start(args, format);
-    HRESULT hr = StringCchVPrintfW(failureMessage, countof(failureMessage), format, args);
+    StringCchVPrintfW(failureMessage, _countof(failureMessage), format, args);
     va_end(args);
 
-    if (SUCCEEDED(hr))
-    {
-        WCHAR buffer[LOG_BUFFER];
-        if (SUCCEEDED(StringCchPrintfW(buffer, countof(buffer), L"FAILURE: 0x%x. %s", hrFailure, failureMessage)))
-        {
-            Log(buffer);
-        }
-    }
+    WCHAR buffer[LOG_BUFFER];
+    StringCchPrintfW(buffer, _countof(buffer), L"FAILURE: 0x%x. %s", hr, failureMessage);
+    Log(buffer);
 }

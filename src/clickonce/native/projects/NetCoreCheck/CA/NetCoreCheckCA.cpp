@@ -10,7 +10,6 @@
 #define CHECKNETRUNTIME_RESULT_PROPERTY_NAME          L"CheckNETRuntime_Result"
 
 #define ExitOnFailure(x, s, ...)   if (FAILED(x)) { msiWrapper.LogFailure(x, s, __VA_ARGS__);  goto Exit; }
-#define FreeStr(s) if (s) { delete s; }
 
 // Globals
 Logger *g_log;
