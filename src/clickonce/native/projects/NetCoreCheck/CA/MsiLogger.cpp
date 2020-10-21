@@ -4,19 +4,14 @@
 
 #include "MsiLogger.h"
 
-MsiLogger::MsiLogger() noexcept : m_msiWrapper(NULL)
+MsiLogger::MsiLogger(MsiWrapper *msiWrapper) noexcept : m_msiWrapper(msiWrapper)
 {
+    LogStart();
 }
 
 MsiLogger::~MsiLogger(void) noexcept
 {
     LogEnd();
-}
-
-void MsiLogger::Initialize(MsiWrapper *msiWrapper)
-{
-    m_msiWrapper = msiWrapper;
-    LogStart();
 }
 
 void MsiLogger::Log(LPCWSTR format, ...) const noexcept

@@ -9,10 +9,9 @@
 class MsiLogger : public Logger
 {
 public:
-    void Initialize(MsiWrapper *msiWrapper);
     void Log(LPCWSTR format, ...) const noexcept;
 
-    MsiLogger(void) noexcept;
+    MsiLogger(MsiWrapper *msiWrapper) noexcept;
     ~MsiLogger(void) noexcept;
 
 private:

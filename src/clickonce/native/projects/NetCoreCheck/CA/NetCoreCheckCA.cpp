@@ -21,8 +21,7 @@ UINT __stdcall CheckNETRuntime(MSIHANDLE hInstall)
     LPWSTR frameworkVersion = NULL;
     MsiWrapper msiWrapper(hInstall);
 
-    MsiLogger logger;
-    logger.Initialize(&msiWrapper);
+    MsiLogger logger(&msiWrapper);
     g_log = &logger;
 
     // Read input properties
