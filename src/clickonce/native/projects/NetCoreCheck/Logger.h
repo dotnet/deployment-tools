@@ -4,19 +4,21 @@
 
 #pragma once
 
-#include "NetCoreCheck.h"
-#include <tchar.h>
-#include <stdio.h>
+#include <Windows.h>
 
 class Logger
 {
 public:
-    void Initialize(LPCWSTR logFilePath);
-    void Log(LPCWSTR pszFormat, ...) const noexcept;
+    virtual void Log(LPCWSTR pszFormat, ...) const noexcept = 0;
 
-    Logger(void) noexcept;
-    ~Logger(void) noexcept;
+protected:
+    void LogStart()
+    {
+        Log(L"============= NetCoreCheck Start ===============");
+    }
 
-private:
-    FILE* m_file;
+    void LogEnd()
+    {
+        Log(L"=============  NetCoreCheck End  ===============");
+    }
 };

@@ -37,6 +37,7 @@
 
     <ItemGroup Condition="'$(SignBinaries)' == 'true'">
       <ItemsToSign Include="$(ArtifactsBinDir)win-$(TargetArchitecture).$(Configuration)\**\netcorecheck.exe" />
+      <ItemsToSign Include="$(ArtifactsBinDir)win-$(TargetArchitecture).$(Configuration)\**\netcorecheckca.dll" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(SignMsiFiles)' == 'true'">
