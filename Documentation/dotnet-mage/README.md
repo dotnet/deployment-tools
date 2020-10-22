@@ -56,3 +56,14 @@ Suppose that we have copied project output to a sub-folder `files` and our .NET 
 * Create deployment manifest
 
 `mage.net -new Deployment -Install true -pub "My Publisher" -v 1.0.0.1 -AppManifest files\MyApp.manifest -t MyApp.application`
+
+### Update an existing application
+
+* Update application manifest
+
+`mage.net -update files\MyApp.manifest -v 1.0.0.2`
+
+* Update deployment manifest
+
+`mage.net -update MyApp.Application -v 1.0.0.2 -AppManifest files\MyApp.manifest`
+
