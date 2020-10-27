@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <BinplaceSymbols>true</BinplaceSymbols>
-    <AssemblyName>Mage.NET</AssemblyName>
+    <AssemblyName>dotnet-mage</AssemblyName>
     <OutputType>EXE</OutputType>
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
     <RCSuppressManifest>true</RCSuppressManifest>
