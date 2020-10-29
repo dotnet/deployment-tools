@@ -1,12 +1,12 @@
 # dotnet-mage
 
-dotnet-mage (currently known as Mage.NET) is open-sourced version of a familiar .NET FX tool Mage.
+dotnet-mage (previously also known as Mage.NET) is the open-sourced version of the familiar .NET FX tool Mage.
 
-It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20513.1`
+It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20527.1`
 
-We are using `Mage.NET` name in the document from here on out, as the current name of the tool. It will be updated to dotnet-mage before .NET 5 release. After that change, the tool would be used by running `dotnet-mage` or `dotnet mage`.
+First version of the tool (`https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20513.1`) had a different tool name 'mage.net' - if you are using that version, you would need to modify the commands listed in this document accordingly - use 'mage.net' instead of 'dotnet mage'.
 
-Mage.NET supports all existing command-line options for the old Mage tool, with few exceptions:
+dotnet-mage supports all existing command-line options of the old Mage tool, with few exceptions:
 - no support for partial trust
 - no support for sha1 hashing
 - no support for ia64 architecture
@@ -15,7 +15,7 @@ For the full list of Mage command line options please visit https://docs.microso
 
 There is one new option, to add launcher. Here's the short documentation for this option:
 
-Adds Launcher to target directory and sets its binary to launch.
+Adds Launcher to target directory and sets binary to be launched.
 
 `-AddLauncher <binary_to_launch>` or short `-al`
 
@@ -24,15 +24,15 @@ Example:
 
 Launcher is required for all .NET 5 (and .NET Core 3.1) apps in ClickOnce.
 
-You can obtain all command-line options by running `Mage.NET` or for verbose help `Mage.NET -help verbose`.
+You can obtain all command-line options by running `dotnet mage` or for verbose help `dotnet mage -help verbose`.
 
 ## Prerequisites for using this tool
 
 * [Install .NET 5 RC.2 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
 
-* Install Mage.NET (DotNet.Mage) global tool:
+* Install dotnet-mage global tool:
 
-`dotnet tool install --global microsoft.dotnet.mage --version 5.0.0-rc.2.20513.1`
+`dotnet tool install --global microsoft.dotnet.mage --version 5.0.0-rc.2.20527.1`
 
 ## Common usage scenario
 
@@ -47,23 +47,23 @@ Suppose that we have copied project output to a sub-folder `files` and our .NET 
 
 * Add Launcher
 
-`mage.net -al myapp.exe -td files`
+`dotnet mage -al myapp.exe -td files`
 
 * Create application manifest
 
-`mage.net -new Application -t files\MyApp.manifest -fd files -v 1.0.0.1`
+`dotnet mage -new Application -t files\MyApp.manifest -fd files -v 1.0.0.1`
 
 * Create deployment manifest
 
-`mage.net -new Deployment -Install true -pub "My Publisher" -v 1.0.0.1 -AppManifest files\MyApp.manifest -t MyApp.application`
+`dotnet mage -new Deployment -Install true -pub "My Publisher" -v 1.0.0.1 -AppManifest files\MyApp.manifest -t MyApp.application`
 
 ### Update an existing application
 
 * Update application manifest
 
-`mage.net -update files\MyApp.manifest -v 1.0.0.2`
+`dotnet mage -update files\MyApp.manifest -v 1.0.0.2`
 
 * Update deployment manifest
 
-`mage.net -update MyApp.Application -v 1.0.0.2 -AppManifest files\MyApp.manifest`
+`dotnet mage -update MyApp.Application -v 1.0.0.2 -AppManifest files\MyApp.manifest`
 
