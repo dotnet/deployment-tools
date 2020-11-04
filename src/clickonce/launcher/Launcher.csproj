@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <IsPackable Condition="'$(TargetArchitecture)' == 'x86'">true</IsPackable>
-    <IsShipping>true</IsShipping>
-    <IsShippingPackage>true</IsShippingPackage>
+    <IsShipping>false</IsShipping>
+    <IsShippingPackage>false</IsShippingPackage>
     <PackageId>VS.Redist.Common.NetCore.Launcher</PackageId>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <!--

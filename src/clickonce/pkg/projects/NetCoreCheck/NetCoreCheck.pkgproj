@@ -5,8 +5,7 @@
     <Description>Provides NetCoreCheck tool, used for detection of .NET Core runtime.</Description>
     <PackageTags>dotnet;deployment-tools;netcorecheck</PackageTags>
     <PackageId>VS.Redist.Common.NETCoreCheck.$(TargetArchitecture)</PackageId>
-    <IsShipping>true</IsShipping>
-    <IsShippingPackage>true</IsShippingPackage>
+    <IsShippingPackage>false</IsShippingPackage>
     <ContentTargetFolders>$(PackageTargetRid)</ContentTargetFolders>
   </PropertyGroup>
 
