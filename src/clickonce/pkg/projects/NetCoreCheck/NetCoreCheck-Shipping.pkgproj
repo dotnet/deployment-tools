@@ -8,7 +8,7 @@
   -->
 
   <PropertyGroup>
-    <PackageId>Microsoft.Net.NETCoreCheck.$(TargetArchitecture)</PackageId>
+    <PackageId>Microsoft.NET.Tools.NETCoreCheck.$(TargetArchitecture)</PackageId>
     <IsShipping>true</IsShipping>
     <IsShippingPackage>true</IsShippingPackage>
   </PropertyGroup>
