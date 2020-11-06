@@ -1,11 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Build.props, $(MSBuildThisFileDirectory)..))" />
 
   <PropertyGroup>
     <Title>NetCoreCheck</Title>
     <Description>Provides NetCoreCheck tool, used for detection of .NET Core runtime.</Description>
     <PackageTags>dotnet;deployment-tools;netcorecheck</PackageTags>
-    <PackageId>VS.Redist.Common.NETCoreCheck.$(TargetArchitecture)</PackageId>
-    <IsShippingPackage>false</IsShippingPackage>
     <ContentTargetFolders>$(PackageTargetRid)</ContentTargetFolders>
   </PropertyGroup>
 
