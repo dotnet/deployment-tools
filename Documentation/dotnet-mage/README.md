@@ -2,7 +2,7 @@
 
 dotnet-mage (previously also known as Mage.NET) is the open-sourced version of the familiar .NET FX tool Mage.
 
-It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20527.1`
+It is available at Nuget.org. Latest version `https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0`
 
 First version of the tool (`https://www.nuget.org/packages/Microsoft.DotNet.Mage/5.0.0-rc.2.20513.1`) had a different tool name 'mage.net' - if you are using that version, you would need to modify the commands listed in this document accordingly - use 'mage.net' instead of 'dotnet mage'.
 
@@ -28,11 +28,11 @@ You can obtain all command-line options by running `dotnet mage` or for verbose 
 
 ## Prerequisites for using this tool
 
-* [Install .NET 5 RC.2 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+* [Install .NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
 
 * Install dotnet-mage global tool:
 
-`dotnet tool install --global microsoft.dotnet.mage --version 5.0.0-rc.2.20527.1`
+`dotnet tool install --global microsoft.dotnet.mage --version 5.0.0`
 
 ## Common usage scenario
 
