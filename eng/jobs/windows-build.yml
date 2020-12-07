@@ -70,7 +70,7 @@ jobs:
 
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - script: >-
-          build.cmd -subset clickonce+installer -ci -test
+          build.cmd -subset clickonce+installer+dotnetreleases -ci -test
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
           /p:Sign=true /p:SignBinaries=true
@@ -79,14 +79,14 @@ jobs:
 
     - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
       - script: >-
-          build.cmd -subset clickonce+installer -ci -test
+          build.cmd -subset clickonce+installer+dotnetreleases -ci -test
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
           /p:LocalizedBuild=true
         displayName: Build
 
     - script: >-
-        build.cmd -subset clickonce+installer -ci -pack
+        build.cmd -subset clickonce+installer+dotnetreleases -ci -pack
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
       displayName: Package
