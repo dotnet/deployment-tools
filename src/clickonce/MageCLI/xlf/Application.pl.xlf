@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Nie można dodać modułu uruchamiania.</target>
+        <target state="translated">Nie można dodać programu Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Nie można zaktualizować zasobów modułu uruchamiania.</target>
+        <target state="translated">Nie można zaktualizować zasobów programu Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -666,7 +666,7 @@ Opcje:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Pomyślnie dodano moduł uruchamiania.</target>
+        <target state="translated">Pomyślnie dodano program Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Opcje:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Szablon modułu uruchamiania „{0}” nie istnieje.</target>
+        <target state="translated">Szablon programu Launcher „{0}” nie istnieje.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
@@ -766,7 +766,7 @@ Opcje:
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">Narzędzie Mage nie ma uprawnień zabezpieczeń wymaganych do uruchomienia. Upewnij się, że narzędzie Mage nie jest uruchamiane z niezaufanego źródła takiego jak udział sieciowy lub witryna internetowa.</target>
+        <target state="translated">Narzędzie Mage nie ma uprawnień zabezpieczeń wymaganych do uruchomienia. Upewnij się, że narzędzie Mage nie jest uruchamiane z niezaufanego źródła, takiego jak udział sieciowy lub witryna internetowa.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">

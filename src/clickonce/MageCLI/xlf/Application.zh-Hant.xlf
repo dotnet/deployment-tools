@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">無法新增啟動程式。</target>
+        <target state="translated">無法新增 Launcher。</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">無法更新啟動程式資源。</target>
+        <target state="translated">無法更新 Launcher 資源。</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -370,7 +370,7 @@ Options:
         -Verify MyApp.manifest
   
   -AddLauncher &lt;binary_to_launch&gt;    -al
-      新增啟動程式以將要啟動的目錄設為目標並進行設定。
+      新增 Launcher 以將要啟動的目錄設為目標並進行設定。
       範例: 
         -AddLauncher myapp.dll -TargetDirectory bin/release
 
@@ -493,7 +493,7 @@ Options:
         -SupportURL http://www.whatever.net/application/support
 
   -TargetDirectory &lt;path&gt;	  -td
-      指定要將啟動程式新增到的目錄。
+      指定要將 Launcher 新增到的目錄。
       範例:
         -TargetDirectory bin/release
 
@@ -566,7 +566,7 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">程式碼庫無效 - "{0}"</target>
+        <target state="translated">程式碼基底無效 - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
@@ -666,7 +666,7 @@ Options:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">已成功新增啟動程式。</target>
+        <target state="translated">已成功新增 Launcher。</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">啟動程式範本 "{0}" 不存在。</target>
+        <target state="translated">Launcher 範本 "{0}" 不存在。</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

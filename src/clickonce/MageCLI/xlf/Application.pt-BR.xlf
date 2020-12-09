@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Falha ao adicionar o Inicializador.</target>
+        <target state="translated">Falha ao adicionar o Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Falha ao atualizar os recursos do Inicializador.</target>
+        <target state="translated">Falha ao atualizar os recursos do Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -606,7 +606,7 @@ Opções:
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
         <source>The minimum version specified is not valid.</source>
-        <target state="translated">A versão de mínima especificada não é válida.</target>
+        <target state="translated">A versão mínima especificada não é válida.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonAddLauncherOption">
@@ -666,7 +666,7 @@ Opções:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">O inicializador foi adicionado com êxito.</target>
+        <target state="translated">O Launcher foi adicionado com êxito.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Opções:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">O modelo do inicializador "{0}" não existe.</target>
+        <target state="translated">O modelo do Launcher "{0}" não existe.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
@@ -766,7 +766,7 @@ Opções:
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">O Mage não tem as permissões de segurança necessárias para a execução.  Verifique se o mage não está sendo executado de uma fonte não confiável, como um compartilhamento de rede ou um site da Web.</target>
+        <target state="translated">O Mage não tem as permissões de segurança necessárias para a execução. Verifique se o mage não está sendo executado de uma fonte não confiável, como um compartilhamento de rede ou um site da Web.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">

@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Fehler beim Hinzufügen des Startprogramms.</target>
+        <target state="translated">Fehler beim Hinzufügen des Launchers.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Fehler beim Aktualisieren der Ressourcen für das Startprogramm.</target>
+        <target state="translated">Fehler beim Aktualisieren der Ressourcen für den Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -666,7 +666,7 @@ Optionen:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Das Startprogramm wurde erfolgreich hinzugefügt.</target>
+        <target state="translated">Der Launcher wurde erfolgreich hinzugefügt.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Optionen:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Die Startprogrammvorlage "{0}" ist nicht vorhanden.</target>
+        <target state="translated">Die Launchervorlage "{0}" ist nicht vorhanden.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Nepovedlo se přidat spouštěč.</target>
+        <target state="translated">Nepovedlo se přidat Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Nepovedlo se aktualizovat prostředky spouštěče.</target>
+        <target state="translated">Nepovedlo se aktualizovat prostředky Launcheru.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -370,7 +370,7 @@ Options:
         -Verify MojeAplikace.manifest
   
   -AddLauncher &lt;binární_soubor_ke_spuštění&gt;    -al
-      Přidá spouštěč do cílového adresáře a nastaví jeho binární soubor ke spuštění.
+      Přidá Launcher do cílového adresáře a nastaví jeho binární soubor ke spuštění.
       Příklad:
         -AddLauncher mojeaplikace.dll -TargetDirectory bin/release
 
@@ -493,7 +493,7 @@ Možnosti:
         -SupportURL http://www.whatever.net/aplikace/podpora
 
   -TargetDirectory &lt;cesta&gt;	  -td
-      Určuje adresář, do kterého se má přidat spouštěč.
+      Určuje adresář, do kterého se má přidat Launcher.
       Příklad:
         -TargetDirectory bin/release
 
@@ -566,7 +566,7 @@ Možnosti:
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Základ kódu je neplatný – {0}</target>
+        <target state="translated">Kódová báze je neplatná – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
@@ -666,7 +666,7 @@ Možnosti:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Spouštěč se úspěšně přidal.</target>
+        <target state="translated">Launcher se úspěšně přidal.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Možnosti:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Šablona spouštěče {0} neexistuje.</target>
+        <target state="translated">Šablona Launcheru {0} neexistuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

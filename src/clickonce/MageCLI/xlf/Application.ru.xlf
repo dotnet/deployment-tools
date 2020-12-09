@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Не удалось добавить средство запуска.</target>
+        <target state="translated">Не удалось добавить Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Не удалось обновить ресурсы средства запуска.</target>
+        <target state="translated">Не удалось обновить ресурсы Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -666,7 +666,7 @@ Options:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Средство запуска добавлено.</target>
+        <target state="translated">Программа Launcher добавлена.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Шаблон средства запуска "{0}" не существует.</target>
+        <target state="translated">Шаблон Launcher "{0}" не существует.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
