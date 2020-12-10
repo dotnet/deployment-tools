@@ -66,6 +66,11 @@
     <_subset>+$(_subset.Trim('+'))+</_subset>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- Temporarily disable ClickOnce native build due to compiler mismatch issue with libnethost.lib -->
+    <DisableClickOnceNativeBuild>true</DisableClickOnceNativeBuild>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- ClickOnce -->
     <SubsetName Include="ClickOnce" Description="ClickOnce tools" />
@@ -90,8 +95,8 @@
   <ItemGroup Condition="$(_subset.Contains('+clickonce+'))">
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.csproj" Pack="true" SignPhase="Binaries" />
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.vcxproj" SignPhase="Binaries" />
-    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.proj" SignPhase="Binaries" />
-    <ClickOncePkgprojProjectToBuild Include="$(ClickOnceProjectRoot)pkg\projects\**\*.pkgproj" SignPhase="MsiFiles" BuildInParallel="false" />
+    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.proj" SignPhase="Binaries" Condition="'$(DisableClickOnceNativeBuild)' != 'true'" />
+    <ClickOncePkgprojProjectToBuild Include="$(ClickOnceProjectRoot)pkg\projects\**\*.pkgproj" SignPhase="MsiFiles" BuildInParallel="false" Condition="'$(DisableClickOnceNativeBuild)' != 'true'" />
     <ProjectToBuild Include="@(ClickOnceProjectToBuild)" BuildInParallel="true" Category="clickonce" />
     <ProjectToBuild Include="@(ClickOncePkgprojProjectToBuild)" Pack="true" Category="clickonce" />
   </ItemGroup>
