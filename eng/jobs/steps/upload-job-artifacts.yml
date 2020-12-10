@@ -4,6 +4,11 @@ parameters:
 steps:
 # Upload build outputs as build artifacts only if internal and not PR, to save storage space.
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+  - powershell: |
+     $ArtifactsFolderExists = Test-Path -Path "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)"
+     Write-Output "##vso[task.setvariable variable=FileExists]$ArtifactsFolderExists"
+    displayName: Detect Artifacts subdirectory
+
   - task: CopyFiles@2
     displayName: Prepare job-specific Artifacts subdirectory
     inputs:
@@ -13,7 +18,7 @@ steps:
         NonShipping/**/*
       TargetFolder: '$(Build.StagingDirectory)/Artifacts/${{ parameters.name }}'
       CleanTargetFolder: true
-    condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
+    condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['ArtifactsFolderExists'], True))
 
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifacts
