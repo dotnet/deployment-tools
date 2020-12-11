@@ -61,7 +61,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <see langword="true"/> if the release version describes a prerelease; <see langword="false"/> otherwise.
         /// </summary>
         [JsonIgnore]
-        public bool IsPreview => !String.IsNullOrEmpty(Version.Prerelease);
+        public bool IsPreview => !string.IsNullOrEmpty(Version.Prerelease);
 
         /// <summary>
         /// <see langword="true"/> if the release includes security fixes; otherwise <see langword="false"/>.

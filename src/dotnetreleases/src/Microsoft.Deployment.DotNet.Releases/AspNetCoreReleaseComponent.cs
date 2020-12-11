@@ -2,9 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.DotNet.Releases
@@ -23,6 +21,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
+        /// The friendly display name for the component.
+        /// </summary>
+        public override string Name => ReleasesResources.AspNetCoreReleaseName;
+
+        /// <summary>
         /// The versions of Visual Studio that includes this runtime. Multiple versions may be listed, e.g.
         /// &quot;15.9.25, 16.0.16, 16.4.11, 16.6.4&quot;
         /// </summary>
@@ -35,7 +38,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             AspNetCoreModuleVersions = new ReadOnlyCollection<Version>(token["version-aspnetcoremodule"]?.ToObject<Version[]>(Utils.DefaultSerializer) ?? new Version[] { });
             VisualStudioVersion = (string)token["vs-version"];
-            Name = ReleasesResources.AspNetCoreReleaseName;
         }
     }
 }

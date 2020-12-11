@@ -16,7 +16,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         Current = 0,
         /// <summary>
-        /// The product is considered end-of-life and will no longer receive updates.
+        /// The product is considered end-of-life and will not receive any updates.
         /// </summary>
         EOL,
         /// <summary>

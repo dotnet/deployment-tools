@@ -11,8 +11,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Theory]
         [InlineData(-1, -1, -1, "*", "$$")]
         [InlineData(1, 0, 0, null, "$$")]
-        [InlineData(1, 0, 0, "00", "+12345")]
-        [InlineData(1, 0, 0, null, "12345")]
+        [InlineData(1, 0, 0, "00", "12345")]
+        [InlineData(1, 0, 0, null, "+12345")]
         public void CtorThrowsIfVersionPartsAreInvalid(int major, int minor, int patch, string prerelease, string buildMetadata)
         {
             var e = Assert.Throws<FormatException>(() =>
@@ -43,6 +43,23 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.Equal(expectedMinor, v.Minor);
             Assert.Equal(expectedPatch, v.Patch);
             Assert.Equal(expectedPrerelease, v.Prerelease);
+        }       
+
+        [Theory]
+        [InlineData(1, 2, 3, "preview.4", "1.2.3-preview.4", -1, -1)]
+        [InlineData(5, 0, 782, "preview.6.20305.6", "5.0.782-preview.6.20305.6", 700, 82)]
+        public void CtorFromVersionParts(int major, int minor, int patch, string prerelease, string expectedVersion,
+            int expectedSdkFeatureBand, int expectedSdkPatchLevel)
+        {
+            ReleaseVersion v = new ReleaseVersion(major, minor, patch, prerelease);
+
+            Assert.Equal(expectedVersion, v.ToString());
+
+            if (patch > 99)
+            {
+                Assert.Equal(expectedSdkFeatureBand, v.SdkFeatureBand);
+                Assert.Equal(expectedSdkPatchLevel, v.SdkPatchLevel);
+            }
         }
 
         [Fact]
@@ -116,8 +133,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [InlineData("1.0.0-beta5", "1.0.0-beta4", -1)]
         public void ComparePrecedenceToReturnsRelativeSortOrder(string version1, string version2, int expectedPrecedence)
         {
-            ReleaseVersion v1 = String.IsNullOrEmpty(version1) ? null : new ReleaseVersion(version1);
-            ReleaseVersion v2 = String.IsNullOrEmpty(version2) ? null : new ReleaseVersion(version2);
+            ReleaseVersion v1 = string.IsNullOrEmpty(version1) ? null : new ReleaseVersion(version1);
+            ReleaseVersion v2 = string.IsNullOrEmpty(version2) ? null : new ReleaseVersion(version2);
 
             if (expectedPrecedence == 1)
             {

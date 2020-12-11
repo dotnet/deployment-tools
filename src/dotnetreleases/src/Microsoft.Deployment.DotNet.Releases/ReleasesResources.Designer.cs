@@ -70,15 +70,6 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value cannot be null or empty. Parameter name: {0}.
-        /// </summary>
-        internal static string CommonNullOrEmpty {
-            get {
-                return ResourceManager.GetString("CommonNullOrEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not find the specified file: {0}.
         /// </summary>
         internal static string FileNotFound {
@@ -165,6 +156,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         internal static string SdkReleaseName {
             get {
                 return ResourceManager.GetString("SdkReleaseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value cannot be empty ({0})..
+        /// </summary>
+        internal static string ValueCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ValueCannotBeEmpty", resourceCulture);
             }
         }
         

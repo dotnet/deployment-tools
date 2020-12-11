@@ -121,7 +121,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <remarks>
         /// The EOL dates are often published in advance, but there can be delays to updating the support phase in the published
-        /// JSON.
+        /// data.
         /// </remarks>
         [JsonProperty(PropertyName = "support-phase")]
         public SupportPhase SupportPhase
@@ -141,31 +141,15 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         /// <summary>
         /// Gets a collection of all releases associated with this <see cref="Product"/> using a file
-        /// containing the releases.json data.
+        /// containing the releases data.
         /// </summary>
-        /// <param name="path">The path to the releases.json file.</param>
-        /// <param name="downloadLatest"></param>
-        /// <returns></returns>
+        /// <param name="path">The path of the file containing the releases data.</param>
+        /// <param name="downloadLatest">When <see langword="true"/>, the latest copy of the releases data is used
+        /// if the online version is newer than the local file copy.</param>
+        /// <returns>A collection of releases associated with this <see cref="Product"/>.</returns>
         public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(string path, bool downloadLatest)
         {
-            if (String.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException(ReleasesResources.CommonNullOrEmpty, nameof(path));
-            }
-
-            if (!File.Exists(path))
-            {
-                if (!downloadLatest)
-                {
-                    throw new FileNotFoundException(String.Format(ReleasesResources.FileNotFound, path));
-                }
-
-                await Utils.DownloadFileAsync(ReleasesJson, path);
-            }
-            else if ((downloadLatest) && (!await Utils.IsLatest(path, ReleasesJson)))
-            {
-                await Utils.DownloadFileAsync(ReleasesJson, path);
-            }
+            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesJson);
 
             using (TextReader reader = File.OpenText(path))
             {

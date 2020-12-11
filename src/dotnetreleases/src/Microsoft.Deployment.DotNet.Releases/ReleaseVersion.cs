@@ -12,12 +12,22 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// </summary>
     public class ReleaseVersion : IComparable, IComparable<ReleaseVersion>, IEquatable<ReleaseVersion>
     {
-        // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+        // See https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+
+        /// <summary>
+        /// Regular expression for capturing the pre-release part of a semantic version.
+        /// </summary>
+        private static readonly string PrereleasePattern = @"(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)";
+
+        /// <summary>
+        /// Regular expression for capturing the build-metadata part of a semantic version.
+        /// </summary>
+        private static readonly string BuildMetadataPattern = @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
 
         /// <summary>
         /// Regular expression for v2 semantic version to capture components into separate groups: major, minor, patch, prerelease and build.
         /// </summary>
-        private static readonly string Version2Pattern = @"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$";
+        private static readonly string SemanticVersion2Pattern = $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
 
         /// <summary>
         /// The build metadata of the version or <see langword="null"/>.
@@ -29,7 +39,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The major version number or -1 if undefined.
+        /// The major version number.
         /// </summary>
         public int Major
         {
@@ -38,7 +48,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         } = 0;
 
         /// <summary>
-        /// The minor version number or -1 if undefined.
+        /// The minor version number.
         /// </summary>
         public int Minor
         {
@@ -47,23 +57,13 @@ namespace Microsoft.Deployment.DotNet.Releases
         } = 0;
 
         /// <summary>
-        /// The patch number or -1 if undefined.
+        /// The patch number.
         /// </summary>
         public int Patch
         {
             get;
             private set;
         } = 0;
-
-        /// <summary>
-        /// Gets the patch level of the feature band if this version is associated with an SDK. The patch level will be between 0 and 99. 
-        /// For example, if the SDK version is 2.1.516, the patch level is 16 
-        /// </summary>
-        public int SdkPatchLevel
-        {
-            get;
-            private set;
-        }
 
         /// <summary>
         /// The prerelease label of the version or <see langword="null"/>.
@@ -86,6 +86,16 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
+        /// Gets the patch level of the feature band if this version is associated with an SDK. The patch level will be between 0 and 99. 
+        /// For example, if the SDK version is 2.1.516, the patch level is 16 
+        /// </summary>
+        public int SdkPatchLevel
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Creates a new <see cref="ReleaseVersion"/> instance using a string representation of a version. The version may
         /// be expressed as a semantic version.
         /// </summary>
@@ -93,11 +103,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <exception cref="FormatException">If the string represents an invalid version.</exception>
         public ReleaseVersion(string version)
         {
-            Match match = Regex.Match(version, Version2Pattern);
+            Match match = Regex.Match(version, SemanticVersion2Pattern);
 
             if (!match.Success)
             {
-                throw new FormatException(String.Format(ReleasesResources.InvalidVersion, version));
+                throw new FormatException(string.Format(ReleasesResources.InvalidVersion, version));
             }
 
             // Major.Minor.Patch are required, see https://semver.org/#spec-item-2
@@ -139,38 +149,49 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             if (major < 0)
             {
-                throw new FormatException(String.Format(ReleasesResources.VersionPartLessThanZero, nameof(major)));
+                throw new FormatException(string.Format(ReleasesResources.VersionPartLessThanZero, nameof(major)));
             }
 
             if (minor < 0)
             {
-                throw new FormatException(String.Format(ReleasesResources.VersionPartLessThanZero, nameof(minor)));
+                throw new FormatException(string.Format(ReleasesResources.VersionPartLessThanZero, nameof(minor)));
             }
 
             if (patch < 0)
             {
-                throw new FormatException(String.Format(ReleasesResources.VersionPartLessThanZero, nameof(patch)));
+                throw new FormatException(string.Format(ReleasesResources.VersionPartLessThanZero, nameof(patch)));
             }
 
             Major = major;
             Minor = minor;
             Patch = patch;
 
-            if (!String.IsNullOrEmpty(prerelease) &&
-                !Regex.IsMatch(prerelease, @"(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))"))
+            if (!string.IsNullOrEmpty(prerelease))
             {
-                throw new FormatException(String.Format(ReleasesResources.InvalidPrerelease, prerelease));
+                Match prereleaseMatch = Regex.Match(prerelease, $@"^{PrereleasePattern}$");
+
+                if (!prereleaseMatch.Groups["prerelease"].Success)
+                {
+                    throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
+                }
+
+                Prerelease = prereleaseMatch.Groups["prerelease"].Value;
             }
 
-            Prerelease = prerelease;
-
-            if (!String.IsNullOrEmpty(buildMetadata) &&
-                !Regex.IsMatch(buildMetadata, @"(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))"))
+            if (!string.IsNullOrEmpty(buildMetadata))
             {
-                throw new FormatException(String.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
+                Match buildMetadataMatch = Regex.Match(buildMetadata, $@"^{BuildMetadataPattern}$");
+
+                if (!buildMetadataMatch.Groups["buildmetadata"].Success)
+                {
+                    throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
+                }
+
+                BuildMetadata = buildMetadataMatch.Groups["buildmetadata"].Value;
             }
 
-            BuildMetadata = buildMetadata;
+            SdkFeatureBand = (Patch / 100) * 100;
+            SdkPatchLevel = Patch % 100;
         }
 
         /// <summary>
@@ -266,8 +287,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             ReleaseVersion other = (ReleaseVersion)obj;
 
             return Major == other.Major && Minor == other.Minor && Patch == other.Patch &&
-                String.Equals(Prerelease, other.Prerelease, StringComparison.Ordinal) &&
-                String.Equals(BuildMetadata, other.BuildMetadata, StringComparison.Ordinal);
+                string.Equals(Prerelease, other.Prerelease, StringComparison.Ordinal) &&
+                string.Equals(BuildMetadata, other.BuildMetadata, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -291,8 +312,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             return Major == obj.Major && Minor == obj.Minor && Patch == obj.Patch &&
-                String.Equals(Prerelease, obj.Prerelease, StringComparison.Ordinal) &&
-                String.Equals(BuildMetadata, obj.BuildMetadata, StringComparison.Ordinal);
+                string.Equals(Prerelease, obj.Prerelease, StringComparison.Ordinal) &&
+                string.Equals(BuildMetadata, obj.BuildMetadata, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -301,8 +322,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return Major ^ Minor ^ Patch ^ (!String.IsNullOrEmpty(Prerelease) ? Prerelease.GetHashCode() : 0) ^
-                (!String.IsNullOrEmpty(BuildMetadata) ? BuildMetadata.GetHashCode() : 0);
+            return Major ^ Minor ^ Patch ^ (!string.IsNullOrEmpty(Prerelease) ? Prerelease.GetHashCode() : 0) ^
+                (!string.IsNullOrEmpty(BuildMetadata) ? BuildMetadata.GetHashCode() : 0);
         }
 
         /// <summary>
@@ -324,8 +345,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         public override string ToString()
         {
             string v = $"{Major}.{Minor}.{Patch}";
-            v += !String.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : String.Empty;
-            v += !String.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : String.Empty;
+            v += !string.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : string.Empty;
+            v += !string.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
 
             return v;
         }
@@ -341,12 +362,12 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             if (fieldCount <= 0)
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             string value = fieldCount == 1 ? $"{Major}" : fieldCount == 2 ? $"{Major}.{Minor}" : $"{Major}.{Minor}.{Patch}";
-            value += fieldCount >= 4 && !String.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : String.Empty;
-            value += fieldCount >= 5 && !String.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : String.Empty;
+            value += fieldCount >= 4 && !string.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : string.Empty;
+            value += fieldCount >= 5 && !string.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
 
             return value;
         }
@@ -482,12 +503,12 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             // https://semver.org/#spec-item-11
             // A non-prerelease version has a higher precendence than pre-release, e.g. 1.0.0 and 1.0.0-preview2
-            if (String.IsNullOrEmpty(identifierA))
+            if (string.IsNullOrEmpty(identifierA))
             {
-                return String.IsNullOrEmpty(identifierB) ? 0 : 1;
+                return string.IsNullOrEmpty(identifierB) ? 0 : 1;
             }
 
-            if (String.IsNullOrEmpty(identifierB))
+            if (string.IsNullOrEmpty(identifierB))
             {
                 return -1;
             }
@@ -530,7 +551,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                         return 1;
                     }
 
-                    compareResult = String.CompareOrdinal(dotPartsA[i], dotPartsB[i]);
+                    compareResult = string.CompareOrdinal(dotPartsA[i], dotPartsB[i]);
 
                     if (compareResult != 0)
                     {
@@ -546,7 +567,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         internal static int CompareNumericIdentifier(string a, string b)
         {
-            if (String.CompareOrdinal(a, b) == 0)
+            if (string.CompareOrdinal(a, b) == 0)
             {
                 return 0;
             }

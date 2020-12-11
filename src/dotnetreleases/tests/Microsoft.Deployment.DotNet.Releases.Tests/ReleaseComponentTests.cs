@@ -19,8 +19,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [InlineData("1.0", "1.0.14")]
         public void ItDoesNotContainMarketingFiles(string productVersion, string releaseVersion)
         {
-            var productReleaseVersion = new ReleaseVersion(releaseVersion);
-            var release = ProductReleases[productVersion].Where(r => r.Version == productReleaseVersion).FirstOrDefault();
+            var release = GetProductRelease(productVersion, releaseVersion);
 
             Assert.All(release.Files, f => Assert.True(!f.Name.Contains("-gs") && !f.Name.Contains("-nj")));
         }

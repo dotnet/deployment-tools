@@ -120,9 +120,6 @@
   <data name="AspNetCoreReleaseName" xml:space="preserve">
     <value>ASP.NET Core Runtime</value>
   </data>
-  <data name="CommonNullOrEmpty" xml:space="preserve">
-    <value>Value cannot be null or empty. Parameter name: {0}</value>
-  </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>Could not find the specified file: {0}</value>
   </data>
@@ -152,6 +149,9 @@
   </data>
   <data name="SdkReleaseName" xml:space="preserve">
     <value>SDK</value>
+  </data>
+  <data name="ValueCannotBeEmpty" xml:space="preserve">
+    <value>Value cannot be empty ({0}).</value>
   </data>
   <data name="VersionPartLessThanZero" xml:space="preserve">
     <value>The '{0}' value cannot be less than 0.</value>

@@ -10,11 +10,17 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
-    class Utils
+    /// <summary>
+    /// Utitlity methods
+    /// </summary>
+    internal class Utils
     {
         private static JsonSerializer _defaultSerializer;
         private static JsonSerializerSettings _defaultSerializerSettings;
 
+        /// <summary>
+        /// Gets the default <see cref="JsonSerializerSettings"/> to use.
+        /// </summary>
         internal static JsonSerializerSettings DefaultSerializerSettings
         {
             get
@@ -34,6 +40,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
         }
 
+        /// <summary>
+        /// Gets the default <see cref="JsonSerializer"/> to use.
+        /// </summary>
         internal static JsonSerializer DefaultSerializer
         {
             get
@@ -47,7 +56,13 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
         }
 
-        internal static async Task<bool> IsLatest(string fileName, Uri address)
+        /// <summary>
+        /// Determines if a local file is the latest version compared to an online copy.
+        /// </summary>
+        /// <param name="fileName">The path of the local file.</param>
+        /// <param name="address">The address pointing of the file.</param>
+        /// <returns><see langword="true"/> if the local file is the latest; <see langword="false"/> otherwise.</returns>
+        internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
             using (var httpClient = new HttpClient())
             {
@@ -63,6 +78,12 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
         }
 
+        /// <summary>
+        /// Downloads a file from the specified address.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="fileName"></param>
+        /// <returns>The task object representing the asynchronous operation.</returns>
         internal static async Task DownloadFileAsync(Uri address, string fileName)
         {
             using (var httpClient = new HttpClient())
@@ -92,9 +113,14 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A string containing the file hash.</returns>
         internal static string GetFileHash(string fileName, HashAlgorithm hashAlgorithm)
         {
-            if (String.IsNullOrEmpty(fileName))
+            if (fileName is null)
             {
-                throw new ArgumentException(ReleasesResources.CommonNullOrEmpty, nameof(fileName));
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            if (fileName == string.Empty)
+            {
+                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(fileName)));
             }
 
             if (hashAlgorithm == null)
@@ -104,7 +130,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             if (!File.Exists(fileName))
             {
-                throw new FileNotFoundException(String.Format(ReleasesResources.FileNotFound, fileName));
+                throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, fileName));
             }
 
             using (FileStream stream = File.OpenRead(fileName))
@@ -112,6 +138,47 @@ namespace Microsoft.Deployment.DotNet.Releases
                 byte[] checksum = hashAlgorithm.ComputeHash(stream);
 
                 return BitConverter.ToString(checksum).Replace("-", "").ToLowerInvariant();
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a specified file exists, and if not, optionally downloads a copy from
+        /// the specified address.
+        /// </summary>
+        /// <param name="path">The path of the local file to check.</param>
+        /// <param name="downloadLatest">When <see langword="true"/>, the latest copy of the file is downloaded if a newer version
+        /// exists online.</param>
+        /// <param name="address">The address of the file to download.</param>
+        /// <returns>The task object representing the asynchronous operation.</returns>
+        internal static async Task GetLatestFileAsync(string path, bool downloadLatest, Uri address)
+        {
+            if (path is null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            if (address is null)
+            {
+                throw new ArgumentNullException(nameof(address));
+            }
+
+            if (path == string.Empty)
+            {
+                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(path)));
+            }
+
+            if (!File.Exists(path))
+            {
+                if (!downloadLatest)
+                {
+                    throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, path));
+                }
+                
+                await Utils.DownloadFileAsync(address, path);
+            }
+            else if ((downloadLatest) && (!await Utils.IsLatestFileAsync(path, address)))
+            {
+                await Utils.DownloadFileAsync(address, path);
             }
         }
     }

@@ -59,9 +59,14 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A collection of products described in the releases index file.</returns>
         public static async Task<ProductCollection> GetAsync(string releasesIndexUri)
         {
-            if (String.IsNullOrEmpty(releasesIndexUri))
+            if (releasesIndexUri is null)
             {
-                throw new ArgumentException(ReleasesResources.CommonNullOrEmpty, nameof(releasesIndexUri));
+                throw new ArgumentNullException(nameof(releasesIndexUri));
+            }
+
+            if (releasesIndexUri == string.Empty)
+            {
+                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(releasesIndexUri)));
             }
 
             return await GetAsync(new Uri(releasesIndexUri));
@@ -70,17 +75,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// Creates a new collection of all released products using the provided URL for the releases index file.
         /// </summary>
-        /// <param name="releasesIndexUri">A URL pointing to the releases index file.</param>
+        /// <param name="releasesIndexUrl">A URL pointing to the releases index file.</param>
         /// <returns>A collection of products described in releases index file.</returns>
-        public static async Task<ProductCollection> GetAsync(Uri releasesIndexUri)
+        public static async Task<ProductCollection> GetAsync(Uri releasesIndexUrl)
         {
-            if (releasesIndexUri == null)
+            if (releasesIndexUrl == null)
             {
-                throw new ArgumentNullException(nameof(releasesIndexUri));
+                throw new ArgumentNullException(nameof(releasesIndexUrl));
             }
 
             using (HttpClient client = new HttpClient())
-            using (var stream = new MemoryStream(await client.GetByteArrayAsync(ReleasesIndexDefaultUrl)))
+            using (var stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl)))
             using (TextReader reader = new StreamReader(stream))
             {
                 return await GetAsync(reader);
@@ -96,30 +101,13 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="downloadLatest">When <see langword="true"/>, if the local copy of the index is
         /// outdated, or does not exist, a new copy is downloaded, replacing the local copy before processing the file.
         /// Otherwise, the local copy is used.</param>
-        /// <returns>A collection of all products described in the index.</returns>
+        /// <returns>A collection of all products described by the index.</returns>
         /// <exception cref="FileNotFoundException">If <paramref name="downloadLatest"/> is <see langword="false"/> and 
         /// <paramref name="path"/> does not exist.
         /// </exception>
         public static async Task<ProductCollection> GetFromFileAsync(string path, bool downloadLatest)
         {
-            if (String.IsNullOrEmpty(path))
-            {
-                throw new ArgumentException(ReleasesResources.CommonNullOrEmpty, nameof(path));
-            }
-
-            if (!File.Exists(path))
-            {
-                if (!downloadLatest)
-                {
-                    throw new FileNotFoundException(String.Format(ReleasesResources.FileNotFound, path));
-                }
-
-                await Utils.DownloadFileAsync(ReleasesIndexDefaultUrl, path);
-            }
-            else if ((downloadLatest) && (!await Utils.IsLatest(path, ReleasesIndexDefaultUrl)))
-            {
-                await Utils.DownloadFileAsync(ReleasesIndexDefaultUrl, path);
-            }
+            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesIndexDefaultUrl);
 
             using (TextReader reader = File.OpenText(path))
             {

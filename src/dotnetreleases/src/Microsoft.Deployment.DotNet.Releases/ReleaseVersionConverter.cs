@@ -9,7 +9,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// <summary>
     /// A <see cref="JsonConverter"/> for a <see cref="ReleaseVersion"/> object.
     /// </summary>
-    class ReleaseVersionConverter : JsonConverter<ReleaseVersion>
+    internal class ReleaseVersionConverter : JsonConverter<ReleaseVersion>
     {
         /// <summary>
         /// Converts the specified <see cref="ReleaseVersion"/> to a string 
@@ -35,7 +35,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             string s = (string)reader.Value;
 
-            return String.IsNullOrEmpty(s) ? null : new ReleaseVersion(s);
+            return string.IsNullOrEmpty(s) ? null : new ReleaseVersion(s);
         }
     }
 }

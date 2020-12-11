@@ -26,7 +26,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 var tokenValue = reader.Value.ToString();
 
-                if (!String.IsNullOrEmpty(tokenValue))
+                if (!string.IsNullOrEmpty(tokenValue))
                 {
                     return Enum.TryParse(tokenValue, ignoreCase: true, out SupportPhase result) ? result : SupportPhase.Unknown;
                 }

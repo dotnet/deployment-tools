@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
-    static class JsonExtensions
+    internal static class JsonExtensions
     {
         internal static bool IsNullOrEmpty(this JToken token)
         {

@@ -81,19 +81,24 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// expected hash.</exception>
         public async Task DownloadAsync(string destinationPath)
         {
-            if (String.IsNullOrEmpty(destinationPath))
+            if (destinationPath is null)
             {
-                throw new ArgumentException(ReleasesResources.CommonNullOrEmpty, nameof(destinationPath));
+                throw new ArgumentNullException(nameof(destinationPath));
+            }
+
+            if (destinationPath == string.Empty)
+            {
+                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath)));
             }
 
             await Utils.DownloadFileAsync(Address, destinationPath);
 
             var actualHash = Utils.GetFileHash(destinationPath, HashAlgorithm);
 
-            if (!String.Equals(Hash, actualHash, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(Hash, actualHash, StringComparison.OrdinalIgnoreCase))
             {
                 File.Delete(destinationPath);
-                throw new InvalidDataException(String.Format(ReleasesResources.HashMismatch, Hash, actualHash, destinationPath));
+                throw new InvalidDataException(string.Format(ReleasesResources.HashMismatch, Hash, actualHash, destinationPath));
             }
         }
 

@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit;
@@ -62,6 +63,28 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         protected Product CreateProduct(string json)
         {
             return JsonConvert.DeserializeObject<Product>(json, Utils.DefaultSerializerSettings);
+        }
+
+        /// <summary>
+        /// Gets a specific <see cref="ProductRelease"/>.
+        /// </summary>
+        /// <param name="productVersion">The version of the product, e.g. "2.1" or "</param>
+        /// <param name="releaseVersion">The version of the release, e.g. "3.1.7".</param>
+        /// <returns>The <see cref="ProductRelease"/> or <see langword="null"/> if the release does not exist.</returns>
+        protected ProductRelease GetProductRelease(string productVersion, string releaseVersion)
+        {
+            return GetProductRelease(productVersion, new ReleaseVersion(releaseVersion));
+        }
+
+        /// <summary>
+        /// Gets a specific <see cref="ProductRelease"/>.
+        /// </summary>
+        /// <param name="productVersion">The version of the product, e.g. "2.1" or "</param>
+        /// <param name="releaseVersion">The version of the release.</param>
+        /// <returns>The <see cref="ProductRelease"/> or <see langword="null"/> if the release does not exist.</returns>
+        protected ProductRelease GetProductRelease(string productVersion, ReleaseVersion releaseVersion)
+        {
+            return ProductReleases[productVersion].Where(r => r.Version == releaseVersion).FirstOrDefault();
         }
     }
 }

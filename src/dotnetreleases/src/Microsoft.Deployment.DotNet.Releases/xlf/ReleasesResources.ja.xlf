@@ -7,11 +7,6 @@
         <target state="new">ASP.NET Core Runtime</target>
         <note />
       </trans-unit>
-      <trans-unit id="CommonNullOrEmpty">
-        <source>Value cannot be null or empty. Parameter name: {0}</source>
-        <target state="new">Value cannot be null or empty. Parameter name: {0}</target>
-        <note />
-      </trans-unit>
       <trans-unit id="FileNotFound">
         <source>Could not find the specified file: {0}</source>
         <target state="new">Could not find the specified file: {0}</target>
@@ -60,6 +55,11 @@
       <trans-unit id="SdkReleaseName">
         <source>SDK</source>
         <target state="new">SDK</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="ValueCannotBeEmpty">
+        <source>Value cannot be empty ({0}).</source>
+        <target state="new">Value cannot be empty ({0}).</target>
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">

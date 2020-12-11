@@ -32,12 +32,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The friendly display name of the release component.
+        /// The friendly display name for the component.
         /// </summary>
-        public string Name
+        public abstract string Name
         {
             get;
-            protected set;
         }
 
         /// <summary>

@@ -29,6 +29,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
+        /// The friendly display name for the component.
+        /// </summary>
+        public override string Name => ReleasesResources.SdkReleaseName;
+
+        /// <summary>
         /// The version of the runtime included with the SDK.
         /// </summary>
         public ReleaseVersion RuntimeVersion
@@ -82,7 +87,6 @@ namespace Microsoft.Deployment.DotNet.Releases
             CSharpVersion = (string)token["csharp-version"];
             FSharpVersion = (string)token["fsharp-version"];
             VisualBasicVersion = (string)token["vb-version"];
-            Name = ReleasesResources.SdkReleaseName;
             RuntimeVersion = token["runtime-version"]?.ToObject<ReleaseVersion>(Utils.DefaultSerializer);
             VisualStudioMacSupport = (string)token["vs-mac-support"];
             VisualStudioMacVersion = (string)token["vs-mac-version"];
