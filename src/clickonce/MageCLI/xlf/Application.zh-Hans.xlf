@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">未能添加启动器。</target>
+        <target state="translated">未能添加 Launcher。</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">未能更新启动程序资源。</target>
+        <target state="translated">未能更新 Launcher 资源。</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -392,7 +392,7 @@ Options:
 
   -AppCodeBase &lt;path&gt;     -appc
       指定要放在所生成或更新的部署清单中
-      的应用清单的基本代码。
+      的应用清单的代码库。
       示例:
          -AppCodeBase 1.0.0.0/myapp.manifest
       
@@ -493,7 +493,7 @@ Options:
         -SupportURL http://www.whatever.net/application/support
 
   -TargetDirectory &lt;path&gt;	  -td
-      指定要添加启动器的目录。
+      指定要添加 Launcher 的目录。
       示例:
         -TargetDirectory bin/release
 
@@ -566,7 +566,7 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">基本代码无效 -“{0}”</target>
+        <target state="translated">代码库无效 -“{0}”</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
@@ -666,7 +666,7 @@ Options:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">已成功添加启动程序。</target>
+        <target state="translated">已成功添加 Launcher。</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">启动器模板“{0}”不存在。</target>
+        <target state="translated">Launcher 模板“{0}”不存在。</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

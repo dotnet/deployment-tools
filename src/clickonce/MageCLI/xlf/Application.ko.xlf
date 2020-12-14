@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">시작 관리자를 추가하지 못했습니다.</target>
+        <target state="translated">Launcher를 추가하지 못했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">시작 관리자 리소스를 업데이트하지 못했습니다.</target>
+        <target state="translated">Launcher 리소스를 업데이트하지 못했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -666,7 +666,7 @@ Options:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">시작 관리자를 추가했습니다.</target>
+        <target state="translated">Launcher를 추가했습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">시작 관리자 템플릿 "{0}"이(가) 없습니다.</target>
+        <target state="translated">Launcher 템플릿 "{0}"이(가) 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

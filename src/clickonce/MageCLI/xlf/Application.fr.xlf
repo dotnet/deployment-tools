@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Échec de l'ajout du lanceur.</target>
+        <target state="translated">L'ajout de Launcher a échoué.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Échec de la mise à jour des ressources du lanceur.</target>
+        <target state="translated">La mise à jour des ressources Launcher a échoué.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -566,7 +566,7 @@ Options :
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Le code base n'est pas valide - "{0}"</target>
+        <target state="translated">Le codebase n'est pas valide - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
@@ -666,7 +666,7 @@ Options :
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Lanceur correctement ajouté.</target>
+        <target state="translated">Launcher correctement ajouté.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options :
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Le modèle de lanceur "{0}" n'existe pas.</target>
+        <target state="translated">Le modèle Launcher "{0}" n'existe pas.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

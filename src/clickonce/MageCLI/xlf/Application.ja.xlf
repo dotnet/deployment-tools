@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">起動ツールの追加に失敗しました。</target>
+        <target state="translated">Launcher の追加に失敗しました。</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">起動ツール リソースの更新に失敗しました。</target>
+        <target state="translated">Launcher リソースの更新に失敗しました。</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -666,7 +666,7 @@ Options:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">起動ツールが正常に追加されました。</target>
+        <target state="translated">Launcher が正常に追加されました。</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Options:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">起動ツール テンプレート "{0}" が存在しません。</target>
+        <target state="translated">Launcher テンプレート "{0}" が存在しません。</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">

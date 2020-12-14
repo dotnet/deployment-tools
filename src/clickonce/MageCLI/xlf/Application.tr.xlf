@@ -64,12 +64,12 @@
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Başlatıcı eklenemedi.</target>
+        <target state="translated">Launcher eklenemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Başlatıcı kaynakları güncelleştirilemedi.</target>
+        <target state="translated">Launcher kaynakları güncelleştirilemedi.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
@@ -493,7 +493,7 @@ Seçenekler:
         -SupportURL http://www.whatever.net/application/support
 
   -TargetDirectory &lt;yol&gt;	  -td
-      Başlatıcının ekleneceği dizini belirtir.
+      Launcher'ın ekleneceği dizini belirtir.
       Örnek:
         -TargetDirectory bin/release
 
@@ -566,7 +566,7 @@ Seçenekler:
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Kod tabanı geçersiz: "{0}"</target>
+        <target state="translated">Kod temeli geçersiz: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
@@ -666,7 +666,7 @@ Seçenekler:
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Başlatıcı başarıyla eklendi.</target>
+        <target state="translated">Launcher başarıyla eklendi.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
@@ -701,7 +701,7 @@ Seçenekler:
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">"{0}" başlatıcı şablonu yok.</target>
+        <target state="translated">"{0}" Launcher şablonu yok.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
@@ -766,7 +766,7 @@ Seçenekler:
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">Mage'i çalıştırmak için gerekli güvenlik izinleri yok. Mage'in ağ paylaşımı veya web sitesi gibi güvenilir olmayan bir kaynaktan çalıştırılmadığından emin olun.</target>
+        <target state="translated">Mage aracını çalıştırmak için gerekli güvenlik izinleri yok. Mage aracının ağ paylaşımı veya web sitesi gibi güvenilir olmayan bir kaynaktan çalıştırılmadığından emin olun.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">
