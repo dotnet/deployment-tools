@@ -11,33 +11,16 @@ using Newtonsoft.Json;
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// Utitlity methods
+    /// Utitlity and help methods.
     /// </summary>
     internal class Utils
     {
-        private static JsonSerializer _defaultSerializer;
-        private static JsonSerializerSettings _defaultSerializerSettings;
-
         /// <summary>
         /// Gets the default <see cref="JsonSerializerSettings"/> to use.
         /// </summary>
         internal static JsonSerializerSettings DefaultSerializerSettings
         {
-            get
-            {
-                if (_defaultSerializerSettings == null)
-                {
-                    _defaultSerializerSettings = new JsonSerializerSettings
-                    {
-                        DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                        NullValueHandling = NullValueHandling.Ignore
-                    };
-
-                    _defaultSerializerSettings.Converters.Add(new ReleaseVersionConverter());
-                }
-
-                return _defaultSerializerSettings;
-            }
+            get;
         }
 
         /// <summary>
@@ -45,15 +28,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         internal static JsonSerializer DefaultSerializer
         {
-            get
-            {
-                if (_defaultSerializer == null)
-                {
-                    _defaultSerializer = JsonSerializer.CreateDefault(DefaultSerializerSettings);
-                }
-
-                return _defaultSerializer;
-            }
+            get;
         }
 
         /// <summary>
@@ -180,6 +155,19 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 await Utils.DownloadFileAsync(address, path);
             }
+        }
+
+        static Utils()
+        {
+            DefaultSerializerSettings = new JsonSerializerSettings
+            {
+                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            DefaultSerializerSettings.Converters.Add(new ReleaseVersionConverter());
+
+            DefaultSerializer = JsonSerializer.CreateDefault(DefaultSerializerSettings);
         }
     }
 }

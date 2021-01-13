@@ -109,7 +109,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the specified object is equal to the current object; <see langword="false"/> otherwise.</returns>
         public override bool Equals(object obj)
         {
-            return Equals(obj as ReleaseFile);
+            return Equals((ReleaseFile)obj);
         }
 
         /// <summary>

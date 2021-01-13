@@ -25,7 +25,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The ASP.NET Core runtime included in this release, or <see langword="null"/> if there is n"/>
+        /// The ASP.NET Core runtime included in this release, or <see langword="null"/> if the component is absent."/>
         /// </summary>
         public AspNetCoreReleaseComponent AspNetCoreRuntime
         {
@@ -121,7 +121,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The Windows Desktop runtime associated with this release.
+        /// The Windows Desktop runtime associated with this release or <see langword="null"/> if the component is absent.
         /// </summary>
         public WindowsDesktopReleaseComponent WindowsDesktopRuntime
         {

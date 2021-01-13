@@ -13,7 +13,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     public class SdkReleaseComponent : ReleaseComponent
     {
         /// <summary>
-        /// The version of C# supported by this SDK.
+        /// The version of C# supported by this SDK or <see langword="null"/>.
         /// </summary>
         public string CSharpVersion
         {
@@ -21,7 +21,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The F# version supported by this SDK.
+        /// The F# version supported by this SDK or <see langword="null"/>.
         /// </summary>
         public string FSharpVersion
         {
@@ -42,7 +42,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The versions of Visual Studio for Mac that supports this SDK. 
+        /// The versions of Visual Studio for Mac that supports this SDK or <see langword="null"/>. 
         /// </summary>
         public string VisualStudioMacSupport
         {
@@ -50,7 +50,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The versions of Visual Studio for Mac that includes this SDK. 
+        /// The versions of Visual Studio for Mac that includes this SDK or <see langword="null"/>. 
         /// </summary>
         public string VisualStudioMacVersion
         {
@@ -58,7 +58,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The versions of Visual Studio that support this SDK.
+        /// The versions of Visual Studio that support this SDK or <see langword="null"/>.
         /// </summary>
         public string VisualStudioSupport
         {
@@ -75,7 +75,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The Visual Basic version supported by this SDK.
+        /// The Visual Basic version supported by this SDK or <see langword="null"/>.
         /// </summary>
         public string VisualBasicVersion
         {
@@ -85,7 +85,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         internal SdkReleaseComponent(JToken token, ProductRelease release) : base(token, release)
         {
             CSharpVersion = (string)token["csharp-version"];
-            FSharpVersion = (string)token["fsharp-version"];
+            FSharpVersion = (string)token["fsharp-version"]; 
             VisualBasicVersion = (string)token["vb-version"];
             RuntimeVersion = token["runtime-version"]?.ToObject<ReleaseVersion>(Utils.DefaultSerializer);
             VisualStudioMacSupport = (string)token["vs-mac-support"];
