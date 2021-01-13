@@ -7,7 +7,7 @@
   <PropertyGroup>
     <InstallerProjectRoot>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'installer'))</InstallerProjectRoot>
     <ClickOnceProjectRoot>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'clickonce'))</ClickOnceProjectRoot>
-    <DotNetReleasesProjectRoot>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'DotNetReleases'))</DotNetReleasesProjectRoot>
+    <DotNetReleasesProjectRoot>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'src', 'Microsoft.Deployment.DotNet.Releases'))</DotNetReleasesProjectRoot>
     <RepoToolsLocalDir>$([MSBuild]::NormalizeDirectory('$(RepoRoot)', 'tools-local'))</RepoToolsLocalDir>
     <RepoTasksDir>$([MSBuild]::NormalizeDirectory('$(RepoToolsLocalDir)', 'tasks'))</RepoTasksDir>
   </PropertyGroup>
