@@ -42,7 +42,6 @@
     <TargetOS Condition="'$(TargetOS)' == 'Linux'">Unix</TargetOS>
   </PropertyGroup>
 
-
   <PropertyGroup>
     <DebugType Condition="'$(DebugType)' == ''">Portable</DebugType>
   </PropertyGroup>
@@ -73,9 +72,6 @@
   <!-- Portable -->
   <PropertyGroup Condition="'$(PortableBuild)' == 'true'">
     <OutputRid Condition="'$(TargetOS)' == 'Windows_NT'">win-$(TargetArchitecture)</OutputRid>
-    <OutputRid Condition="'$(TargetOS)' == 'OSX'">osx-$(TargetArchitecture)</OutputRid>
-    <OutputRid Condition="'$(TargetOS)' == 'Linux' or '$(TargetOS)' == 'Unix'">linux-$(TargetArchitecture)</OutputRid>
-    <OutputRid Condition="'$(TargetOS)' == 'FreeBSD' or $([MSBuild]::IsOSPlatform('FREEBSD'))">freebsd-$(TargetArchitecture)</OutputRid>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -109,7 +105,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetsWindows>false</TargetsWindows>
+    <TargetsWindows>true</TargetsWindows>
     <TargetsOSX>false</TargetsOSX>
     <TargetsLinux>false</TargetsLinux>
     <TargetsUnix>false</TargetsUnix>
@@ -123,113 +119,10 @@
     <TargetsOracle>false</TargetsOracle>
     <TargetsSles>false</TargetsSles>
   </PropertyGroup>
-  <Choose>
-    <When Condition="$(OutputRid.StartsWith('win'))">
-      <PropertyGroup>
-        <TargetsWindows>true</TargetsWindows>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('osx'))">
-      <PropertyGroup>
-        <TargetsOSX>true</TargetsOSX>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('debian'))">
-      <PropertyGroup>
-        <TargetsDebian>true</TargetsDebian>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('ubuntu'))">
-      <PropertyGroup>
-        <TargetsUbuntu>true</TargetsUbuntu>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('linuxmint'))">
-      <PropertyGroup>
-        <TargetsLinuxMint>true</TargetsLinuxMint>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('rhel'))">
-      <PropertyGroup>
-        <TargetsRhel>true</TargetsRhel>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('centos'))">
-      <PropertyGroup>
-        <TargetsCentos>true</TargetsCentos>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('opensuse'))">
-      <PropertyGroup>
-        <TargetsOpensuse>true</TargetsOpensuse>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('fedora'))">
-      <PropertyGroup>
-        <TargetsFedora>true</TargetsFedora>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('oracle'))">
-      <PropertyGroup>
-        <TargetsOracle>true</TargetsOracle>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('sles'))">
-      <PropertyGroup>
-        <TargetsSles>true</TargetsSles>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <When Condition="$(OutputRid.StartsWith('freebsd'))">
-      <PropertyGroup>
-        <TargetsFreeBSD>true</TargetsFreeBSD>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <TargetsLinux>true</TargetsLinux>
-        <TargetsUnix>true</TargetsUnix>
-      </PropertyGroup>
-      <PropertyGroup Condition="'$(PortableBuild)' == 'true'">
-        <HostMachineRidTargetsDebianPackages Condition="
-          $(HostMachineRid.StartsWith('debian')) or
-          $(HostMachineRid.StartsWith('ubuntu')) or
-          $(HostMachineRid.StartsWith('linuxmint'))">true</HostMachineRidTargetsDebianPackages>
-        <!-- If the build machine isn't known to be Debian-based, try to build RPM packages. -->
-        <HostMachineRidTargetsRpmPackages Condition="'$(HostMachineRidTargetsDebianPackages)' != 'true'">true</HostMachineRidTargetsRpmPackages>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-
-  <PropertyGroup>
-    <CompressedFileExtension Condition="'$(TargetOS)' == 'Windows_NT'">.zip</CompressedFileExtension>
-    <CompressedFileExtension Condition="'$(TargetOS)' != 'Windows_NT'">.tar.gz</CompressedFileExtension>
-  </PropertyGroup>
 
   <!-- Use actual publishable (non-dummy) package name produced by the build system for this RID -->
   <PropertyGroup Condition="'$(OutputRid)' != ''">
     <PackageTargetRid>$(OutputRid)</PackageTargetRid>
-    <PackageTargetRid Condition="'$(OutputRid)' == 'osx.10.11-x64'">osx.10.10-x64</PackageTargetRid>
-    <PackageTargetRid Condition="$(OutputRid.StartsWith('rhel.7.')) and $(OutputRid.EndsWith('-x64'))">rhel.7-x64</PackageTargetRid>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(UsingNETSdkCompiler)' != 'true'">
@@ -252,16 +145,6 @@
          want to ensure we use the correct packages.
     -->
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <LibPrefix Condition="'$(TargetOS)' != 'Windows_NT'">lib</LibPrefix>
-    <LibSuffix>.so</LibSuffix>
-    <LibSuffix Condition="'$(TargetOS)' == 'Windows_NT'">.dll</LibSuffix>
-    <LibSuffix Condition="'$(TargetOS)' == 'OSX'">.dylib</LibSuffix>
-    <StaticLibPrefix>lib</StaticLibPrefix>
-    <StaticLibSuffix>.a</StaticLibSuffix>
-    <StaticLibSuffix Condition="'$(TargetOS)' == 'Windows_NT'">.lib</StaticLibSuffix>
   </PropertyGroup>
 
   <PropertyGroup>
