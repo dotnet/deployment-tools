@@ -639,6 +639,11 @@ Options:
         <target state="translated">-RequiredUpdate 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidSigningPlatform">
+        <source>Signing is only supported on Windows.</source>
+        <target state="new">Signing is only supported on Windows.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
         <target state="translated">지정한 타임스탬프 URI가 잘못되었습니다.</target>

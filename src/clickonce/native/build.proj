@@ -40,7 +40,7 @@
       <BuildArgs>$(Configuration) $(TargetArchitecture) nativever $(NativeVersion) netcorepkgver $(BundledNETCoreAppPackageVersion) commit $(LatestCommit) rid $(OutputRid)</BuildArgs>
       <BuildArgs Condition="'$(PortableBuild)' == 'true'">$(BuildArgs) portable</BuildArgs>
       <BuildArgs Condition="'$(IncrementalNativeBuild)' == 'true'">$(BuildArgs) incremental-native-build</BuildArgs>
-      <BuildArgs>$(BuildArgs) rootdir $(RepoRoot)</BuildArgs>
+      <BuildArgs>$(BuildArgs) dotnetInstallDir "$(DOTNET_INSTALL_DIR)" rootdir $(RepoRoot)</BuildArgs>
     </PropertyGroup>
 
     <!--

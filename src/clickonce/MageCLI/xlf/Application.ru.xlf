@@ -639,6 +639,11 @@ Options:
         <target state="translated">Параметр -RequiredUpdate должен принимать значения "true", "false", "t" или "f" - "{0}"</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidSigningPlatform">
+        <source>Signing is only supported on Windows.</source>
+        <target state="new">Signing is only supported on Windows.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
         <target state="translated">Указана недопустимая отметка времени URI.</target>
