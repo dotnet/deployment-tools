@@ -639,6 +639,11 @@ Options :
         <target state="translated">L'option -RequiredUpdate doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidSigningPlatform">
+        <source>Signing is only supported on Windows.</source>
+        <target state="new">Signing is only supported on Windows.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
         <target state="translated">L'URI d'horodatage spécifiée n'est pas valide.</target>

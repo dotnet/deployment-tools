@@ -14,6 +14,7 @@ set "__LinkArgs= "
 set "__LinkLibraries= "
 set __PortableBuild=0
 set __IncrementalNativeBuild=0
+set __DotnetInstallDir=%~dp0..\..\..\.dotnet
 
 :Arg_Loop
 if [%1] == [] goto :ToolsVersion
@@ -35,6 +36,7 @@ if /i [%1] == [netcorepkgver]  ( set __NetCorePkgVersion=%2&&shift&&shift&goto A
 if /i [%1] == [commit]         ( set __CommitSha=%2&&shift&&shift&goto Arg_Loop)
 
 if /i [%1] == [incremental-native-build] ( set __IncrementalNativeBuild=1&&shift&goto Arg_Loop)
+if /i [%1] == [dotnetInstallDir]     ( set __DotnetInstallDir=%~2&&shift&&shift&goto Arg_Loop)
 if /i [%1] == [rootDir]        ( set __rootDir=%2&&shift&&shift&goto Arg_Loop)
 
 shift
@@ -125,9 +127,9 @@ exit /b 1
 :GenVSSolution
 :: Regenerate the VS solution
 
-echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% %__PortableBuild%"
+echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" %__PortableBuild%"
 pushd "%__IntermediatesDir%"
-call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% %__PortableBuild%
+call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" %__PortableBuild%
 popd
 
 :CheckForProj

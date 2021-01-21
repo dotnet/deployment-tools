@@ -564,4 +564,7 @@ Options:
   <data name="LauncherSuccessfullyAdded" xml:space="preserve">
     <value>Launcher successfully added.</value>
   </data>
+  <data name="InvalidSigningPlatform" xml:space="preserve">
+    <value>Signing is only supported on Windows.</value>
+  </data>
 </root>

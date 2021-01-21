@@ -502,6 +502,11 @@ namespace Microsoft.Deployment.MageCLI
         MissingBinaryToLaunch,
 
         /// <summary>
+        /// Current platform cannot be used for signing.
+        /// </summary>
+        InvalidSigningPlatform,
+
+        /// <summary>
         /// The UseManifestForTrust argument needs to be set to true when generating/updating an application manifest
         /// while a Publisher or SupportURL argument is provided.
         /// </summary>

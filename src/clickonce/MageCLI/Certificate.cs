@@ -9,6 +9,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 using System.Collections.Generic;
+#if RUNTIME_TYPE_NETCORE
+using System.Runtime.Versioning;
+#endif
 
 namespace Microsoft.Deployment.Utilities
 {
@@ -220,12 +223,19 @@ namespace Microsoft.Deployment.Utilities
         /// If the certificate has private key, this cert can be used for signing, if it does not, 
         /// try to access private key stored in the CSP, if CSP provider or key container name 
         /// is not provided, certificate can't be used for signing.
+        ///
+        /// In .NET 5+, CspParameters type is only available on Windows - this method cannot be used
+        /// on other platforms.
+        /// Signing is only supported on Windows, anyway, due to limitations in signing code in MSBuild.
         /// </summary>
         /// <param name="certificate">Certificate</param>
         /// <param name="cryptoProviderName">Crypto provider name</param>
         /// <param name="keyContainerName">Key container name</param>
         /// <param name="providerType">Provider type</param>
         /// <returns></returns>
+#if RUNTIME_TYPE_NETCORE
+        [SupportedOSPlatform("windows")]
+#endif
         public static bool SetPrivateKeyIfNeeded(X509Certificate2 certificate, string cryptoProviderName, string keyContainerName, int providerType = -1)
         {
             if (Certificate.HasPrivateKey(certificate))

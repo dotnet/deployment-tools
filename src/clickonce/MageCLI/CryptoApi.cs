@@ -155,7 +155,9 @@ namespace Microsoft.Deployment.Utilities
     /// </summary>
     internal sealed class CAPI : CAPIMethods
     {
+#if DEBUG
         private const int ERROR_NO_MORE_ITEMS = 259;
+#endif
         internal const uint PP_ENUMCONTAINERS = 2;
         internal const uint CRYPT_FIRST = 1;
         internal const uint CRYPT_NEXT = 2;
@@ -180,6 +182,8 @@ namespace Microsoft.Deployment.Utilities
             out int errorCode)
         {
             errorCode = 0;
+
+#if !RUNTIME_TYPE_NETCORE
             CspParameters parameters = new CspParameters();
             parameters.ProviderName = pwszProvider;
             parameters.KeyContainerName = pwszContainer;
@@ -191,6 +195,7 @@ namespace Microsoft.Deployment.Utilities
             KeyContainerPermissionAccessEntry entry = new KeyContainerPermissionAccessEntry(parameters, KeyContainerPermissionFlags.Open);
             kp.AccessEntries.Add(entry);
             kp.Demand();
+#endif
 
             bool rc = CAPIMethods.CryptAcquireContext(ref hCryptProv,
                                                       pwszContainer,
@@ -229,13 +234,15 @@ namespace Microsoft.Deployment.Utilities
 
         internal static bool CertSetKeyProviderInfoProperty(IntPtr pCert, SafeLocalAllocHandle handle)
         {
-            if (pCert == null)
+            if (pCert == IntPtr.Zero)
                 throw new ArgumentNullException(nameof(pCert));
 
             if (handle.IsInvalid)
                 throw new ArgumentException(nameof(handle));
 
+#if !RUNTIME_TYPE_NETCORE
             new PermissionSet(PermissionState.Unrestricted).Demand();
+#endif
 
             return CertSetCertificateContextProperty(pCert, CAPI.CERT_KEY_PROV_INFO_PROP_ID, 0, handle);
         }
@@ -316,8 +323,11 @@ namespace Microsoft.Deployment.Utilities
         }
 
         [DllImport(CAPI.KERNEL32, SetLastError=true),
-         SuppressUnmanagedCodeSecurity,
-         ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+         SuppressUnmanagedCodeSecurity
+#if !RUNTIME_TYPE_NETCORE
+         , ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)
+#endif
+        ]
         private static extern int LocalFree(IntPtr handle);
 
         override protected bool ReleaseHandle()
@@ -340,8 +350,11 @@ namespace Microsoft.Deployment.Utilities
         }
 
         [DllImport(CAPI.ADVAPI32, SetLastError=true),
-         SuppressUnmanagedCodeSecurity,
-         ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+         SuppressUnmanagedCodeSecurity
+#if !RUNTIME_TYPE_NETCORE
+         , ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)
+#endif
+        ]
         private static extern bool CryptReleaseContext(IntPtr hCryptProv, uint dwFlags); 
 
         override protected bool ReleaseHandle()

@@ -639,6 +639,11 @@ Možnosti:
         <target state="translated">Možnost -RequiredUpdate musí mít hodnotu true, false, t nebo f – {0}</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidSigningPlatform">
+        <source>Signing is only supported on Windows.</source>
+        <target state="new">Signing is only supported on Windows.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
         <target state="translated">Zadaný identifikátor URI pro časová razítka není platný.</target>

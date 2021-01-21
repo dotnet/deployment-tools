@@ -1052,6 +1052,13 @@ namespace Microsoft.Deployment.MageCLI
         {
             bool result = true;
 
+            // Signing is only supported on Windows.
+            if (!OperatingSystem.IsWindows())
+            {
+                Application.PrintErrorMessage(ErrorMessages.InvalidSigningPlatform);
+                return false;
+            }
+
             if (Requested(Operations.GenerateSomething) == false)
             {
                 // Make sure an input file was specified and exists
@@ -1129,7 +1136,12 @@ namespace Microsoft.Deployment.MageCLI
                             {
                                 Application.PrintErrorMessage(ErrorMessages.InvalidCertUsage, certPath);
                             }
+#if RUNTIME_TYPE_NETCORE
+                            // SetPrivateKeyIfNeeded API is only available on Windows
+                            else if (OperatingSystem.IsWindows())
+#else
                             else
+#endif
                             {
                                 result = Utilities.Certificate.SetPrivateKeyIfNeeded(cert, cryptoProviderName, keyContainer);
                                 if (!result)
@@ -1258,7 +1270,9 @@ namespace Microsoft.Deployment.MageCLI
             return result;
         }
 
+#if !RUNTIME_TYPE_NETCORE
         [System.Security.Permissions.PermissionSetAttribute(System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
+#endif
         public void ExecuteManifestRelated()
         {
             Manifest manifest = null;
