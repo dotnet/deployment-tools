@@ -160,7 +160,7 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value cannot be empty ({0})..
+        ///   Looks up a localized string similar to Value cannot be empty..
         /// </summary>
         internal static string ValueCannotBeEmpty {
             get {

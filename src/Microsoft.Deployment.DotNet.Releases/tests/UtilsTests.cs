@@ -14,7 +14,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void GetFileHashThrowsIfFileNameIsNull()
         {
-            var e = Assert.Throws<ArgumentNullException>(() =>
+            ArgumentNullException e = Assert.Throws<ArgumentNullException>(() =>
             {
                 Utils.GetFileHash(null, SHA512Managed.Create());
             });
@@ -23,18 +23,18 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void GetFileHashThrowsIfFileNameIsEmpty()
         {
-            var e = Assert.Throws<ArgumentException>(() =>
+            ArgumentException e = Assert.Throws<ArgumentException>(() =>
             {
                 Utils.GetFileHash("", SHA512Managed.Create());
             });
 
-            Assert.Equal("Value cannot be empty (fileName).", e.Message);
+            Assert.Equal("Value cannot be empty.\r\nParameter name: fileName", e.Message);
         }
 
         [Fact]
         public void GetFileHashThrowsIfHashAlgorithmIsNull()
         {
-            var e = Assert.Throws<ArgumentNullException>(() =>
+            ArgumentNullException e = Assert.Throws<ArgumentNullException>(() =>
             {
                 Utils.GetFileHash("File.txt", null);
             });

@@ -15,7 +15,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// </summary>
     public class ReleaseFile : IEquatable<ReleaseFile>
     {
-        private static SHA512 HashAlgorithm = SHA512Managed.Create();
+        private static readonly SHA512 s_defaultHashAlgorithm = SHA512Managed.Create();
 
         /// <summary>
         /// The URL from where to download the file.
@@ -77,8 +77,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <param name="destinationPath">The path, including the filename of the local file. The file will be
         /// overwritten if it already exists.</param>
-        /// <exception cref="InvalidDataException">Thrown if the downloaded file's hash does to match the 
-        /// expected hash.</exception>
         public async Task DownloadAsync(string destinationPath)
         {
             if (destinationPath is null)
@@ -88,18 +86,49 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             if (destinationPath == string.Empty)
             {
-                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath)));
+                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath));
             }
 
             await Utils.DownloadFileAsync(Address, destinationPath);
+        }
 
-            var actualHash = Utils.GetFileHash(destinationPath, HashAlgorithm);
+        /// <summary>
+        /// Download this file to the specified local file and verify the file hash. The file is first downloaded to a temporary location
+        /// to verify its hash. If the hash is invalid, the temporary file is deleted. Otherwise, the file is moved to the
+        /// destination location, overwriting any previous copy that may exist.
+        /// </summary>
+        /// <param name="destinationPath">The path, including the filename of the local file. The file will be
+        /// overwritten if it already exists if the hash check passed.</param>
+        /// <exception cref="InvalidDataException">Thrown if the downloaded file's hash does to match the 
+        /// expected hash.</exception>
+        public async Task DownloadAndVerifyAsync(string destinationPath)
+        {
+            if (destinationPath is null)
+            {
+                throw new ArgumentNullException(nameof(destinationPath));
+            }
+
+            if (destinationPath == string.Empty)
+            {
+                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath));
+            }
+
+            string tempPath = Path.GetTempFileName();
+            await Utils.DownloadFileAsync(Address, tempPath);
+
+            string actualHash = Utils.GetFileHash(tempPath, s_defaultHashAlgorithm);
 
             if (!string.Equals(Hash, actualHash, StringComparison.OrdinalIgnoreCase))
             {
-                File.Delete(destinationPath);
+                File.Delete(tempPath);
                 throw new InvalidDataException(string.Format(ReleasesResources.HashMismatch, Hash, actualHash, destinationPath));
             }
+
+            if (File.Exists(destinationPath))
+            {
+                File.Delete(destinationPath);
+            }
+            File.Move(tempPath, destinationPath);
         }
 
         /// <summary>

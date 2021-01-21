@@ -41,8 +41,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             using (var httpClient = new HttpClient())
             {
-                var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-                var httpResponse = await httpClient.SendAsync(httpRequest);
+                HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
+                HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
 
                 httpResponse.EnsureSuccessStatusCode();
 
@@ -63,17 +63,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             using (var httpClient = new HttpClient())
             {
-                var directory = Path.GetDirectoryName(fileName);
+                string directory = Path.GetDirectoryName(fileName);
 
                 if (!Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
 
-                var httpResponse = await httpClient.GetAsync(address);
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
                 httpResponse.EnsureSuccessStatusCode();
 
-                using (var fileStream = File.Create(fileName))
+                using (FileStream fileStream = File.Create(fileName))
                 {
                     await httpResponse.Content.CopyToAsync(fileStream);
                 }
@@ -95,7 +95,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             if (fileName == string.Empty)
             {
-                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(fileName)));
+                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(fileName));
             }
 
             if (hashAlgorithm == null)
@@ -139,7 +139,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             if (path == string.Empty)
             {
-                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(path)));
+                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(path));
             }
 
             if (!File.Exists(path))
@@ -148,7 +148,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 {
                     throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, path));
                 }
-                
+
                 await Utils.DownloadFileAsync(address, path);
             }
             else if ((downloadLatest) && (!await Utils.IsLatestFileAsync(path, address)))

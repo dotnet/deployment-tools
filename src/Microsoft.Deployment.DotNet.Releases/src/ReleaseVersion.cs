@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Microsoft.Deployment.DotNet.Releases
@@ -17,17 +18,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// Regular expression for capturing the pre-release part of a semantic version.
         /// </summary>
-        private static readonly string PrereleasePattern = @"(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)";
+        private const string PrereleasePattern = @"(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)";
 
         /// <summary>
         /// Regular expression for capturing the build-metadata part of a semantic version.
         /// </summary>
-        private static readonly string BuildMetadataPattern = @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
+        private const string BuildMetadataPattern = @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
 
         /// <summary>
         /// Regular expression for v2 semantic version to capture components into separate groups: major, minor, patch, prerelease and build.
         /// </summary>
-        private static readonly string SemanticVersion2Pattern = $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
+        private static readonly string s_semanticVersion2Pattern = $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
 
         /// <summary>
         /// The build metadata of the version or <see langword="null"/>.
@@ -103,7 +104,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <exception cref="FormatException">If the string represents an invalid version.</exception>
         public ReleaseVersion(string version)
         {
-            Match match = Regex.Match(version, SemanticVersion2Pattern);
+            Match match = Regex.Match(version, s_semanticVersion2Pattern);
 
             if (!match.Success)
             {
@@ -240,31 +241,31 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current 
         /// instance precedes, follows, or occurs in the same position in the sort order as the other object.
         /// </summary>
-        /// <param name="value">An object to compare or null.</param>
+        /// <param name="obj">An object to compare or null.</param>
         /// <returns>
         /// Returns a signed integer indicating whether this instance precedes, follows or appears in the same position in 
-        /// the sort order as the specified <paramref name="value"/>.
+        /// the sort order as the specified <paramref name="obj"/>.
         /// </returns>
-        public int CompareTo(object value)
+        public int CompareTo(object obj)
         {
-            return CompareTo((ReleaseVersion)value);
+            return CompareTo((ReleaseVersion)obj);
         }
 
         /// <summary>
         /// Compares this instance to the specified object and returns an indication of their relative values.
         /// </summary>
-        /// <param name="value">An object to compare.</param>
+        /// <param name="other">An object to compare.</param>
         /// <returns></returns>
-        public int CompareTo(ReleaseVersion value)
+        public int CompareTo(ReleaseVersion other)
         {
-            int result = ComparePrecedenceTo(value);
+            int result = ComparePrecedenceTo(other);
 
             if (result != 0)
             {
                 return result;
             }
 
-            return CompareIdentifiers(BuildMetadata, value.BuildMetadata);
+            return CompareIdentifiers(BuildMetadata, other.BuildMetadata);
         }
 
         /// <summary>
@@ -295,25 +296,25 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// Returns a value indicating whether the current <see cref="ReleaseVersion"/> object and a specified
         /// <see cref="ReleaseVersion"/> object represent the same value.
         /// </summary>
-        /// <param name="obj">The <see cref="ReleaseVersion"/> object to compare to this instance, or <see langword="null" />.</param>
+        /// <param name="other">The <see cref="ReleaseVersion"/> object to compare to this instance, or <see langword="null" />.</param>
         /// <returns><see langword="true"/> if every component of this <see cref="ReleaseVersion"/> matches the corresponding
-        /// component of the <paramref name="obj"/> parameter; <see langword="false"/> otherwise.
+        /// component of the <paramref name="other"/> parameter; <see langword="false"/> otherwise.
         /// </returns>
-        public bool Equals(ReleaseVersion obj)
+        public bool Equals(ReleaseVersion other)
         {
-            if (obj is null)
+            if (other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            return Major == obj.Major && Minor == obj.Minor && Patch == obj.Patch &&
-                string.Equals(Prerelease, obj.Prerelease, StringComparison.Ordinal) &&
-                string.Equals(BuildMetadata, obj.BuildMetadata, StringComparison.Ordinal);
+            return Major == other.Major && Minor == other.Minor && Patch == other.Patch &&
+                string.Equals(Prerelease, other.Prerelease, StringComparison.Ordinal) &&
+                string.Equals(BuildMetadata, other.BuildMetadata, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -513,8 +514,8 @@ namespace Microsoft.Deployment.DotNet.Releases
                 return -1;
             }
 
-            var dotPartsA = identifierA.Split('.');
-            var dotPartsB = identifierB.Split('.');
+            string[] dotPartsA = identifierA.Split('.');
+            string[] dotPartsB = identifierB.Split('.');
 
             int minParts = dotPartsA.Length < dotPartsB.Length ? dotPartsA.Length : dotPartsB.Length;
 
@@ -525,7 +526,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 bool isNumericIdentifierA = Regex.IsMatch(dotPartsA[i], @"^\d+$");
                 bool isNumericIdentifierB = Regex.IsMatch(dotPartsB[i], @"^\d+$");
 
-                int compareResult = 0;
+                int compareResult;
 
                 if (isNumericIdentifierA && isNumericIdentifierB)
                 {

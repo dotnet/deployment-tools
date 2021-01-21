@@ -66,7 +66,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             if (releasesIndexUri == string.Empty)
             {
-                throw new ArgumentException(string.Format(ReleasesResources.ValueCannotBeEmpty, nameof(releasesIndexUri)));
+                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(releasesIndexUri));
             }
 
             return await GetAsync(new Uri(releasesIndexUri));
@@ -122,8 +122,8 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var json = JObject.Parse(await reader.ReadToEndAsync());
-            var releasesIndex = json["releases-index"];
+            JObject json = JObject.Parse(await reader.ReadToEndAsync());
+            JToken releasesIndex = json["releases-index"];
 
             return new ProductCollection(JsonConvert.DeserializeObject<List<Product>>(releasesIndex.ToString(),
                 Utils.DefaultSerializerSettings));

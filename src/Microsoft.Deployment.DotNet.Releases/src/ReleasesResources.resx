@@ -151,7 +151,7 @@
     <value>SDK</value>
   </data>
   <data name="ValueCannotBeEmpty" xml:space="preserve">
-    <value>Value cannot be empty ({0}).</value>
+    <value>Value cannot be empty.</value>
   </data>
   <data name="VersionPartLessThanZero" xml:space="preserve">
     <value>The '{0}' value cannot be less than 0.</value>

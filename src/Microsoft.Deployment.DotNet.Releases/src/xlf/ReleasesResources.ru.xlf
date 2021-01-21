@@ -58,8 +58,8 @@
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
-        <source>Value cannot be empty ({0}).</source>
-        <target state="new">Value cannot be empty ({0}).</target>
+        <source>Value cannot be empty.</source>
+        <target state="new">Value cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">

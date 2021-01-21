@@ -197,11 +197,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var json = JObject.Parse(await reader.ReadToEndAsync());
-            var releasesToken = json["releases"];
+            JObject json = JObject.Parse(await reader.ReadToEndAsync());
+            JToken releasesToken = json["releases"];
             List<ProductRelease> releases = new List<ProductRelease>();
 
-            foreach (var releaseToken in releasesToken)
+            foreach (JToken releaseToken in releasesToken)
             {
                 releases.Add(new ProductRelease(releaseToken, product));
             }

@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,8 +15,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public async Task ItReturnsAllSupportPhases()
         {
-            var products = await ProductCollection.GetFromFileAsync(@"data\\releases-index.json", false);
-            var supportPhases = products.GetSupportPhases();
+            ProductCollection products = await ProductCollection.GetFromFileAsync(@"data\\releases-index.json", false);
+            IEnumerable<SupportPhase> supportPhases = products.GetSupportPhases();
 
             Assert.Equal(3, supportPhases.Count());
             Assert.Contains(SupportPhase.EOL, supportPhases);
@@ -28,7 +29,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetFromFileAsync((string)null, false);
 
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(f);
+            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(f);
         }
 
         [Fact]
@@ -36,8 +37,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetFromFileAsync("", false);
 
-            var exception = await Assert.ThrowsAsync<ArgumentException>(f);
-            Assert.Equal("Value cannot be empty (path).", exception.Message);
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(f);
+            Assert.Equal("Value cannot be empty.\r\nParameter name: path", exception.Message);
         }
 
         [Fact]
@@ -45,7 +46,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetFromFileAsync("data.json", false);
 
-            var exception = await Assert.ThrowsAsync<FileNotFoundException>(f);
+            FileNotFoundException exception = await Assert.ThrowsAsync<FileNotFoundException>(f);
 
             Assert.Equal("Could not find the specified file: data.json", exception.Message);
         }
@@ -55,7 +56,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetAsync((string)null);
 
-            var exception = await Assert.ThrowsAsync<ArgumentNullException>(f);
+            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(f);
         }
 
         [Fact]
@@ -63,8 +64,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetAsync("");
 
-            var exception = await Assert.ThrowsAsync<ArgumentException>(f);
-            Assert.Equal("Value cannot be empty (releasesIndexUri).", exception.Message);
+            ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(f);
+            Assert.Equal("Value cannot be empty.\r\nParameter name: releasesIndexUri", exception.Message);
         }
     }
 }
