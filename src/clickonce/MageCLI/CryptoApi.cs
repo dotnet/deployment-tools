@@ -155,7 +155,9 @@ namespace Microsoft.Deployment.Utilities
     /// </summary>
     internal sealed class CAPI : CAPIMethods
     {
+#if DEBUG
         private const int ERROR_NO_MORE_ITEMS = 259;
+#endif
         internal const uint PP_ENUMCONTAINERS = 2;
         internal const uint CRYPT_FIRST = 1;
         internal const uint CRYPT_NEXT = 2;
