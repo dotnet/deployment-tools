@@ -59,6 +59,12 @@ stages:
       name: Windows_x86
       targetArchitecture: x86
 
+  # Windows arm64
+  - template: /eng/jobs/windows-build.yml
+    parameters:
+      name: Windows_arm64
+      targetArchitecture: arm64
+
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - stage: PrepareForPublish
     displayName: Prepare for Publish
