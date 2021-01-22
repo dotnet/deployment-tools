@@ -72,11 +72,15 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// Download this file to the specified local file and verify the file hash. If the hash is invalid, the
-        /// file will be deleted.
+        /// Download this file to the specified local file and verify the file hash. If the destination file exists, the new copy is
+        /// downloaded to a temporary file before verifying its hash. If the hash check fails, the temporary file is deleted. Otherwise,
+        /// the temporary file is copied to the destination path. If the destination file does not exist, the file is downloaded and
+        /// the hash is verified. If the hash check fails, the destination file is deleted.
         /// </summary>
         /// <param name="destinationPath">The path, including the filename of the local file. The file will be
-        /// overwritten if it already exists.</param>
+        /// overwritten if it already exists if the hash check passed.</param>
+        /// <exception cref="InvalidDataException">Thrown if the downloaded file's hash does to match the 
+        /// expected hash.</exception>
         public async Task DownloadAsync(string destinationPath)
         {
             if (destinationPath is null)
@@ -89,33 +93,12 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath));
             }
 
-            await Utils.DownloadFileAsync(Address, destinationPath);
-        }
-
-        /// <summary>
-        /// Download this file to the specified local file and verify the file hash. The file is first downloaded to a temporary location
-        /// to verify its hash. If the hash is invalid, the temporary file is deleted. Otherwise, the file is moved to the
-        /// destination location, overwriting any previous copy that may exist.
-        /// </summary>
-        /// <param name="destinationPath">The path, including the filename of the local file. The file will be
-        /// overwritten if it already exists if the hash check passed.</param>
-        /// <exception cref="InvalidDataException">Thrown if the downloaded file's hash does to match the 
-        /// expected hash.</exception>
-        public async Task DownloadAndVerifyAsync(string destinationPath)
-        {
-            if (destinationPath is null)
-            {
-                throw new ArgumentNullException(nameof(destinationPath));
-            }
-
-            if (destinationPath == string.Empty)
-            {
-                throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(destinationPath));
-            }
-
-            string tempPath = Path.GetTempFileName();
+            // If the destination file doesn't exist we can skip using an actual temporary file.
+            string tempPath = !File.Exists(destinationPath) ? destinationPath : Path.GetTempFileName();
             await Utils.DownloadFileAsync(Address, tempPath);
 
+            // Most of the files are large since they represent full installations of .NET/.NET Core. They can
+            // easily be 100MB+ so we won't verify the hash in memory.
             string actualHash = Utils.GetFileHash(tempPath, s_defaultHashAlgorithm);
 
             if (!string.Equals(Hash, actualHash, StringComparison.OrdinalIgnoreCase))
@@ -124,11 +107,12 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new InvalidDataException(string.Format(ReleasesResources.HashMismatch, Hash, actualHash, destinationPath));
             }
 
-            if (File.Exists(destinationPath))
+            // Replace the destination file if the hash verified successfully and we used an actual temporary file.
+            if (!string.Equals(destinationPath, tempPath))
             {
                 File.Delete(destinationPath);
+                File.Move(tempPath, destinationPath);
             }
-            File.Move(tempPath, destinationPath);
         }
 
         /// <summary>

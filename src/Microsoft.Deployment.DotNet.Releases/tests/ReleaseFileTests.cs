@@ -64,7 +64,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(f);
 
-            Assert.Equal("Value cannot be empty.\r\nParameter name: destinationPath", exception.Message);
+            Assert.Equal($"Value cannot be empty.{Environment.NewLine}Parameter name: destinationPath", exception.Message);
         }
     }
 }

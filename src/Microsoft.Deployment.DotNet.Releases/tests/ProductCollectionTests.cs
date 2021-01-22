@@ -38,7 +38,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Func<Task> f = async () => await ProductCollection.GetFromFileAsync("", false);
 
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(f);
-            Assert.Equal("Value cannot be empty.\r\nParameter name: path", exception.Message);
+            Assert.Equal($"Value cannot be empty.{Environment.NewLine}Parameter name: path", exception.Message);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Func<Task> f = async () => await ProductCollection.GetAsync("");
 
             ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(f);
-            Assert.Equal("Value cannot be empty.\r\nParameter name: releasesIndexUri", exception.Message);
+            Assert.Equal($"Value cannot be empty.{Environment.NewLine}Parameter name: releasesIndexUri", exception.Message);
         }
     }
 }

@@ -3,8 +3,6 @@
 
 using System;
 using System.Security.Cryptography;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.Deployment.DotNet.Releases.Tests
@@ -28,7 +26,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
                 Utils.GetFileHash("", SHA512Managed.Create());
             });
 
-            Assert.Equal("Value cannot be empty.\r\nParameter name: fileName", e.Message);
+            Assert.Equal($"Value cannot be empty.{Environment.NewLine}Parameter name: fileName", e.Message);
         }
 
         [Fact]
@@ -39,7 +37,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
                 Utils.GetFileHash("File.txt", null);
             });
 
-            Assert.Equal("Value cannot be null.\r\nParameter name: hashAlgorithm", e.Message);
+            Assert.Equal($"Value cannot be null.{Environment.NewLine}Parameter name: hashAlgorithm", e.Message);
         }
     }
 }
