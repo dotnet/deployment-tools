@@ -5,6 +5,7 @@
 #include "TempRuntimeConfigFile.h"
 
 #define RUNTIMECONFIG_TEXT_FORMAT_STR TEXT("{ \"runtimeOptions\": { \"framework\": { \"name\": \"%s\", \"version\": \"%s\" } } }")
+#define RUNTIMECONFIG_TEXT_FORMAT_STR_WITH_ROLL_FORWARD TEXT("{ \"runtimeOptions\": { \"rollForward\": \"%s\", \"framework\": { \"name\": \"%s\", \"version\": \"%s\" } } }")
 #define RUNTIMECONFIG_NAME_FORMAT_STR TEXT("Test%I64u.runtimeconfig.json")
 
 // Forward declarations
@@ -48,7 +49,7 @@ DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath, bool useTempDirectory)
     return 0;
 }
 
-DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkName, LPCWSTR frameworkVersion)
+DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR rollForwardPolicy)
 {
     if (PathFileExists(runtimeConfigPath))
     {
@@ -60,7 +61,11 @@ DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkNa
     }
 
     WCHAR fileText[MAX_PATH];
-    if (swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_TEXT_FORMAT_STR, frameworkName, frameworkVersion) <= 0)
+    int ret = (NULL == rollForwardPolicy || (wcslen(rollForwardPolicy) == 0)) ?
+        swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_TEXT_FORMAT_STR, frameworkName, frameworkVersion) :
+        swprintf_s(fileText, MAX_PATH, RUNTIMECONFIG_TEXT_FORMAT_STR_WITH_ROLL_FORWARD, rollForwardPolicy, frameworkName, frameworkVersion);
+
+    if (ret <= 0)
     {
         g_log->Log(TEXT("Failed to format file text."));
         return EXIT_FAILURE_TEMPRTJSONFile;

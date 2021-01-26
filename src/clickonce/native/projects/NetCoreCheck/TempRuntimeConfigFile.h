@@ -7,4 +7,4 @@
 #include "NetCoreCheck.h"
 
 DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath, bool useTempDirectory);
-DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkName, LPCWSTR frameworkVersion);
+DWORD CreateTempRuntimeConfigFile(LPCWSTR runtimeConfigPath, LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR rollForwardPolicy);

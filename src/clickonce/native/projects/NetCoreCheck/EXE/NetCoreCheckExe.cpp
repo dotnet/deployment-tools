@@ -9,12 +9,16 @@ Logger *g_log;
 
 int __cdecl wmain(int argc, WCHAR* argv[])
 {
-    if (argc != 3 && argc != 4)
+    if (argc < 3 || argc > 5)
     {
         return EXIT_FAILURE_INVALIDARGS;
     }
 
-    LPCWSTR logFilePath = (argc == 4) ? argv[3] : NULL;
+    bool useExistingFile = (0 == _wcsicmp(TEXT("UseExisting"), argv[1]));
+    LPCWSTR logFilePath = useExistingFile ?
+        ((argc == 4) ? argv[3] : NULL) :
+        ((argc == 5) ? argv[4] : NULL);
+
     FileLogger logger;
     logger.Initialize(logFilePath);
     g_log = &logger;
@@ -24,23 +28,24 @@ int __cdecl wmain(int argc, WCHAR* argv[])
     //     runtimeconfig.json file that we'll try to load.
     //     Example: NetCoreCheck.exe UseExisting Foo.runtimeconfig.json
     //  2. Otherwise we'll create a temporary runtime config file ourselves using the passed
-    //     in framework name and framework version.
-    //     Example: NetCoreCheck.exe Microsoft.WindowsDesktop.App 3.1.0
-    // In both cases the optional third parameter is the path to the log file.
+    //     in framework name and framework version, and optionally the roll forward policy.
+    //     Examples: NetCoreCheck.exe Microsoft.WindowsDesktop.App 3.1.0
+    //               NetCoreCheck.exe Microsoft.NETCore.App 3.1.0 LatestMajor
+    // In both cases the optional last parameter is the path to the log file.
     int result;
-    bool useExistingFile = (0 == _wcsicmp(TEXT("UseExisting"), argv[1]));
     if (useExistingFile)
     {
         LPCWSTR existingRuntimeConfigFile = argv[2];
 
-        result = CheckRuntime(NULL, NULL, existingRuntimeConfigFile, false);
+        result = CheckRuntime(NULL, NULL, NULL, existingRuntimeConfigFile, false);
     }
     else
     {
         LPCWSTR frameworkName = argv[1];
         LPCWSTR frameworkVersion = argv[2];
+        LPCWSTR rollForwardPolicy = argc > 3 ? argv[3] : NULL;
 
-        result = CheckRuntime(frameworkName, frameworkVersion, NULL, false);
+        result = CheckRuntime(frameworkName, frameworkVersion, rollForwardPolicy, NULL, false);
     }
 
     return result;

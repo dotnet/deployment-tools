@@ -18,7 +18,7 @@ int Exit(int ret);
 extern Logger *g_log;
 HMODULE g_hostfxrLibrary = NULL;
 
-int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR existingRuntimeConfigPath, bool useTempDirectory)
+int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR rollForwardPolicy, LPCWSTR existingRuntimeConfigPath, bool useTempDirectory)
 {
     WCHAR hostfxrPath[MAX_PATH];
     size_t bufferSize = sizeof(hostfxrPath) / sizeof(WCHAR);
@@ -55,8 +55,9 @@ int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR existi
     }
     else
     {
-        g_log->Log(TEXT("Framework Name:    '%s'"), frameworkName);
-        g_log->Log(TEXT("Framework Version: '%s'"), frameworkVersion);
+        g_log->Log(TEXT("Framework Name:      '%s'"), frameworkName);
+        g_log->Log(TEXT("Framework Version:   '%s'"), frameworkVersion);
+        g_log->Log(TEXT("Roll Forward Policy: '%s'"), (rollForwardPolicy && (wcslen(rollForwardPolicy) > 0)) ? rollForwardPolicy : TEXT("(Default)"));
 
         DWORD ret = GetTempRuntimeConfigPath(runtimeConfigPath, useTempDirectory);
         if (ret != 0)
@@ -65,7 +66,7 @@ int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR existi
             return Exit(ret);
         }
 
-        ret = CreateTempRuntimeConfigFile(runtimeConfigPath, frameworkName, frameworkVersion);
+        ret = CreateTempRuntimeConfigFile(runtimeConfigPath, frameworkName, frameworkVersion, rollForwardPolicy);
         if (ret != 0)
         {
             g_log->Log(TEXT("Failed to create temp runtime config file."));
