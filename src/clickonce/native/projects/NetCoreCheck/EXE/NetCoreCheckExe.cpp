@@ -5,6 +5,7 @@
 #include "NetCoreCheckExe.h"
 
 #define PARAM_NAME(s) (_wcsicmp(*argv, TEXT(s)) == 0)
+#define PRINT_HELP_AND_RETURN fprintf(stderr, "%s", g_help); return EXIT_FAILURE_INVALIDARGS;
 
 // Globals
 Logger *g_log;
@@ -31,10 +32,16 @@ int __cdecl wmain(int argc, WCHAR* argv[])
 
     // Parse the command line options
     argv++;
-    for (int i = 1; i < argc; i++)
+    for (int i = 1; i < argc; i += 2)
     {
         if (*argv != nullptr)
         {
+            if (*(argv + 1) == nullptr)
+            {
+                // Parameter name passed in without a value
+                PRINT_HELP_AND_RETURN
+            }
+
             if (PARAM_NAME("-n") || PARAM_NAME("--runtimename"))
             {
                 runtimeName = *++argv;
@@ -57,8 +64,8 @@ int __cdecl wmain(int argc, WCHAR* argv[])
             }
             else
             {
-                fprintf(stderr, "%s", g_help);
-                return EXIT_FAILURE_INVALIDARGS;
+                // Invalid parameter name
+                PRINT_HELP_AND_RETURN
             }
 
             argv++;
@@ -69,8 +76,7 @@ int __cdecl wmain(int argc, WCHAR* argv[])
     if ((existingRuntimeConfigFilPath  &&  (runtimeName || runtimeversion || rollForwardPolicy)) ||
         (!existingRuntimeConfigFilPath && !(runtimeName && runtimeversion)))
     {
-        fprintf(stderr, "%s", g_help);
-        return EXIT_FAILURE_INVALIDARGS;
+        PRINT_HELP_AND_RETURN
     }
 
     FileLogger logger;
