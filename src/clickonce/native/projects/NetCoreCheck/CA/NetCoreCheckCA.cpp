@@ -5,9 +5,10 @@
 #include "NetCoreCheckCA.h"
 #include "MsiLogger.h"
 
-#define CHECKNETRUNTIME_PARAM_FRAMEWORK_PROPERTY_NAME L"CheckNETRuntime_Framework"
-#define CHECKNETRUNTIME_PARAM_VERSION_PROPERTY_NAME   L"CheckNETRuntime_Version"
-#define CHECKNETRUNTIME_RESULT_PROPERTY_NAME          L"CheckNETRuntime_Result"
+#define CHECKNETRUNTIME_PARAM_FRAMEWORK_PROPERTY_NAME           L"CheckNETRuntime_Framework"
+#define CHECKNETRUNTIME_PARAM_VERSION_PROPERTY_NAME             L"CheckNETRuntime_Version"
+#define CHECKNETRUNTIME_PARAM_ROLL_FORWARD_POLICY_PROPERTY_NAME L"CheckNETRuntime_RollForwardPolicy"
+#define CHECKNETRUNTIME_RESULT_PROPERTY_NAME                    L"CheckNETRuntime_Result"
 
 #define ExitOnFailure(x, s, ...)   if (FAILED(x)) { msiWrapper.LogFailure(x, s, __VA_ARGS__);  goto Exit; }
 
@@ -19,6 +20,7 @@ UINT __stdcall CheckNETRuntime(MSIHANDLE hInstall)
     int ret = EXIT_SUCCESS;
     LPWSTR frameworkName = NULL;
     LPWSTR frameworkVersion = NULL;
+    LPWSTR rollForwardPolicy = NULL;
     MsiWrapper msiWrapper(hInstall);
 
     MsiLogger logger(&msiWrapper);
@@ -39,8 +41,12 @@ UINT __stdcall CheckNETRuntime(MSIHANDLE hInstall)
         ExitOnFailure(hr = E_INVALIDARG, L"Missing framework version property '%s'.", CHECKNETRUNTIME_PARAM_VERSION_PROPERTY_NAME);
     }
 
+    // Roll forward policy is optional, so no need to verify the value
+    hr = msiWrapper.GetProperty(CHECKNETRUNTIME_PARAM_ROLL_FORWARD_POLICY_PROPERTY_NAME, &rollForwardPolicy);
+    ExitOnFailure(hr, L"Failed to read roll forward policy from property '%s'.", CHECKNETRUNTIME_PARAM_ROLL_FORWARD_POLICY_PROPERTY_NAME);
+
     // Perform runtime check
-    ret = CheckRuntime(frameworkName, frameworkVersion, NULL, true);
+    ret = CheckRuntime(frameworkName, frameworkVersion, rollForwardPolicy, NULL, true);
     WCHAR result[10];
     _itow_s(ret, result, _countof(result), 10);
     hr = msiWrapper.SetProperty(CHECKNETRUNTIME_RESULT_PROPERTY_NAME, result);
@@ -49,6 +55,7 @@ UINT __stdcall CheckNETRuntime(MSIHANDLE hInstall)
 Exit:
     FreeStr(frameworkName)
     FreeStr(frameworkVersion)
+    FreeStr(rollForwardPolicy)
 
     return (SUCCEEDED(hr) && EXIT_SUCCESS == ret) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
 }

@@ -11,7 +11,7 @@
 
 #define VER_PRODUCT_MAJOR           1
 #define VER_PRODUCT_MINOR           0
-#define VER_BUILD_MAJOR             0
+#define VER_BUILD_MAJOR             2
 #define VER_BUILD_MINOR             0
 
 #define VER_FILEVERSION             VER_PRODUCT_MAJOR,VER_PRODUCT_MINOR,VER_BUILD_MAJOR,VER_BUILD_MINOR

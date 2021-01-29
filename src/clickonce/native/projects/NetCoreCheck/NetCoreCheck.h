@@ -22,4 +22,4 @@
 #define EXIT_FAILURE_TEMPRTJSONPATH MAKE_NETCORECHECK_HRESULT(5)  // Failed to construct temp json file path
 #define EXIT_FAILURE_TEMPRTJSONFile MAKE_NETCORECHECK_HRESULT(6)  // Failed to create temp json file
 
-int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR existingRuntimeConfigPath, bool useTempDirectory);
+int CheckRuntime(LPCWSTR frameworkName, LPCWSTR frameworkVersion, LPCWSTR rollForwardPolicy, LPCWSTR existingRuntimeConfigPath, bool useTempDirectory);
