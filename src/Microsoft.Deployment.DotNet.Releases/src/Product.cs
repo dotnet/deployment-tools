@@ -175,7 +175,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="address">The URL pointing to the releases.json file to use.</param>
         /// <param name="product">The <see cref="Product"/> to link to the releases.</param>
         /// <returns></returns>
-        public static async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(Uri address, Product product)
+        public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(Uri address, Product product)
         {
             if (address == null)
             {
