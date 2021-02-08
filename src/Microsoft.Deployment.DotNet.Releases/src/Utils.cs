@@ -39,7 +39,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the local file is the latest; <see langword="false"/> otherwise.</returns>
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
-            using (var httpClient = new HttpClient())
+            using (HttpClient httpClient = new HttpClient())
             {
                 HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
                 HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
@@ -61,7 +61,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>The task object representing the asynchronous operation.</returns>
         internal static async Task DownloadFileAsync(Uri address, string fileName)
         {
-            using (var httpClient = new HttpClient())
+            using (HttpClient httpClient = new HttpClient())
             {
                 string directory = Path.GetDirectoryName(fileName);
 
