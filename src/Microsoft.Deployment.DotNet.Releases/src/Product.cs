@@ -54,7 +54,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// The date of the latest release for this product.
         /// </summary>
         [JsonProperty(PropertyName = "latest-release-date")]
-        public DateTime? LatestReleaseDate
+        public DateTime LatestReleaseDate
         {
             get;
             private set;

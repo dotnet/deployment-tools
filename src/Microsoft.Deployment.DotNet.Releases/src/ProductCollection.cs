@@ -85,7 +85,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             using (HttpClient client = new HttpClient())
-            using (var stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl)))
+            using (MemoryStream stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl)))
             using (TextReader reader = new StreamReader(stream))
             {
                 return await GetAsync(reader);
