@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Microsoft.Deployment.DotNet.Releases
@@ -46,7 +45,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             get;
             private set;
-        } = 0;
+        }
 
         /// <summary>
         /// The minor version number.
@@ -55,7 +54,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             get;
             private set;
-        } = 0;
+        }
 
         /// <summary>
         /// The patch number.
@@ -64,7 +63,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             get;
             private set;
-        } = 0;
+        }
 
         /// <summary>
         /// The prerelease label of the version or <see langword="null"/>.

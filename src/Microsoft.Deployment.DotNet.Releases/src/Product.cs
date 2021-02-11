@@ -134,10 +134,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// Gets a collection of all releases associated with this <see cref="Product"/>.
         /// </summary>
         /// <returns>A collection of all releases for this product.</returns>
-        public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync()
-        {
-            return await GetReleasesAsync(ReleasesJson, this);
-        }
+        public Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync()
+            => GetReleasesAsync(ReleasesJson);
 
         /// <summary>
         /// Gets a collection of all releases associated with this <see cref="Product"/> using a file
@@ -158,24 +156,12 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// <see langword="true"/> if the support phase is <see cref="SupportPhase.EOL"/>
-        /// or the current date is greater than or equal to the EOL date of the product, 
-        /// <see langword="false"/> otherwise.
-        /// </summary>
-        /// <returns><see langword="true"/> if the product is out of support; <see langword="false"/> otherwise.</returns>
-        public bool IsOutOfSupport()
-        {
-            return SupportPhase == SupportPhase.EOL || EndOfLifeDate?.Date <= DateTime.Now.Date;
-        }
-
-        /// <summary>
         /// Creates a new <see cref="ProductRelease"/> collection using the releases.json file pointed to
         /// by the provided URL.
         /// </summary>
         /// <param name="address">The URL pointing to the releases.json file to use.</param>
-        /// <param name="product">The <see cref="Product"/> to link to the releases.</param>
-        /// <returns></returns>
-        public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(Uri address, Product product)
+        /// <returns>A collection of releases associated with this <see cref="Product"/>.</returns>
+        public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(Uri address)
         {
             if (address == null)
             {
@@ -186,8 +172,19 @@ namespace Microsoft.Deployment.DotNet.Releases
             using (MemoryStream stream = new MemoryStream(await client.GetByteArrayAsync(address)))
             using (TextReader reader = new StreamReader(stream))
             {
-                return await GetReleasesAsync(reader, product);
+                return await GetReleasesAsync(reader, this);
             }
+        }
+
+        /// <summary>
+        /// <see langword="true"/> if the support phase is <see cref="SupportPhase.EOL"/>
+        /// or the current date is greater than or equal to the EOL date of the product, 
+        /// <see langword="false"/> otherwise.
+        /// </summary>
+        /// <returns><see langword="true"/> if the product is out of support; <see langword="false"/> otherwise.</returns>
+        public bool IsOutOfSupport()
+        {
+            return SupportPhase == SupportPhase.EOL || EndOfLifeDate?.Date <= DateTime.Now.Date;
         }
 
         private static async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(TextReader reader, Product product)
