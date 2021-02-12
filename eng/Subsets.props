@@ -37,7 +37,7 @@
   -->
 
   <PropertyGroup>
-    <DefaultSubsets>clickonce+installer</DefaultSubsets>
+    <DefaultSubsets>clickonce+installer+dotnet_releases</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">clickonce+installer</DefaultSubsets>
   </PropertyGroup>
 
@@ -56,11 +56,13 @@
   <PropertyGroup>
     <DefaultClickOnceSubsets>clickonce</DefaultClickOnceSubsets>
     <DefaultInstallerSubsets>installer.pkgprojs</DefaultInstallerSubsets>
+    <DefaultDotNetReleasesSubsets>dotnet_releases</DefaultDotNetReleasesSubsets>
   </PropertyGroup>
 
   <PropertyGroup>
     <_subset>$(_subset.Replace('+clickonce+', '+$(DefaultClickOnceSubsets)+'))</_subset>
     <_subset>$(_subset.Replace('+installer+', '+$(DefaultInstallerSubsets)+'))</_subset>
+    <_subset>$(_subset.Replace('+dotnet_releases+', '+$(DefaultDotNetReleasesSubsets)+'))</_subset>
 
     <!-- Surround _subset in dashes to simplify checks below -->
     <_subset>+$(_subset.Trim('+'))+</_subset>
@@ -79,6 +81,9 @@
     <SubsetName Include="Installer" Description="Generates installers. This produces installers for deployment tools." />
     <SubsetName Include="Installer.PkgProjs" Description="The packaging projects. These produce NETCoreApp assets: NuGet packages, installers, zips, and Linux packages." />
     <SubsetName Include="Installer.Publish" OnDemand="true" Description="Builds the installer publish infrastructure." />
+
+    <!-- DotNetReleases -->
+    <SubsetName Include="dotnet_releases" Description="Libary for accessing .NET release data." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -108,6 +113,13 @@
 
   <ItemGroup Condition="$(_subset.Contains('+installer.publish+'))">
     <ProjectToBuild Include="$(InstallerProjectRoot)publish\prepare-artifacts.proj" Pack="true" BuildInParallel="false" Category="installer" />
+  </ItemGroup>
+
+  <!-- Releases sets -->
+  <ItemGroup Condition="$(_subset.Contains('+dotnet_releases+'))">
+    <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
+    <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)tests\**\*.csproj" Test="$(Test)"/>
+    <ProjectToBuild Include="@(DotNetReleasesProjectToBuild)" BuildInParallel="true" Category="dotnet_releases" />
   </ItemGroup>
 
   <!-- Set default configurations. -->
