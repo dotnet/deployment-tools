@@ -15,6 +15,9 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EnableXlfLocalization>true</EnableXlfLocalization>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Description>
+      A client library for queyring the .NET releases JSON files.
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>    
