@@ -3,6 +3,14 @@
 This repo contains the code to build the .NET deployment tools and installers for
 all supported platforms, as well as the sources to .NET deployment tools.
 
+## Status
+
+| |Build|
+|---|:--:|
+| ci |[![Build Status](https://dev.azure.com/dnceng/public/_apis/build/status/dotnet.deployment-tools?branchName=master)](https://dev.azure.com/dnceng/public/_build/latest?definitionId=884&branchName=master)|
+| official | [![Build Status](https://dev.azure.com/dnceng/internal/_apis/build/status/dotnet-deployment-tools?branchName=master)](https://dev.azure.com/dnceng/internal/_build/latest?definitionId=877&branchName=master)|
+<br/>
+
 ## Tools documentation
 
 * [dotnet-mage](Documentation/dotnet-mage/README.md) usage patterns for dotnet-mage tool (formerly Mage.NET)
