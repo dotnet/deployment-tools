@@ -18,7 +18,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             ProductCollection products = await ProductCollection.GetFromFileAsync(@"data\\releases-index.json", false);
             IEnumerable<SupportPhase> supportPhases = products.GetSupportPhases();
 
-            Assert.Equal(3, supportPhases.Count());
+            Assert.Equal(4, supportPhases.Count());
+            Assert.Contains(SupportPhase.Current, supportPhases);
             Assert.Contains(SupportPhase.EOL, supportPhases);
             Assert.Contains(SupportPhase.LTS, supportPhases);
             Assert.Contains(SupportPhase.Preview, supportPhases);
@@ -29,7 +30,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         {
             Func<Task> f = async () => await ProductCollection.GetFromFileAsync((string)null, false);
 
-            ArgumentNullException exception = await Assert.ThrowsAsync<ArgumentNullException>(f);
+            _ = await Assert.ThrowsAsync<ArgumentNullException>(f);
         }
 
         [Fact]

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// <summary>
     /// Provides an overview of a single product, including information related to its support level and the latest SDK and runtime releases.
     /// </summary>
+    [DebuggerDisplay("{ProductName} {ProductVersion} ({SupportPhase})")]
     public class Product
     {
         /// <summary>
