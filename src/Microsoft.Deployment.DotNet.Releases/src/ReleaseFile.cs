@@ -60,7 +60,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         [JsonConstructor]
-        internal ReleaseFile([JsonProperty(PropertyName = "hash")] string hash,
+        internal ReleaseFile(
+            [JsonProperty(PropertyName = "hash")] string hash,
             [JsonProperty(PropertyName = "name")] string name,
             [JsonProperty(PropertyName = "rid")] string rid,
             [JsonProperty(PropertyName = "url")] string address)

@@ -17,7 +17,6 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         internal WindowsDesktopReleaseComponent(JToken token, ProductRelease release) : base(token, release)
         {
-
         }
     }
 }

@@ -17,9 +17,11 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// <summary>
     /// Provides an overview of a single product, including information related to its support level and the latest SDK and runtime releases.
     /// </summary>
-    [DebuggerDisplay("{ProductName} {ProductVersion} ({SupportPhase})")]
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Product
     {
+        private string DebuggerDisplay => $"{ProductName} {ProductVersion} ({SupportPhase})";
+
         /// <summary>
         /// The version of the product, e.g "5.0" or "1.1".
         /// </summary>
@@ -119,7 +121,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         /// <summary>
         /// The support phase of the Product. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
-        /// be checked to confirm whether a release is still supported. 
+        /// be checked to confirm whether a release is still supported.
         /// </summary>
         /// <remarks>
         /// The EOL dates are often published in advance, but there can be delays to updating the support phase in the published
@@ -133,11 +135,20 @@ namespace Microsoft.Deployment.DotNet.Releases
         } = SupportPhase.Unknown;
 
         /// <summary>
+        /// <see langword="true"/> if the support phase is not <see cref="SupportPhase.EOL"/>
+        /// and the current date is less than the EOL date of the product, 
+        /// <see langword="false"/> otherwise.
+        /// </summary>
+        /// <returns><see langword="true"/> if the product is currently supported; <see langword="false"/> otherwise.</returns>
+        [JsonIgnore]
+        public bool IsSupported => !IsOutOfSupport();
+
+        /// <summary>
         /// Gets a collection of all releases associated with this <see cref="Product"/>.
         /// </summary>
         /// <returns>A collection of all releases for this product.</returns>
-        public Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync()
-            => GetReleasesAsync(ReleasesJson);
+        public Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync() =>
+            GetReleasesAsync(ReleasesJson);
 
         /// <summary>
         /// Gets a collection of all releases associated with this <see cref="Product"/> using a file
@@ -151,10 +162,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesJson);
 
-            using (TextReader reader = File.OpenText(path))
-            {
-                return await GetReleasesAsync(reader, this);
-            }
+            using TextReader reader = File.OpenText(path);
+
+            return await GetReleasesAsync(reader, this);
         }
 
         /// <summary>
@@ -170,12 +180,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(address));
             }
 
-            using (HttpClient client = new HttpClient())
-            using (MemoryStream stream = new MemoryStream(await client.GetByteArrayAsync(address)))
-            using (TextReader reader = new StreamReader(stream))
-            {
-                return await GetReleasesAsync(reader, this);
-            }
+            using var client = new HttpClient();
+            using var stream = new MemoryStream(await client.GetByteArrayAsync(address));
+            using var reader = new StreamReader(stream);
+
+            return await GetReleasesAsync(reader, this);
         }
 
         /// <summary>
@@ -196,9 +205,9 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            JObject json = JObject.Parse(await reader.ReadToEndAsync());
+            var json = JObject.Parse(await reader.ReadToEndAsync());
             JToken releasesToken = json["releases"];
-            List<ProductRelease> releases = new List<ProductRelease>();
+            var releases = new List<ProductRelease>();
 
             foreach (JToken releaseToken in releasesToken)
             {

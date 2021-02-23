@@ -15,7 +15,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     {
         /// <summary>
         /// The identifier of the CVE.
-        /// </summary>        
+        /// </summary>
         public string Id
         {
             get;
@@ -24,7 +24,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         /// <summary>
         /// The URI pointing to a description of the vulnerability.
-        /// </summary>        
+        /// </summary>
         public Uri DescriptionLink
         {
             get;
@@ -46,7 +46,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         public bool Equals(Cve other)
         {
             return ReferenceEquals(this, other) ||
-                (Id == other.Id && DescriptionLink == other.DescriptionLink);
+                Id == other.Id && DescriptionLink == other.DescriptionLink;
         }
 
         /// <summary>

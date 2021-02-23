@@ -20,15 +20,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="hasExistingValue">The existing value of the object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <returns>A <see cref="SupportPhase"/> created from the object value.</returns>
-        public override SupportPhase ReadJson(JsonReader reader, Type objectType, SupportPhase existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override SupportPhase ReadJson(
+            JsonReader reader, Type objectType, SupportPhase existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.String)
             {
                 var tokenValue = reader.Value.ToString();
-
-                if (!string.IsNullOrEmpty(tokenValue))
+                if (!string.IsNullOrWhiteSpace(tokenValue))
                 {
-                    return Enum.TryParse(tokenValue, ignoreCase: true, out SupportPhase result) ? result : SupportPhase.Unknown;
+                    return Enum.TryParse(tokenValue, ignoreCase: true, out SupportPhase result)
+                        ? result
+                        : SupportPhase.Unknown;
                 }
             }
 
@@ -41,9 +43,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="writer">The <see cref="JsonWriter"/> to use for writing the value.</param>
         /// <param name="value">The <see cref="SupportPhase"/> to write.</param>
         /// <param name="serializer">The calling serializer</param>
-        public override void WriteJson(JsonWriter writer, SupportPhase value, JsonSerializer serializer)
-        {
+        public override void WriteJson(JsonWriter writer, SupportPhase value, JsonSerializer serializer) =>
             throw new NotImplementedException();
-        }
     }
 }

@@ -3,14 +3,15 @@
   <PropertyGroup>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>      
+    <PreReleaseVersionLabel>preview1</PreReleaseVersionLabel>
   </PropertyGroup>
-  
-  <PropertyGroup>  
+
+  <PropertyGroup>
     <IsPackable Condition="'$(TargetArchitecture)' == 'x86'">true</IsPackable>
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <LangVersion>8.0</LangVersion>
     <RootNamespace>Microsoft.Deployment.DotNet.Releases</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EnableXlfLocalization>true</EnableXlfLocalization>
@@ -20,9 +21,10 @@
     </Description>
   </PropertyGroup>
 
-  <ItemGroup>    
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

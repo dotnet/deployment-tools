@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -13,8 +14,11 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// <summary>
     /// Describes a single .NET <see cref="ProductRelease"/>. A release may include multiple SDKs and runtime releases.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ProductRelease
     {
+        private string DebuggerDisplay => $"Release {Version} (SDKs: {Sdks.Count}, Runtimes: {AllRuntimes.Count})";
+
         /// <summary>
         /// A collection of all the runtime components (.NET Core, ASP.NET Core, Windows Desktop, etc.) included in this <see cref="ProductRelease"/>.
         /// </summary>
@@ -61,7 +65,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <see langword="true"/> if the release version describes a prerelease; <see langword="false"/> otherwise.
         /// </summary>
         [JsonIgnore]
-        public bool IsPreview => !string.IsNullOrEmpty(Version.Prerelease);
+        public bool IsPreview => !string.IsNullOrWhiteSpace(Version.Prerelease);
 
         /// <summary>
         /// <see langword="true"/> if the release includes security fixes; otherwise <see langword="false"/>.
@@ -74,7 +78,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The <see cref="Product"/> to which this <see cref="ProductRelease"/> belongs.
         /// </summary>
-        
+
         public Product Product
         {
             get;
@@ -140,8 +144,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             Version = jtoken["release-version"].ToObject<ReleaseVersion>(js);
 
             var cveListToken = jtoken["cve-list"];
-            List<Cve> cveList = cveListToken.IsNullOrEmpty() ? new List<Cve>() :
-                JsonConvert.DeserializeObject<List<Cve>>(cveListToken.ToString(), Utils.DefaultSerializerSettings);
+            var cveList = cveListToken.IsNullOrEmpty()
+                ? new List<Cve>()
+                : JsonConvert.DeserializeObject<List<Cve>>(cveListToken.ToString(), Utils.DefaultSerializerSettings);
             Cves = new ReadOnlyCollection<Cve>(cveList);
             IsSecurityUpdate = jtoken["security"].ToObject<bool>(js);
             ReleaseNotes = jtoken["release-notes"]?.ToObject<Uri>(js);
@@ -190,7 +195,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             Components = new ReadOnlyCollection<ReleaseComponent>(componentList);
             AllRuntimes = new ReadOnlyCollection<ReleaseComponent>(runtimeList);
 
-            Files = new ReadOnlyCollection<ReleaseFile>(new List<ReleaseFile>(Components.SelectMany(c => c.Files).Distinct()));
+            Files = new ReadOnlyCollection<ReleaseFile>(
+                Components.SelectMany(c => c.Files).Distinct().ToList());
 
             Product = product;
         }
