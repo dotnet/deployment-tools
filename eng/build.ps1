@@ -75,7 +75,7 @@ function Get-Help() {
   Write-Host "* Build ClickOnce tools and installers for Windows x64 on Release configuration:"
   Write-Host ".\build.cmd -subset clickonce+installer -c release"
   Write-Host ""
-  Write-Host "For more information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
+  Write-Host "For more information, check out https://github.com/dotnet/runtime/blob/main/docs/workflow/README.md"
 }
 
 if ($help -or (($null -ne $properties) -and ($properties.Contains('/help') -or $properties.Contains('/?')))) {

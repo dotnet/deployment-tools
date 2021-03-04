@@ -60,7 +60,7 @@
     <GitHubRepositoryName>deployment-tools</GitHubRepositoryName>
     <RepositoryUrl>https://github.com/dotnet/deployment-tools</RepositoryUrl>
     <ProjectUrl>https://github.com/dotnet/deployment-tools</ProjectUrl>
-    <LicenseUrl>https://github.com/dotnet/deployment-tools/blob/master/LICENSE.TXT</LicenseUrl>
+    <LicenseUrl>https://github.com/dotnet/deployment-tools/blob/main/LICENSE.TXT</LicenseUrl>
     <LicenseFile>$(RepoRoot)LICENSE.TXT</LicenseFile>
     <ThirdPartyNoticesFile>$(RepoRoot)THIRD-PARTY-NOTICES.TXT</ThirdPartyNoticesFile>
 

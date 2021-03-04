@@ -9,7 +9,7 @@
       reference-style Markdown links in the readme file to figure out what to put in the cells.
     -->
     <ItemGroup>
-      <Branches Include="Master" Abbr="master" />
+      <Branches Include="Main" Abbr="main" />
       <Branches Include="Release/3.0.X" Abbr="3.0.X" />
       <Branches Include="Release/2.2.X" Abbr="2.2.X" />
       <Branches Include="Release/2.1.X" Abbr="2.1.X" />

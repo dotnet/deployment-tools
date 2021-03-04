@@ -80,7 +80,7 @@ usage()
   echo "* Build ClickOnce for Linux x64 on Release configuration:"
   echo "./build.sh -subset clickonce -c release"
   echo ""
-  echo "For more general information, check out https://github.com/dotnet/runtime/blob/master/docs/workflow/README.md"
+  echo "For more general information, check out https://github.com/dotnet/runtime/blob/main/docs/workflow/README.md"
 }
 
 initDistroRid()
