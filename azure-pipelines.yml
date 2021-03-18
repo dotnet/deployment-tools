@@ -45,6 +45,10 @@ variables:
 stages:
 - stage: Build
   jobs:
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+    - template: /eng/common/templates/job/onelocbuild.yml
+      parameters:
+        CreatePr: false
   # -------- Build Windows legs --------
   # Windows x64
   - template: /eng/jobs/windows-build.yml
