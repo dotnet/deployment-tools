@@ -641,7 +641,7 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
         <source>Signing is only supported on Windows.</source>
-        <target state="new">Signing is only supported on Windows.</target>
+        <target state="translated">署名は Windows でのみサポートされます。</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTimestamp">

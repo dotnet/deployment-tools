@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
-        <target state="new">Value cannot be empty.</target>
+        <target state="translated">值不能为空。</target>
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">
