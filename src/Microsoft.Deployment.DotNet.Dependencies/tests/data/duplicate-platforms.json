@@ -1,0 +1,14 @@
+{
+  "productVersion": "6.0",
+  "dependencyUsages": {
+    "default": "Used by default or for canonical scenarios"
+  },
+  "platforms": [
+    {
+      "rid": "debian"
+    },
+    {
+      "rid": "debian"
+    }
+  ]
+}

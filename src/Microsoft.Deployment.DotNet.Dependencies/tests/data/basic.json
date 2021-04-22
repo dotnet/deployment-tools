@@ -1,0 +1,49 @@
+{
+  "productVersion": "6.0",
+  "dependencyUsages": {
+    "default": "Used by default or for canonical scenarios"
+  },
+  "platforms": [
+    {
+      "rid": "debian",
+      "components": [
+        {
+          "name": "Microsoft.NETCore.App",
+          "type": "SharedFramework",
+          "platformDependencies": [
+            {
+              "name": "libicu57",
+              "dependencyType": "LinuxPackage",
+              "usage": "default"
+            },
+            {
+              "name": "zlib1g",
+              "dependencyType": "LinuxPackage",
+              "usage": "default"
+            }
+          ]
+        }
+      ],
+      "platforms": [
+        {
+          "rid": "debian.10",
+          "components": [
+            {
+              "name": "Microsoft.NETCore.App",
+              "type": "SharedFramework",
+              "platformDependencies": [
+                {
+                  "name": "libicu63",
+                  "overrides": {
+                    "id": "libicu57",
+                    "dependencyType": "LinuxPackage"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
