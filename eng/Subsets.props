@@ -37,7 +37,7 @@
   -->
 
   <PropertyGroup>
-    <DefaultSubsets>clickonce+installer+dotnet_releases</DefaultSubsets>
+    <DefaultSubsets>clickonce+installer+dotnet_releases+dotnet_dependencies</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">clickonce+installer</DefaultSubsets>
   </PropertyGroup>
 
@@ -57,12 +57,14 @@
     <DefaultClickOnceSubsets>clickonce</DefaultClickOnceSubsets>
     <DefaultInstallerSubsets>installer.pkgprojs</DefaultInstallerSubsets>
     <DefaultDotNetReleasesSubsets>dotnet_releases</DefaultDotNetReleasesSubsets>
+    <DefaultDotNetDependenciesSubsets>dotnet_dependencies</DefaultDotNetDependenciesSubsets>
   </PropertyGroup>
 
   <PropertyGroup>
     <_subset>$(_subset.Replace('+clickonce+', '+$(DefaultClickOnceSubsets)+'))</_subset>
     <_subset>$(_subset.Replace('+installer+', '+$(DefaultInstallerSubsets)+'))</_subset>
     <_subset>$(_subset.Replace('+dotnet_releases+', '+$(DefaultDotNetReleasesSubsets)+'))</_subset>
+    <_subset>$(_subset.Replace('+dotnet_dependencies+', '+$(DefaultDotNetDependenciesSubsets)+'))</_subset>
 
     <!-- Surround _subset in dashes to simplify checks below -->
     <_subset>+$(_subset.Trim('+'))+</_subset>
@@ -84,6 +86,9 @@
 
     <!-- DotNetReleases -->
     <SubsetName Include="dotnet_releases" Description="Libary for accessing .NET release data." />
+
+    <!-- DotNetDependencies -->
+    <SubsetName Include="dotnet_dependencies" Description="Libary for accessing .NET platform dependency data." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -120,6 +125,13 @@
     <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
     <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)tests\**\*.csproj" Test="$(Test)"/>
     <ProjectToBuild Include="@(DotNetReleasesProjectToBuild)" BuildInParallel="true" Category="dotnet_releases" />
+  </ItemGroup>
+
+  <!-- Dependencies sets -->
+  <ItemGroup Condition="$(_subset.Contains('+dotnet_dependencies+'))">
+    <DotNetDependenciesProjectToBuild Include="$(DotNetDependenciesProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
+    <DotNetDependenciesProjectToBuild Include="$(DotNetDependenciesProjectRoot)tests\**\*.csproj" Test="$(Test)"/>
+    <ProjectToBuild Include="@(DotNetDependenciesProjectToBuild)" BuildInParallel="true" Category="dotnet_dependencies" />
   </ItemGroup>
 
   <!-- Set default configurations. -->
