@@ -65,12 +65,15 @@ namespace Microsoft.Deployment.DotNet.Releases
             Version = token["version"]?.ToObject<ReleaseVersion>(Utils.DefaultSerializer);
             DisplayVersion = token["version-display"]?.ToString();
             JToken filesToken = token["files"];
-            List<ReleaseFile> fileList = filesToken.IsNullOrEmpty() ? new List<ReleaseFile>() :
-                JsonConvert.DeserializeObject<List<ReleaseFile>>(filesToken.ToString(), Utils.DefaultSerializerSettings);
+            List<ReleaseFile> fileList = filesToken.IsNullOrEmpty()
+                ? new List<ReleaseFile>()
+                : JsonConvert.DeserializeObject<List<ReleaseFile>>(
+                    filesToken.ToString(), Utils.DefaultSerializerSettings);
             Release = release;
 
             // Trim out marketing files. Users should never interact with these
-            Files = new ReadOnlyCollection<ReleaseFile>(fileList.Where(f => !f.Name.Contains("-gs") || !f.Name.Contains("-nj")).ToList());
+            Files = new ReadOnlyCollection<ReleaseFile>(
+                fileList.Where(f => !f.Name.Contains("-gs") || !f.Name.Contains("-nj")).ToList());
         }
     }
 }

@@ -133,8 +133,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [InlineData("1.0.0-beta5", "1.0.0-beta4", -1)]
         public void ComparePrecedenceToReturnsRelativeSortOrder(string version1, string version2, int expectedPrecedence)
         {
-            ReleaseVersion v1 = string.IsNullOrEmpty(version1) ? null : new ReleaseVersion(version1);
-            ReleaseVersion v2 = string.IsNullOrEmpty(version2) ? null : new ReleaseVersion(version2);
+            ReleaseVersion v1 = string.IsNullOrWhiteSpace(version1) ? null : new ReleaseVersion(version1);
+            ReleaseVersion v2 = string.IsNullOrWhiteSpace(version2) ? null : new ReleaseVersion(version2);
 
             if (expectedPrecedence == 1)
             {

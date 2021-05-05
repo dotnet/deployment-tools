@@ -17,17 +17,20 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// Regular expression for capturing the pre-release part of a semantic version.
         /// </summary>
-        private const string PrereleasePattern = @"(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)";
+        private const string PrereleasePattern =
+            @"(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)";
 
         /// <summary>
         /// Regular expression for capturing the build-metadata part of a semantic version.
         /// </summary>
-        private const string BuildMetadataPattern = @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
+        private const string BuildMetadataPattern =
+            @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
 
         /// <summary>
         /// Regular expression for v2 semantic version to capture components into separate groups: major, minor, patch, prerelease and build.
         /// </summary>
-        private static readonly string s_semanticVersion2Pattern = $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
+        private static readonly string s_semanticVersion2Pattern =
+            $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
 
         /// <summary>
         /// The build metadata of the version or <see langword="null"/>.
@@ -104,7 +107,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         public ReleaseVersion(string version)
         {
             Match match = Regex.Match(version, s_semanticVersion2Pattern);
-
             if (!match.Success)
             {
                 throw new FormatException(string.Format(ReleasesResources.InvalidVersion, version));
@@ -166,10 +168,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             Minor = minor;
             Patch = patch;
 
-            if (!string.IsNullOrEmpty(prerelease))
+            if (!string.IsNullOrWhiteSpace(prerelease))
             {
                 Match prereleaseMatch = Regex.Match(prerelease, $@"^{PrereleasePattern}$");
-
                 if (!prereleaseMatch.Groups["prerelease"].Success)
                 {
                     throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
@@ -178,10 +179,9 @@ namespace Microsoft.Deployment.DotNet.Releases
                 Prerelease = prereleaseMatch.Groups["prerelease"].Value;
             }
 
-            if (!string.IsNullOrEmpty(buildMetadata))
+            if (!string.IsNullOrWhiteSpace(buildMetadata))
             {
                 Match buildMetadataMatch = Regex.Match(buildMetadata, $@"^{BuildMetadataPattern}$");
-
                 if (!buildMetadataMatch.Groups["buildmetadata"].Success)
                 {
                     throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
@@ -213,21 +213,18 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             int result = Major.CompareTo(value.Major);
-
             if (result != 0)
             {
                 return result;
             }
 
             result = Minor.CompareTo(value.Minor);
-
             if (result != 0)
             {
                 return result;
             }
 
             result = Patch.CompareTo(value.Patch);
-
             if (result != 0)
             {
                 return result;
@@ -245,10 +242,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// Returns a signed integer indicating whether this instance precedes, follows or appears in the same position in 
         /// the sort order as the specified <paramref name="obj"/>.
         /// </returns>
-        public int CompareTo(object obj)
-        {
-            return CompareTo((ReleaseVersion)obj);
-        }
+        public int CompareTo(object obj) => CompareTo((ReleaseVersion)obj);
 
         /// <summary>
         /// Compares this instance to the specified object and returns an indication of their relative values.
@@ -258,7 +252,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         public int CompareTo(ReleaseVersion other)
         {
             int result = ComparePrecedenceTo(other);
-
             if (result != 0)
             {
                 return result;
@@ -274,7 +267,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the specified object is equal to the current object; <see langword="false"/> otherwise.</returns>
         public override bool Equals(object obj)
         {
-            if ((obj is null) || !(obj is ReleaseVersion))
+            if (obj is null || !(obj is ReleaseVersion releaseVersion))
             {
                 return false;
             }
@@ -284,7 +277,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 return true;
             }
 
-            ReleaseVersion other = (ReleaseVersion)obj;
+            ReleaseVersion other = releaseVersion;
 
             return Major == other.Major && Minor == other.Minor && Patch == other.Patch &&
                 string.Equals(Prerelease, other.Prerelease, StringComparison.Ordinal) &&
@@ -322,8 +315,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return Major ^ Minor ^ Patch ^ (!string.IsNullOrEmpty(Prerelease) ? Prerelease.GetHashCode() : 0) ^
-                (!string.IsNullOrEmpty(BuildMetadata) ? BuildMetadata.GetHashCode() : 0);
+            return Major ^ Minor ^ Patch ^ (!string.IsNullOrWhiteSpace(Prerelease) ? Prerelease.GetHashCode() : 0) ^
+                (!string.IsNullOrWhiteSpace(BuildMetadata) ? BuildMetadata.GetHashCode() : 0);
         }
 
         /// <summary>
@@ -332,11 +325,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="value">The value to compare.</param>
         /// <returns>
         /// <see langword="true"/> if both values have the same sort order; <see langword="false"/> otherwise.
-        /// </returns>        
-        public bool PrecedenceEquals(ReleaseVersion value)
-        {
-            return ComparePrecedenceTo(value) == 0;
-        }
+        /// </returns>
+        public bool PrecedenceEquals(ReleaseVersion value) => ComparePrecedenceTo(value) == 0;
 
         /// <summary>
         /// Returns a <see cref="string"/> representation of this <see cref="ReleaseVersion"/>.
@@ -345,8 +335,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         public override string ToString()
         {
             string v = $"{Major}.{Minor}.{Patch}";
-            v += !string.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : string.Empty;
-            v += !string.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
+            v += !string.IsNullOrWhiteSpace(Prerelease) ? $"-{Prerelease}" : string.Empty;
+            v += !string.IsNullOrWhiteSpace(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
 
             return v;
         }
@@ -366,8 +356,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             string value = fieldCount == 1 ? $"{Major}" : fieldCount == 2 ? $"{Major}.{Minor}" : $"{Major}.{Minor}.{Patch}";
-            value += fieldCount >= 4 && !string.IsNullOrEmpty(Prerelease) ? $"-{Prerelease}" : string.Empty;
-            value += fieldCount >= 5 && !string.IsNullOrEmpty(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
+            value += fieldCount >= 4 && !string.IsNullOrWhiteSpace(Prerelease) ? $"-{Prerelease}" : string.Empty;
+            value += fieldCount >= 5 && !string.IsNullOrWhiteSpace(BuildMetadata) ? $"+{BuildMetadata}" : string.Empty;
 
             return value;
         }
@@ -420,7 +410,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 return true;
             }
 
-            if ((a is null) || (b is null))
+            if (a is null || b is null)
             {
                 return false;
             }
@@ -434,10 +424,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> equals <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator ==(ReleaseVersion a, ReleaseVersion b)
-        {
-            return Equals(a, b);
-        }
+        public static bool operator ==(ReleaseVersion a, ReleaseVersion b) => Equals(a, b);
 
         /// <summary>
         /// Determines whether two specified <see cref="ReleaseVersion"/> objects are unequal.
@@ -445,10 +432,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> does not equal <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator !=(ReleaseVersion a, ReleaseVersion b)
-        {
-            return !Equals(a, b);
-        }
+        public static bool operator !=(ReleaseVersion a, ReleaseVersion b) => !Equals(a, b);
 
         /// <summary>
         /// Determines whether the first <see cref="ReleaseVersion"/> object is greater than the 
@@ -457,10 +441,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> is greater than <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator >(ReleaseVersion a, ReleaseVersion b)
-        {
-            return Compare(a, b) > 0;
-        }
+        public static bool operator >(ReleaseVersion a, ReleaseVersion b) => Compare(a, b) > 0;
 
         /// <summary>
         /// Determines whether the first <see cref="ReleaseVersion"/> object is greater than or equal to the 
@@ -469,10 +450,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> is greater than or equal to <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator >=(ReleaseVersion a, ReleaseVersion b)
-        {
-            return Compare(a, b) >= 0;
-        }
+        public static bool operator >=(ReleaseVersion a, ReleaseVersion b) => Compare(a, b) >= 0;
 
         /// <summary>
         /// Determines whether the first <see cref="ReleaseVersion"/> object is less than the 
@@ -481,10 +459,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> is less than <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator <(ReleaseVersion a, ReleaseVersion b)
-        {
-            return Compare(a, b) < 0;
-        }
+        public static bool operator <(ReleaseVersion a, ReleaseVersion b) => Compare(a, b) < 0;
 
         /// <summary>
         /// Determines whether the first <see cref="ReleaseVersion"/> object is less than or equal to the 
@@ -493,22 +468,19 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="a">The first <see cref="ReleaseVersion"/> object.</param>
         /// <param name="b">The second <see cref="ReleaseVersion"/> object.</param>
         /// <returns><see langword="true"/> if <paramref name="a"/> is less than or equal to <paramref name="b"/>;otherwise <see langword="false"/>.</returns>
-        public static bool operator <=(ReleaseVersion a, ReleaseVersion b)
-        {
-            return Compare(a, b) <= 0;
-        }
+        public static bool operator <=(ReleaseVersion a, ReleaseVersion b) => Compare(a, b) <= 0;
         #endregion
 
         internal static int CompareIdentifiers(string identifierA, string identifierB)
         {
             // https://semver.org/#spec-item-11
             // A non-prerelease version has a higher precendence than pre-release, e.g. 1.0.0 and 1.0.0-preview2
-            if (string.IsNullOrEmpty(identifierA))
+            if (string.IsNullOrWhiteSpace(identifierA))
             {
-                return string.IsNullOrEmpty(identifierB) ? 0 : 1;
+                return string.IsNullOrWhiteSpace(identifierB) ? 0 : 1;
             }
 
-            if (string.IsNullOrEmpty(identifierB))
+            if (string.IsNullOrWhiteSpace(identifierB))
             {
                 return -1;
             }
@@ -526,7 +498,6 @@ namespace Microsoft.Deployment.DotNet.Releases
                 bool isNumericIdentifierB = Regex.IsMatch(dotPartsB[i], @"^\d+$");
 
                 int compareResult;
-
                 if (isNumericIdentifierA && isNumericIdentifierB)
                 {
                     // Identifiers consisting of only digits are compared numerically
@@ -552,7 +523,6 @@ namespace Microsoft.Deployment.DotNet.Releases
                     }
 
                     compareResult = string.CompareOrdinal(dotPartsA[i], dotPartsB[i]);
-
                     if (compareResult != 0)
                     {
                         return compareResult;
@@ -587,11 +557,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             // between 1 and -1 depending on the ordinal value
             // of the character at the current index.
             int r = 0;
-
             for (int i = a.Length - 1; i > 0; i--)
             {
                 int r2 = a[i].CompareTo(b[i]);
-
                 if (r2 != 0)
                 {
                     r = r2 / Math.Abs(r2);

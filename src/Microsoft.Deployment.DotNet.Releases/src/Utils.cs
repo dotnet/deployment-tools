@@ -39,18 +39,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the local file is the latest; <see langword="false"/> otherwise.</returns>
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-                HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
+            using var httpClient = new HttpClient();
 
-                httpResponse.EnsureSuccessStatusCode();
+            var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
+            HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
 
-                DateTime? onlineLastModified = httpResponse.Content.Headers.LastModified?.DateTime;
-                FileInfo fileInfo = new FileInfo(fileName);
+            httpResponse.EnsureSuccessStatusCode();
 
-                return fileInfo.LastWriteTime >= onlineLastModified;
-            }
+            DateTime? onlineLastModified = httpResponse.Content.Headers.LastModified?.DateTime;
+            var fileInfo = new FileInfo(fileName);
+
+            return fileInfo.LastWriteTime >= onlineLastModified;
         }
 
         /// <summary>
@@ -61,23 +60,19 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>The task object representing the asynchronous operation.</returns>
         internal static async Task DownloadFileAsync(Uri address, string fileName)
         {
-            using (HttpClient httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            string directory = Path.GetDirectoryName(fileName);
+
+            if (!Directory.Exists(directory))
             {
-                string directory = Path.GetDirectoryName(fileName);
-
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
-                httpResponse.EnsureSuccessStatusCode();
-
-                using (FileStream fileStream = File.Create(fileName))
-                {
-                    await httpResponse.Content.CopyToAsync(fileStream);
-                }
+                Directory.CreateDirectory(directory);
             }
+
+            HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
+            httpResponse.EnsureSuccessStatusCode();
+
+            using var fileStream = File.Create(fileName);
+            await httpResponse.Content.CopyToAsync(fileStream);
         }
 
         /// <summary>
@@ -108,12 +103,10 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, fileName));
             }
 
-            using (FileStream stream = File.OpenRead(fileName))
-            {
-                byte[] checksum = hashAlgorithm.ComputeHash(stream);
+            using var stream = File.OpenRead(fileName);
+            byte[] checksum = hashAlgorithm.ComputeHash(stream);
 
-                return BitConverter.ToString(checksum).Replace("-", "").ToLowerInvariant();
-            }
+            return BitConverter.ToString(checksum).Replace("-", "").ToLowerInvariant();
         }
 
         /// <summary>
@@ -149,11 +142,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                     throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, path));
                 }
 
-                await Utils.DownloadFileAsync(address, path);
+                await DownloadFileAsync(address, path);
             }
-            else if ((downloadLatest) && (!await Utils.IsLatestFileAsync(path, address)))
+            else if (downloadLatest && !await IsLatestFileAsync(path, address))
             {
-                await Utils.DownloadFileAsync(address, path);
+                await DownloadFileAsync(address, path);
             }
         }
 
@@ -162,10 +155,12 @@ namespace Microsoft.Deployment.DotNet.Releases
             DefaultSerializerSettings = new JsonSerializerSettings
             {
                 DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                Converters =
+                {
+                    new ReleaseVersionConverter()
+                }
             };
-
-            DefaultSerializerSettings.Converters.Add(new ReleaseVersionConverter());
 
             DefaultSerializer = JsonSerializer.CreateDefault(DefaultSerializerSettings);
         }

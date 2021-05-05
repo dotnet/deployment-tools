@@ -17,10 +17,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="writer">The <see cref="JsonWriter"/> to use for writing the value.</param>
         /// <param name="value">The <see cref="ReleaseVersion"/> to write.</param>
         /// <param name="serializer">The calling serializer</param>
-        public override void WriteJson(JsonWriter writer, ReleaseVersion value, JsonSerializer serializer)
-        {
+        public override void WriteJson(JsonWriter writer, ReleaseVersion value, JsonSerializer serializer) =>
             writer.WriteValue(value.ToString());
-        }
 
         /// <summary>
         /// Reads a string value and converts it into a <see cref="ReleaseVersion"/> object.
@@ -31,11 +29,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="hasExistingValue">The existing value of the object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <returns>A <see cref="ReleaseVersion"/> created from the object value.</returns>
-        public override ReleaseVersion ReadJson(JsonReader reader, Type objectType, ReleaseVersion existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override ReleaseVersion ReadJson(
+            JsonReader reader, Type objectType, ReleaseVersion existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            string s = (string)reader.Value;
-
-            return string.IsNullOrEmpty(s) ? null : new ReleaseVersion(s);
+            var stringValue = (string)reader.Value;
+            return string.IsNullOrWhiteSpace(stringValue) ? null : new ReleaseVersion(stringValue);
         }
     }
 }

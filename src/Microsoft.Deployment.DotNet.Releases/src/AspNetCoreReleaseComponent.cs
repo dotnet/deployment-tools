@@ -36,9 +36,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         internal AspNetCoreReleaseComponent(JToken token, ProductRelease release) : base(token, release)
         {
-#pragma warning disable CA1825 // Avoid zero-length array allocations, Array.Empty<T> is only supported in netstandard2.1
             AspNetCoreModuleVersions = new ReadOnlyCollection<Version>(token["version-aspnetcoremodule"]?.ToObject<Version[]>(Utils.DefaultSerializer) ?? new Version[] { });
-#pragma warning restore CA1825 // Avoid zero-length array allocations
             VisualStudioVersion = (string)token["vs-version"];
         }
     }

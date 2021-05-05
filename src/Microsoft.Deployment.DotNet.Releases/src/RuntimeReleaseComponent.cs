@@ -40,7 +40,6 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         internal RuntimeReleaseComponent(JToken token, ProductRelease release) : base(token, release)
         {
-
         }
     }
 }

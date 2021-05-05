@@ -9,7 +9,7 @@ namespace Microsoft.Deployment.DotNet.Releases
     {
         internal static bool IsNullOrEmpty(this JToken token)
         {
-            return (token == null) || (token.Type == JTokenType.Null) || (!token.HasValues);
+            return token is null || token is { Type: JTokenType.Null } || !token.HasValues;
         }
     }
 }

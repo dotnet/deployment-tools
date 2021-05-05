@@ -32,7 +32,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="productList">The list of products to include.</param>
         private ProductCollection(IList<Product> productList) : base(productList)
         {
-
         }
 
         /// <summary>
@@ -84,12 +83,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(releasesIndexUrl));
             }
 
-            using (HttpClient client = new HttpClient())
-            using (MemoryStream stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl)))
-            using (TextReader reader = new StreamReader(stream))
-            {
-                return await GetAsync(reader);
-            }
+            using var client = new HttpClient();
+            using var stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl));
+            using var reader = new StreamReader(stream);
+
+            return await GetAsync(reader);
         }
 
         /// <summary>
@@ -109,10 +107,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesIndexDefaultUrl);
 
-            using (TextReader reader = File.OpenText(path))
-            {
-                return await GetAsync(reader);
-            }
+            using TextReader reader = File.OpenText(path);
+            
+            return await GetAsync(reader);
         }
 
         private static async Task<ProductCollection> GetAsync(TextReader reader)
@@ -122,11 +119,12 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            JObject json = JObject.Parse(await reader.ReadToEndAsync());
+            var json = JObject.Parse(await reader.ReadToEndAsync());
             JToken releasesIndex = json["releases-index"];
 
-            return new ProductCollection(JsonConvert.DeserializeObject<List<Product>>(releasesIndex.ToString(),
-                Utils.DefaultSerializerSettings));
+            return new ProductCollection(
+                JsonConvert.DeserializeObject<List<Product>>(releasesIndex.ToString(),
+                    Utils.DefaultSerializerSettings));
         }
     }
 }
