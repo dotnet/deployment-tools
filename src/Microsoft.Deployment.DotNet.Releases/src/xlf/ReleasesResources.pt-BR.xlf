@@ -4,72 +4,72 @@
     <body>
       <trans-unit id="AspNetCoreReleaseName">
         <source>ASP.NET Core Runtime</source>
-        <target state="new">ASP.NET Core Runtime</target>
+        <target state="translated">Runtime do ASP.NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotFound">
         <source>Could not find the specified file: {0}</source>
-        <target state="new">Could not find the specified file: {0}</target>
+        <target state="translated">Não foi possível localizar o arquivo especificado: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="HashMismatch">
         <source>The expected hash ({0}) and actual hash ({1}) for {2} do not match.</source>
-        <target state="new">The expected hash ({0}) and actual hash ({1}) for {2} do not match.</target>
+        <target state="translated">O hash esperado ({0}) e o hash real ({1}) de {2} não correspondem.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidBuildMetadata">
         <source>The build metadata value is invalid: {0}</source>
-        <target state="new">The build metadata value is invalid: {0}</target>
+        <target state="translated">O valor de metadados do build é inválido: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMajorVersion">
         <source>Invalid or missing major version.</source>
-        <target state="new">Invalid or missing major version.</target>
+        <target state="translated">Versão principal inválida ou ausente.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinorVersion">
         <source>Invalid or missing minor version.</source>
-        <target state="new">Invalid or missing minor version.</target>
+        <target state="translated">Versão secundária inválida ou ausente.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPatch">
         <source>Invalid or missing patch version.</source>
-        <target state="new">Invalid or missing patch version.</target>
+        <target state="translated">Versão de patch inválida ou ausente.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPrerelease">
         <source>The prerelease value is invalid: {0}</source>
-        <target state="new">The prerelease value is invalid: {0}</target>
+        <target state="translated">O valor de pré-lançamento é inválido: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
         <source>Invalid version: {0}</source>
-        <target state="new">Invalid version: {0}</target>
+        <target state="translated">Versão inválida: {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="RuntimeReleaseName">
         <source>.NET Core Runtime</source>
-        <target state="new">.NET Core Runtime</target>
+        <target state="translated">Runtime do .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="SdkReleaseName">
         <source>SDK</source>
-        <target state="new">SDK</target>
+        <target state="translated">SDK</target>
         <note />
       </trans-unit>
       <trans-unit id="ValueCannotBeEmpty">
         <source>Value cannot be empty.</source>
-        <target state="new">Value cannot be empty.</target>
+        <target state="translated">O valor não pode ser vazio.</target>
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">
         <source>The '{0}' value cannot be less than 0.</source>
-        <target state="new">The '{0}' value cannot be less than 0.</target>
+        <target state="translated">O valor de '{0}' não pode ser inferior a 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsDesktopReleaseName">
         <source>Desktop Runtime</source>
-        <target state="new">Desktop Runtime</target>
+        <target state="translated">Runtime do Desktop</target>
         <note />
       </trans-unit>
     </body>
