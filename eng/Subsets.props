@@ -70,7 +70,7 @@
 
   <PropertyGroup>
     <!-- Temporarily disable ClickOnce native build due to compiler mismatch issue with libnethost.lib -->
-    <DisableClickOnceNativeBuild>false</DisableClickOnceNativeBuild>
+    <DisableClickOnceNativeBuild>true</DisableClickOnceNativeBuild>
   </PropertyGroup>
 
   <ItemGroup>
