@@ -705,6 +705,11 @@ namespace Microsoft.Deployment.MageCLI
                     {
                         Version v = new Version(isRequiredUpdateString);
                         minVersion = isRequiredUpdateString;
+
+                        // Specifying minimum version implies that the app will get installed.
+                        // We will set 'install' to true, otherwise, app will not check for future updates.
+                        // Install value can still be overridden on command line, see next code block.
+                        install = TriStateBool.True;
                     }
                     catch (ArgumentOutOfRangeException)
                     {
@@ -718,30 +723,22 @@ namespace Microsoft.Deployment.MageCLI
             // Validate the Install option, if given
             if (installString != null)
             {
-                if (!string.IsNullOrEmpty(minVersion))
+                switch (installString.ToLower(CultureInfo.InvariantCulture))
                 {
-                    Application.PrintErrorMessage(ErrorMessages.InvalidMinVersion, minVersion);
-                    result = false;
-                }
-                else
-                {
-                    switch (installString.ToLower(CultureInfo.InvariantCulture))
-                    {
-                        case "true":
-                        case "t":
-                            install = TriStateBool.True;
-                            break;
+                    case "true":
+                    case "t":
+                        install = TriStateBool.True;
+                        break;
 
-                        case "false":
-                        case "f":
-                            install = TriStateBool.False;
-                            break;
+                    case "false":
+                    case "f":
+                        install = TriStateBool.False;
+                        break;
 
-                        default:
-                            result = false;
-                            Application.PrintErrorMessage(ErrorMessages.InvalidInstall, installString);
-                            break;
-                    }
+                    default:
+                        result = false;
+                        Application.PrintErrorMessage(ErrorMessages.InvalidInstall, installString);
+                        break;
                 }
             }
 
