@@ -32,7 +32,7 @@ Official Starting Page: https://dotnet.microsoft.com/
 We welcome contributions! Many people all over the world have helped make this project better.
 
 * [Contributing](CONTRIBUTING.md) explains what kinds of changes we welcome
-* [Get Up and Running on .NET Core](documentation/project/dogfooding.md) explains how to get nightly builds of the runtime and its libraries to test them in your own projects.
+* [Get Up and Running on .NET Core](https://github.com/dotnet/runtime/blob/main/docs/project/dogfooding.md) explains how to get nightly builds of the runtime and its libraries to test them in your own projects.
 
 ## Building
 
