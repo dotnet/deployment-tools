@@ -24,7 +24,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         public static Uri ReleasesIndexDefaultUrl
         {
             get;
-        } = new Uri("https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/releases-index.json");
+        } = new Uri("https://dotnetcli.azureedge.net/dotnet/release-metadata/releases-index.json");
 
         /// <summary>
         /// Creates a new <see cref="ProductCollection"/> instance.
