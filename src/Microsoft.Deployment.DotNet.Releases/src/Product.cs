@@ -198,6 +198,18 @@ namespace Microsoft.Deployment.DotNet.Releases
             return SupportPhase == SupportPhase.EOL || EndOfLifeDate?.Date <= DateTime.Now.Date;
         }
 
+        /// <summary>
+        /// Gets a collection of all releases defined in the specified file.
+        /// </summary>
+        /// <param name="path">The path of the file containing the releases data.</param>
+        /// <returns>A collection of releases. The releases are not linked to a specific <see cref="Product"/>.</returns>
+        public static async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(string path)
+        {
+            using TextReader reader = File.OpenText(path);
+
+            return await GetReleasesAsync(reader, null);
+        }
+
         private static async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(TextReader reader, Product product)
         {
             if (reader == null)
