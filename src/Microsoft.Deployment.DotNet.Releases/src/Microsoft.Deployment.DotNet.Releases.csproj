@@ -4,6 +4,8 @@
     <MajorVersion>1</MajorVersion>
     <MinorVersion>0</MinorVersion>
     <PreReleaseVersionLabel></PreReleaseVersionLabel>
+    <PreReleaseVersionIteration></PreReleaseVersionIteration>
+    <DotNetFinalVersionKind>true</DotNetFinalVersionKind>
   </PropertyGroup>
 
   <PropertyGroup>
