@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <IsPackable Condition="'$(TargetArchitecture)' == 'x86'">true</IsPackable>
+    <IsPackable Condition="'$(TargetArchitecture)' == 'x86' OR '$(DotNetBuildFromSource)' == 'true'">true</IsPackable>
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
     <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>

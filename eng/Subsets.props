@@ -39,6 +39,7 @@
   <PropertyGroup>
     <DefaultSubsets>clickonce+installer+dotnet_releases</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">clickonce+installer</DefaultSubsets>
+    <DefaultSubsets Condition="'$(DotNetBuildFromSource)' == 'true'">dotnet_releases</DefaultSubsets>
   </PropertyGroup>
 
   <!-- Init _subset here in to allow RuntimeFlavor to be set as early as possible -->
