@@ -75,6 +75,7 @@ stages:
   - template: /eng/common/templates/jobs/source-build.yml
     parameters:
       includeDefaultManagedPlatform: true
+      skipPublishValidation: true
 
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
   - stage: PrepareForPublish
