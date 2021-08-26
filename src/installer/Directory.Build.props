@@ -120,6 +120,7 @@
     <TargetsOpensuse>false</TargetsOpensuse>
     <TargetsFedora>false</TargetsFedora>
     <TargetsCentos>false</TargetsCentos>
+    <TargetsRocky>false</TargetsRocky>
     <TargetsOracle>false</TargetsOracle>
     <TargetsSles>false</TargetsSles>
   </PropertyGroup>
@@ -166,6 +167,13 @@
     <When Condition="$(OutputRid.StartsWith('centos'))">
       <PropertyGroup>
         <TargetsCentos>true</TargetsCentos>
+        <TargetsLinux>true</TargetsLinux>
+        <TargetsUnix>true</TargetsUnix>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(OutputRid.StartsWith('rocky'))">
+      <PropertyGroup>
+        <TargetsRocky>true</TargetsRocky>
         <TargetsLinux>true</TargetsLinux>
         <TargetsUnix>true</TargetsUnix>
       </PropertyGroup>
