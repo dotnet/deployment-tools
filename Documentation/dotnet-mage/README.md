@@ -34,6 +34,8 @@ You can obtain all command-line options by running `dotnet mage` or for verbose 
 
 `dotnet tool install --global microsoft.dotnet.mage --version 5.0.0`
 
+dotnet-mage is fully supported on Windows (we are gathering feedback about scenarios for dotnet-mage usage on Linux build agents).
+
 ## Common usage scenario
 
 * Build the project and copy the produced project output (binaries, json files, etc.) to a new folder
