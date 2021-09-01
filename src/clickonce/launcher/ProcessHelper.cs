@@ -16,12 +16,21 @@ namespace Microsoft.Deployment.Launcher
         /// </summary>
         /// <param name="exe">Executable name</param>
         /// <param name="args">Arguments</param>
-        public ProcessHelper(string exe, string args)
+        /// <param name="activationData">Activation Data (if any)</param>
+        public ProcessHelper(string exe, string args, string[] activationData)
         {
             psi = new ProcessStartInfo(exe, args)
             {
                 UseShellExecute = false
             };
+
+            if (activationData != null)
+            {
+                // store activation data in the environment variables
+                // of the process being launched.
+                for (int i = 0; i < activationData.Length; i++)
+                    psi.EnvironmentVariables[$"CLICKONCE_ACTIVATIONDATA_{i + 1}"] = activationData[i];
+            }
         }
 
         /// <summary>

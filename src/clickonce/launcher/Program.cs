@@ -26,7 +26,8 @@ namespace Microsoft.Deployment.Launcher
                     throw new LauncherException(Constants.ErrorNotAClickOnceDeployment);
                 }
 
-                Launch(GetApplicationPath());
+                string[] activationData = AppDomain.CurrentDomain.SetupInformation.ActivationArguments?.ActivationData;
+                Launch(GetApplicationPath(), activationData);
 
             }
             catch (Exception e)
@@ -43,7 +44,7 @@ namespace Microsoft.Deployment.Launcher
         /// Launches .NET (Core) application.
         /// </summary>
         /// <param name="appToLaunchFullPath">Full path to application binary</param>
-        private static void Launch(string appToLaunchFullPath)
+        private static void Launch(string appToLaunchFullPath, string[] activationData)
         {
             string exe;
             string args;
@@ -65,7 +66,7 @@ namespace Microsoft.Deployment.Launcher
                 throw new LauncherException(Constants.ErrorUnsupportedExtension, appToLaunchFullPath);
             }
 
-            ProcessHelper ph = new ProcessHelper(exe, args);
+            ProcessHelper ph = new ProcessHelper(exe, args, activationData);
             ph.StartProcessWithRetries();
         }
 
