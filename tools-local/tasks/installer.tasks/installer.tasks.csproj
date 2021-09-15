@@ -3,7 +3,6 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">$(TargetFrameworks);net46</TargetFrameworks>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <ExcludeFromSourceBuild>true</ExcludeFromSourceBuild>
     <IsShipping>false</IsShipping>
   </PropertyGroup>
 
