@@ -119,7 +119,7 @@
   <!-- Releases sets -->
   <ItemGroup Condition="$(_subset.Contains('+dotnet_releases+'))">
     <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
-    <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)tests\**\*.csproj" Test="$(Test)"/>
+    <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)tests\**\*.csproj" Test="$(Test)" Condition="'$(DotNetBuildFromSource)' != 'true'"/>
     <ProjectToBuild Include="@(DotNetReleasesProjectToBuild)" BuildInParallel="true" Category="dotnet_releases" />
   </ItemGroup>
 

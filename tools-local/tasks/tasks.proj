@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.Build.Traversal">
   <ItemGroup>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)**\*.csproj" Exclude="$(MSBuildProjectFullPath)" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)**\*.csproj" Exclude="$(MSBuildProjectFullPath)" Condition="'$(DotNetBuildFromSource)' != 'true'" />
   </ItemGroup>
 
   <!--
