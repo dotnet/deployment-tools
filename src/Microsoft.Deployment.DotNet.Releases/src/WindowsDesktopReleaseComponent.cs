@@ -13,7 +13,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The friendly display name for the component.
         /// </summary>
-        public override string Name => ReleasesResources.RuntimeReleaseName;
+        public override string Name => ReleasesResources.WindowsDesktopReleaseName;
 
         internal WindowsDesktopReleaseComponent(JToken token, ProductRelease release) : base(token, release)
         {
