@@ -23,5 +23,21 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 
             Assert.All(release.Files, f => Assert.True(!f.Name.Contains("-gs") && !f.Name.Contains("-nj")));
         }
+
+        [Fact]
+        public void ReleaseComponentNames()
+        {
+            var release = GetProductRelease("3.1", "3.1.5");
+
+            var sdkComponent = release.Sdks.FirstOrDefault();
+            var aspNetComponent = release.AspNetCoreRuntime;
+            var runtimeComponent = release.Runtime;
+            var desktopComponent = release.WindowsDesktopRuntime;
+
+            Assert.Equal("SDK", sdkComponent.Name);
+            Assert.Equal("ASP.NET Core Runtime", aspNetComponent.Name);
+            Assert.Equal(".NET Core Runtime", runtimeComponent.Name);
+            Assert.Equal("Desktop Runtime", desktopComponent.Name);
+        }
     }
 }
