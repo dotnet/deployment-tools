@@ -67,7 +67,8 @@
       ManifestCommit="$(BUILD_SOURCEVERSION)"
       IsStableBuild="$(IsStableBuild)"
       AssetManifestPath="$(AssetManifestFile)"
-      AssetsTemporaryDirectory="$(TempWorkingDir)" />
+      AssetsTemporaryDirectory="$(TempWorkingDir)"
+      PublishingVersion="3" />
 
     <!-- Copy the generated manifest to the build's artifacts -->
     <Copy SourceFiles="$(AssetManifestFile)" DestinationFolder="$(TempWorkingDir)" />
@@ -117,7 +118,8 @@
       IsStableBuild="$(IsStableBuild)"
       PublishFlatContainer="true"
       AssetManifestPath="$(AssetManifestFile)"
-      AssetsTemporaryDirectory="$(TempWorkingDir)" />
+      AssetsTemporaryDirectory="$(TempWorkingDir)"
+      PublishingVersion="3" />
 
     <!-- Copy the generated manifest to the build's artifacts -->
     <Copy SourceFiles="$(AssetManifestFile)" DestinationFolder="$(TempWorkingDir)" />
