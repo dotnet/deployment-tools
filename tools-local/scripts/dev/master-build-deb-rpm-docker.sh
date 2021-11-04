@@ -84,15 +84,15 @@ package() {
         > "info-$type.txt"
 }
 
-[ "$skipPortable" ] || containerized microsoft/dotnet-buildtools-prereqs:centos-7-b46d863-20180719033416 \
+[ "$skipPortable" ] || containerized mcr.microsoft.com/dotnet-buildtools/prereqs:centos-7-b46d863-20180719033416 \
     ./build.sh \
     -c Release \
     /p:PortableBuild=true \
     /p:TargetArchitecture=x64 \
     /bl:artifacts/msbuild.portable.binlog
 
-ubuntu=microsoft/dotnet-buildtools-prereqs:ubuntu-14.04-debpkg-e5cf912-20175003025046
-rhel=microsoft/dotnet-buildtools-prereqs:rhel-7-rpmpkg-c982313-20174116044113
+ubuntu=mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-14.04-debpkg-e5cf912-20175003025046
+rhel=mcr.microsoft.com/dotnet-buildtools/prereqs:rhel-7-rpmpkg-c982313-20174116044113
 
 [ "$makeRpm" ] && package rhel $rhel rpm "rpm -qpiR"
 [ "$makeDeb" ] && package ubuntu $ubuntu deb "dpkg-deb -I"
