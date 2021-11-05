@@ -36,6 +36,15 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         }
 
         [Fact]
+        public void ItContainsAllFiles()
+        {
+            ProductRelease release = GetProductRelease("2.1", "2.1.8");
+
+            Assert.Equal(33, release.Files.Count);
+            Assert.Empty(release.Files.Where(f => f.FileName.Contains("-gs")));
+        }
+
+        [Fact]
         public async Task ItCanCreateASingleRelease()
         {
             var releases = await Product.GetReleasesAsync(@"data\5.0\releases.json");
