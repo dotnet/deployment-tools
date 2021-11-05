@@ -73,7 +73,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             // Trim out marketing files. Users should never interact with these
             Files = new ReadOnlyCollection<ReleaseFile>(
-                fileList.Where(f => !f.Name.Contains("-gs") || !f.Name.Contains("-nj")).ToList());
+                fileList.Where(f => !(f.Name.Contains("-gs") || f.Name.Contains("-nj"))).ToList());
         }
     }
 }

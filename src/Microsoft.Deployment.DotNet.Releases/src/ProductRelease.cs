@@ -158,21 +158,18 @@ namespace Microsoft.Deployment.DotNet.Releases
             if (!aspNetCoreRuntimeToken.IsNullOrEmpty())
             {
                 AspNetCoreRuntime = new AspNetCoreReleaseComponent(aspNetCoreRuntimeToken, this);
-                componentList.Add(AspNetCoreRuntime);
                 runtimeList.Add(AspNetCoreRuntime);
             }
 
             if (!runtimeToken.IsNullOrEmpty())
             {
                 Runtime = new RuntimeReleaseComponent(runtimeToken, this);
-                componentList.Add(Runtime);
                 runtimeList.Add(Runtime);
             }
 
             if (!winDesktopToken.IsNullOrEmpty())
             {
                 WindowsDesktopRuntime = new WindowsDesktopReleaseComponent(winDesktopToken, this);
-                componentList.Add(WindowsDesktopRuntime);
                 runtimeList.Add(WindowsDesktopRuntime);
             }
 
@@ -190,6 +187,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 sdkList.Add(new SdkReleaseComponent(sdkToken, this));
             }
+
+            componentList.AddRange(runtimeList);
+            componentList.AddRange(sdkList);
 
             Sdks = new ReadOnlyCollection<SdkReleaseComponent>(sdkList);
             Components = new ReadOnlyCollection<ReleaseComponent>(componentList);
