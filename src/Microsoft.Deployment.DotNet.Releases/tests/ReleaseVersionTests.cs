@@ -192,6 +192,20 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.True(v1 == v2);
         }
 
+        [Theory]
+        [InlineData("1.0.0-preview.4", "1.0.0-preview.5", -1)]
+        [InlineData("1.0.0-preview.4", "1.0.0-preview.4", 0)]
+        [InlineData("1.0.0-preview.1234567890123456", "1.0.0-preview.12345678901234567", -1)]
+        [InlineData("1.0.0-preview.1.2", "1.0.0-preview.2", -1)]
+        [InlineData("1.0.0-preview.1.2.3.4.6", "1.0.0-preview.1.2.3.4.5", 1)]
+        public void CompareToIncludesPrecedence(string version1, string version2, int expectedResult)
+        {
+            ReleaseVersion v1 = new ReleaseVersion(version1);
+            ReleaseVersion v2 = new ReleaseVersion(version2);
+
+            Assert.Equal(expectedResult, v1.CompareTo(v2));
+        }
+
         [Fact]
         public void OperatorNotEquals()
         {

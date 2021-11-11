@@ -547,7 +547,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 return 1;
             }
 
-            if (b.Length < a.Length)
+            if (a.Length < b.Length)
             {
                 return -1;
             }
@@ -557,7 +557,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             // between 1 and -1 depending on the ordinal value
             // of the character at the current index.
             int r = 0;
-            for (int i = a.Length - 1; i > 0; i--)
+            for (int i = a.Length - 1; i >= 0; i--)
             {
                 int r2 = a[i].CompareTo(b[i]);
                 if (r2 != 0)
