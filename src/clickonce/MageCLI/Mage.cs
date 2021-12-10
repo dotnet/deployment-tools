@@ -261,6 +261,11 @@ namespace Microsoft.Deployment.MageCLI
                 }
                 else
                 {
+#if RUNTIME_TYPE_NETCORE
+                    // GetRegisteredOrganization() is a Windows-only API
+                    manifest.Publisher = string.Empty;
+                    if (OperatingSystem.IsWindows())
+#endif
                     // Get the default publisher name
                     manifest.Publisher = Utilities.Misc.GetRegisteredOrganization();
                 }
@@ -359,6 +364,11 @@ namespace Microsoft.Deployment.MageCLI
             }
             else
             {
+#if RUNTIME_TYPE_NETCORE
+                // GetRegisteredOrganization() is a Windows-only API
+                manifest.Publisher = string.Empty;
+                if (OperatingSystem.IsWindows())
+#endif
                 // Get the default publisher name
                 manifest.Publisher = Utilities.Misc.GetRegisteredOrganization();
             }

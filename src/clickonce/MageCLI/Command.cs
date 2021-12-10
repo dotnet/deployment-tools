@@ -1476,8 +1476,10 @@ namespace Microsoft.Deployment.MageCLI
                 Sha256SignatureMethodUri);
 
 #if RUNTIME_TYPE_NETCORE
+#pragma warning disable SYSLIB0021
             CryptoConfig.AddAlgorithm(typeof(SHA256Managed),
                 Sha256DigestMethod);
+#pragma warning restore SYSLIB0021
 #else
             CryptoConfig.AddAlgorithm(typeof(SHA256Cng),
                 Sha256DigestMethod);
