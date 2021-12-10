@@ -283,7 +283,9 @@ namespace Microsoft.Deployment.Utilities
                             parameters.Flags |= CspProviderFlags.UseMachineKeyStore;
                         }
 
+#pragma warning disable SYSLIB0028
                         certificate.PrivateKey = new RSACryptoServiceProvider(parameters);
+#pragma warning restore SYSLIB0028
                     }
                     else
                     {
