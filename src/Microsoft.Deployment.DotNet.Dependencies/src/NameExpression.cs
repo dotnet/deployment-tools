@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Microsoft.Deployment.DotNet.Dependencies
 {
     /// <summary>
-    /// A type of expression node.
+    /// A dependency name represented as an expression.
     /// </summary>
     public class NameExpression
     {
@@ -23,7 +23,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         /// Parses the expression into its component parts.
         /// </summary>
         /// <param name="expression">String to be parsed as an expression.</param>
-        /// <returns>An expression node representing the component parts of the expression.</returns>
+        /// <returns>A dependency name expression representing the component parts of the expression.</returns>
         public static NameExpression Parse(string expression)
         {
             if (expression is null)
