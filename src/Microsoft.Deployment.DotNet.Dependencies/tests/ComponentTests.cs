@@ -54,7 +54,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
             PlatformDependenciesModel model = new(new Version("2.0"));
             model.Platforms.Add(platform);
 
-            IEnumerable<PlatformDependency> dependencies = component.GetResolvedDependencies(model);
+            IEnumerable<PlatformDependency> dependencies = component.GetResolvedPlatformDependencies(model);
             Assert.Equal(component.PlatformDependencies, dependencies);
         }
 
@@ -96,7 +96,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
             PlatformDependencyComparer platformDependencyComparer = new();
 
             // Test the resolve dependencies from the grandchild
-            IEnumerable<PlatformDependency> dependencies = grandChildComponent.GetResolvedDependencies(model);
+            IEnumerable<PlatformDependency> dependencies = grandChildComponent.GetResolvedPlatformDependencies(model);
             PlatformDependency[] expectedDependencies = new PlatformDependency[]
             {
                 new("dep1", DependencyType.Library, "default"),
@@ -106,7 +106,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
             Assert.Equal(expectedDependencies, dependencies, platformDependencyComparer);
 
             // Test the resolve dependencies from the child
-            dependencies = childComponent.GetResolvedDependencies(model);
+            dependencies = childComponent.GetResolvedPlatformDependencies(model);
             expectedDependencies = new PlatformDependency[]
             {
                 new("dep1", DependencyType.Library, "default"),
@@ -116,7 +116,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
             Assert.Equal(expectedDependencies, dependencies, platformDependencyComparer);
 
             // Test the resolve dependencies from the root
-            dependencies = rootComponent.GetResolvedDependencies(model);
+            dependencies = rootComponent.GetResolvedPlatformDependencies(model);
             expectedDependencies = rootComponent.PlatformDependencies.ToArray();
             Assert.Equal(expectedDependencies, dependencies, platformDependencyComparer);
         }

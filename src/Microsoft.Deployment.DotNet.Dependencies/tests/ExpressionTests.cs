@@ -14,20 +14,20 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
         [MemberData(nameof(ParseTestInput))]
         public void ItCanParse(ParseTestData testData)
         {
-            Expression result = Expression.Parse(testData.Input);
+            NameExpression result = NameExpression.Parse(testData.Input);
             testData.Validate(result);
         }
 
         [Fact]
         public void ItThrowsIfParseInputIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => Expression.Parse(null!));
+            Assert.Throws<ArgumentNullException>(() => NameExpression.Parse(null!));
         }
 
         [Fact]
         public void ItThrowsIfParseInputIsEmpty()
         {
-            ArgumentException ex = Assert.Throws<ArgumentException>(() => Expression.Parse(string.Empty));
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => NameExpression.Parse(string.Empty));
             Assert.Equal($"Value cannot be empty.{Environment.NewLine}Parameter name: expression", ex.Message);
         }
 
@@ -37,18 +37,18 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
             {
                 new ParseTestData("dep1", result =>
                 {
-                    Assert.IsType<DependencyName>(result);
+                    Assert.Single(result.Names);
 
-                    DependencyName depName = (DependencyName)result;
+                    DependencyName depName = result.Names[0];
                     Assert.Equal("dep1", depName.Name);
                     Assert.Null(depName.VersionRange);
                 }),
 
                 new ParseTestData("dep1:1.0", result =>
                 {
-                    Assert.IsType<DependencyName>(result);
+                    Assert.Single(result.Names);
 
-                    DependencyName depName = (DependencyName)result;
+                    DependencyName depName = result.Names[0];
                     Assert.Equal("dep1", depName.Name);
                     VersionRangeTests.ValidateVersionRange(
                         depName.VersionRange,
@@ -58,53 +58,38 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
 
                 new ParseTestData("dep1:[2.0,3.0) || dep2:1.1", result =>
                 {
-                    Assert.IsType<BinaryExpression>(result);
+                    Assert.Equal(2, result.Names.Count);
 
-                    BinaryExpression binExpr = (BinaryExpression)result;
+                    DependencyName dep1 = result.Names[0];
 
-                    Assert.IsType<DependencyName>(binExpr.Left);
-                    DependencyName leftDep = (DependencyName)binExpr.Left;
-
-                    Assert.Equal("dep1", leftDep.Name);
+                    Assert.Equal("dep1", dep1.Name);
                     VersionRangeTests.ValidateVersionRange(
-                        leftDep.VersionRange,
+                        dep1.VersionRange,
                         expectedMin: "2.0", expectedIsMinimumInclusive: true,
                         expectedMax: "3.0", expectedIsMaximumInclusive: false);
 
-                    Assert.IsType<DependencyName>(binExpr.Right);
-                    DependencyName rightDep = (DependencyName)binExpr.Right;
+                    DependencyName dep2 = result.Names[1];
 
-                    Assert.Equal("dep2", rightDep.Name);
+                    Assert.Equal("dep2", dep2.Name);
                     VersionRangeTests.ValidateVersionRange(
-                        rightDep.VersionRange,
+                        dep2.VersionRange,
                         expectedMin: "1.1", expectedIsMinimumInclusive: true,
                         expectedMax: null, expectedIsMaximumInclusive: false);
                 }),
 
                 new ParseTestData("dep1 || dep2 || dep3", result =>
                 {
-                    Assert.IsType<BinaryExpression>(result);
+                    Assert.Equal(3, result.Names.Count);
 
-                    BinaryExpression binExpr = (BinaryExpression)result;
-
-                    Assert.IsType<BinaryExpression>(binExpr.Left);
-                    BinaryExpression leftBinExpr = (BinaryExpression)binExpr.Left;
-
-                    Assert.IsType<DependencyName>(leftBinExpr.Left);
-                    DependencyName dep1 = (DependencyName)leftBinExpr.Left;
-
+                    DependencyName dep1 = result.Names[0];
                     Assert.Equal("dep1", dep1.Name);
                     Assert.Null(dep1.VersionRange);
 
-                    Assert.IsType<DependencyName>(leftBinExpr.Right);
-                    DependencyName dep2 = (DependencyName)leftBinExpr.Right;
-
+                    DependencyName dep2 = result.Names[1];
                     Assert.Equal("dep2", dep2.Name);
                     Assert.Null(dep2.VersionRange);
 
-                    Assert.IsType<DependencyName>(binExpr.Right);
-                    DependencyName dep3 = (DependencyName)binExpr.Right;
-
+                    DependencyName dep3 = result.Names[2];
                     Assert.Equal("dep3", dep3.Name);
                     Assert.Null(dep3.VersionRange);
                 })
@@ -117,9 +102,9 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
         {
             public string Input { get; }
 
-            public Action<Expression> Validate { get; }
+            public Action<NameExpression> Validate { get; }
 
-            public ParseTestData(string input, Action<Expression> validate)
+            public ParseTestData(string input, Action<NameExpression> validate)
             {
                 Input = input;
                 Validate = validate;

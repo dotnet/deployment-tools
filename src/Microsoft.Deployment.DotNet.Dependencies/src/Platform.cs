@@ -72,23 +72,30 @@ namespace Microsoft.Deployment.DotNet.Dependencies
             }
         }
 
-        internal IEnumerable<Platform> GetAncestors(Platform childPlatform, PlatformDependenciesModel model)
+        /// <summary>
+        /// Fills <paramref name="ancestors"/> with the set of platforms that are ancestors of <paramref name="childPlatform"/>.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="childPlatform"/> is not a descendant of this platform then no platforms will be added to
+        /// <paramref name="childPlatform"/>.
+        /// </remarks>
+        internal void AddAncestorsBottomUp(Platform childPlatform, List<Platform> ancestors)
         {
             foreach (Platform platform in Platforms)
             {
                 if (platform == childPlatform)
                 {
-                    return new Platform[] { this };
+                    ancestors.Add(this);
+                    return;
                 }
 
-                IEnumerable<Platform> ancestors = platform.GetAncestors(childPlatform, model);
+                platform.AddAncestorsBottomUp(childPlatform, ancestors);
                 if (ancestors.Any())
                 {
-                    return ancestors.Concat(new Platform[] { this });
+                    ancestors.Add(this);
+                    return;
                 }
             }
-
-            return Enumerable.Empty<Platform>();
         }
     }
 }

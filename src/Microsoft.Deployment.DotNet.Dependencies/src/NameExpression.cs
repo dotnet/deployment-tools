@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Deployment.DotNet.Dependencies
@@ -9,19 +10,22 @@ namespace Microsoft.Deployment.DotNet.Dependencies
     /// <summary>
     /// A type of expression node.
     /// </summary>
-    public abstract class Expression
+    public class NameExpression
     {
         /// <summary>
-        /// Gets the type of expression.
+        /// The set of names that represent the dependency, only one of which needs to apply in order to meet the dependency condition.
         /// </summary>
-        public abstract ExpressionType NodeType { get; }
+        /// <remarks>
+        /// Logically, each item in the set is OR'd together.
+        /// </remarks>
+        public IList<DependencyName> Names { get; } = new List<DependencyName>();
 
         /// <summary>
         /// Parses the expression into its component parts.
         /// </summary>
         /// <param name="expression">String to be parsed as an expression.</param>
         /// <returns>An expression node representing the component parts of the expression.</returns>
-        public static Expression Parse(string expression)
+        public static NameExpression Parse(string expression)
         {
             if (expression is null)
             {
@@ -35,90 +39,24 @@ namespace Microsoft.Deployment.DotNet.Dependencies
 
             string[] operands = expression.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
 
-            Expression? current = null;
+            NameExpression nameExpression = new();
 
             for (int i = 0; i < operands.Length; i++)
             {
                 DependencyName name = DependencyName.Parse(operands[i].Trim());
-                if (current is null)
-                {
-                    current = name;
-                }
-                else
-                {
-                    current = new BinaryExpression(current, name);
-                }
+                nameExpression.Names.Add(name);
+                
             }
 
-            if (current is null)
-            {
-                throw new ArgumentException(
-                    $"Dependency name expression '{expression}' is not a valid expression.",
-                    nameof(expression));
-            }
-
-            return current;
-        }
-    }
-
-    /// <summary>
-    /// The type of an expression node.
-    /// </summary>
-    public enum ExpressionType
-    {
-        /// <summary>
-        /// Indicates the expression node represents a dependency name.
-        /// </summary>
-        DependencyName,
-
-        /// <summary>
-        /// Indicates the expression node represents a Boolean OR operator.
-        /// </summary>
-        Or
-    }
-
-    /// <summary>
-    /// Represents a binary expression with two child expression nodes.
-    /// </summary>
-    public class BinaryExpression : Expression
-    {
-        /// <summary>
-        /// Gets the type of expression.
-        /// </summary>
-        public override ExpressionType NodeType => ExpressionType.Or;
-
-        /// <summary>
-        /// Gets the left operand of the binary expression.
-        /// </summary>
-        public Expression Left { get; }
-
-        /// <summary>
-        /// Gets the right operand of the binary expression.
-        /// </summary>
-        public Expression Right { get; }
-
-        /// <summary>
-        /// Initializes an instance of <see cref="BinaryExpression"/>.
-        /// </summary>
-        /// <param name="left">Left operand of the binary expression.</param>
-        /// <param name="right">Right operand of the binary expression.</param>
-        public BinaryExpression(Expression left, Expression right)
-        {
-            Left = left;
-            Right = right;
+            return nameExpression;
         }
     }
 
     /// <summary>
     /// Represents a reference to a dependency name and optional version information.
     /// </summary>
-    public class DependencyName : Expression
+    public class DependencyName
     {
-        /// <summary>
-        /// Gets the type of expression.
-        /// </summary>
-        public override ExpressionType NodeType => ExpressionType.DependencyName;
-
         /// <summary>
         /// Gets the name of the dependency.
         /// </summary>
@@ -138,7 +76,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
             Name = name;
         }
 
-        internal static new DependencyName Parse(string dependencyName)
+        internal static DependencyName Parse(string dependencyName)
         {
             if (dependencyName == string.Empty)
             {

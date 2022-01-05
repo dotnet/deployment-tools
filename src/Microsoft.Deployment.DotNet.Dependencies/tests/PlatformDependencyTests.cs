@@ -17,8 +17,8 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
                 new(name, DependencyType.LinuxPackage, usage) : new(name, DependencyType.LinuxPackage, usage, id);
 
             Assert.Equal(name, platformDependency.Name);
-            Assert.IsType<DependencyName>(platformDependency.ParsedName);
-            DependencyName depName = (DependencyName)platformDependency.ParsedName;
+            Assert.Single(platformDependency.NameExpression.Names);
+            DependencyName depName = platformDependency.NameExpression.Names[0];
             Assert.Equal(name, depName.Name);
             Assert.Null(depName.VersionRange);
             Assert.Equal(usage, platformDependency.Usage);
@@ -46,7 +46,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies.Tests
 
             Assert.Equal(
                 $"Platform dependency with name expression '{name}' needs to explicitly define its ID because " +
-                "the name is not a simple expression.", ex.Message);
+                "the expression contains more than one dependency name.", ex.Message);
         }
 
         [Fact]

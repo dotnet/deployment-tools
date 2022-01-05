@@ -57,13 +57,13 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         /// This takes into account the inheritance of dependencies from parent platforms as well as any
         /// dependency overrides.
         /// </remarks>
-        public IEnumerable<PlatformDependency> GetResolvedDependencies(PlatformDependenciesModel model)
+        public IEnumerable<PlatformDependency> GetResolvedPlatformDependencies(PlatformDependenciesModel model)
         {
             Platform containingPlatform = model.GetContainingPlatform(this);
             List<PlatformDependency> overridenDependencies = new();
 
             IEnumerable<Platform> platformHierarchy = new Platform[] { containingPlatform }
-                .Concat(model.GetAncestors(containingPlatform));
+                .Concat(model.GetAncestorsBottomUp(containingPlatform));
 
             List<PlatformDependency> resolvedDependencies = new();
 

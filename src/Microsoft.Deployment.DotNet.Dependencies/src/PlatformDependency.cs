@@ -21,7 +21,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         public string Id { get; }
 
         /// <summary>
-        /// Gets the name expression of the dependency artifact.
+        /// Gets the raw name expression of the dependency artifact.
         /// </summary>
         /// <remarks>
         /// The name of a dependency is an expression that can be used to describe a variety of conditions. The syntax allows
@@ -32,12 +32,6 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         ///     Any version of the libgcc1 package:
         ///     <code>
         ///     libgcc1
-        ///     </code>
-        /// </example>
-        /// <example>
-        ///     Version 4.9.2 or higher of the libgcc1 package:
-        ///     <code>
-        ///     libgcc1:4.9.2
         ///     </code>
         /// </example>
         /// <example>
@@ -64,7 +58,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         /// Gets the parsed representation of the name expression.
         /// </summary>
         [JsonIgnore]
-        public Expression ParsedName { get; }
+        public NameExpression NameExpression { get; }
 
         /// <summary>
         /// Gets the type of the dependency.
@@ -115,20 +109,20 @@ namespace Microsoft.Deployment.DotNet.Dependencies
                 throw new ArgumentException("Value cannot be empty.", nameof(name));
             }
 
-            ParsedName = Expression.Parse(name);
+            NameExpression = NameExpression.Parse(name);
 
             if (id is null)
             {
-                // Id defaults to the name portion of the name name expression (excludes version info).
-                if (ParsedName is DependencyName dependencyName)
+                // Id defaults to the name portion of the name expression (excludes version info).
+                if (NameExpression.Names.Count == 1)
                 {
-                    Id = dependencyName.Name;
+                    Id = NameExpression.Names.First().Name;
                 }
                 else
                 {
                     throw new InvalidOperationException(
                         $"Platform dependency with name expression '{name}' needs to explicitly define its ID because " +
-                        "the name is not a simple expression.");
+                        "the expression contains more than one dependency name.");
                 }
             }
             else
@@ -166,7 +160,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
 
             PlatformDependency? overridenDependency = null;
             Platform parentPlatform = model.GetContainingPlatform(this);
-            foreach (Platform ancestor in model.GetAncestors(parentPlatform))
+            foreach (Platform ancestor in model.GetAncestorsBottomUp(parentPlatform))
             {
                 overridenDependency = ancestor.Components
                     .SelectMany(component => component.PlatformDependencies)

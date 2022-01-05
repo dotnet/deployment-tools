@@ -26,7 +26,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         /// </summary>
         /// <remarks>
         /// A dependency usage is a descriptor of how a dependency is used by a component (e.g. default, diagnostics, 
-        /// localization). This maps the name of the name of the usage to its description.
+        /// localization). This maps the name of the usage to its description.
         /// </remarks>
         public IDictionary<string, string> DependencyUsages { get; } = new Dictionary<string, string>();
 
@@ -49,7 +49,10 @@ namespace Microsoft.Deployment.DotNet.Dependencies
             ProductVersion = productVersion;
         }
 
-        internal void Validate()
+        /// <summary>
+        /// Validates the model is semantically correct.
+        /// </summary>
+        public void Validate()
         {
             HashSet<string> platformRids = new();
             foreach (Platform platform in Platforms)
@@ -64,7 +67,7 @@ namespace Microsoft.Deployment.DotNet.Dependencies
             }
         }
 
-        internal IEnumerable<Platform> GetAncestors(Platform childPlatform)
+        internal IEnumerable<Platform> GetAncestorsBottomUp(Platform childPlatform)
         {
             foreach (Platform platform in Platforms)
             {
@@ -73,7 +76,8 @@ namespace Microsoft.Deployment.DotNet.Dependencies
                     return Enumerable.Empty<Platform>();
                 }
 
-                IEnumerable<Platform> ancestors = platform.GetAncestors(childPlatform, this);
+                List<Platform> ancestors = new();
+                platform.AddAncestorsBottomUp(childPlatform, ancestors);
                 if (ancestors.Any())
                 {
                     return ancestors;
@@ -130,7 +134,15 @@ namespace Microsoft.Deployment.DotNet.Dependencies
         /// </summary>
         /// <param name="platformDependenciesUrl">A URL pointing to a platform dependencies JSON file.</param>
         /// <returns>A <see cref="PlatformDependenciesModel"/> deserialized from the content of the file.</returns>
-        public static async Task<PlatformDependenciesModel> GetAsync(Uri platformDependenciesUrl)
+        public static Task<PlatformDependenciesModel> GetAsync(Uri platformDependenciesUrl) =>
+            GetAsync(platformDependenciesUrl.ToString());
+
+        /// <summary>
+        /// Loads the dependency model from the provided URL.
+        /// </summary>
+        /// <param name="platformDependenciesUrl">A URL pointing to a platform dependencies JSON file.</param>
+        /// <returns>A <see cref="PlatformDependenciesModel"/> deserialized from the content of the file.</returns>
+        public static async Task<PlatformDependenciesModel> GetAsync(string platformDependenciesUrl)
         {
             if (platformDependenciesUrl is null)
             {
