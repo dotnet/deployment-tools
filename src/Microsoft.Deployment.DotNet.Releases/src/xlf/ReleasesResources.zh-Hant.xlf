@@ -32,6 +32,11 @@
         <target state="translated">次要版本無效，或缺少次要版本。</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidNumericIdentifier">
+        <source>Invalid numeric identifier: '{0}'.</source>
+        <target state="new">Invalid numeric identifier: '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidPatch">
         <source>Invalid or missing patch version.</source>
         <target state="translated">修補檔版本無效，或缺少修補檔版本。</target>
@@ -42,9 +47,14 @@
         <target state="translated">發行前的值無效: {0}</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidReleaseVersion">
+        <source>The specified version is not a valid semantic version.</source>
+        <target state="new">The specified version is not a valid semantic version.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Invalid version: {0}</source>
-        <target state="translated">無效的版本: {0}</target>
+        <source>The specified version does not contain a valid major, minor, and patch version: '{0}'.</source>
+        <target state="new">The specified version does not contain a valid major, minor, and patch version: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="RuntimeReleaseName">
@@ -63,8 +73,8 @@
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">
-        <source>The '{0}' value cannot be less than 0.</source>
-        <target state="translated">'{0}' 值不能小於 0。</target>
+        <source>The value cannot be less than 0.</source>
+        <target state="new">The value cannot be less than 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsDesktopReleaseName">

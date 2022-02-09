@@ -19,7 +19,7 @@ namespace Microsoft.Deployment.DotNet.Releases {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ReleasesResources {
@@ -115,6 +115,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid numeric identifier: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidNumericIdentifier {
+            get {
+                return ResourceManager.GetString("InvalidNumericIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid or missing patch version..
         /// </summary>
         internal static string InvalidPatch {
@@ -133,7 +142,16 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid version: {0}.
+        ///   Looks up a localized string similar to The specified version is not a valid semantic version..
+        /// </summary>
+        internal static string InvalidReleaseVersion {
+            get {
+                return ResourceManager.GetString("InvalidReleaseVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified version does not contain a valid major, minor, and patch version: &apos;{0}&apos;..
         /// </summary>
         internal static string InvalidVersion {
             get {
@@ -169,7 +187,7 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;{0}&apos; value cannot be less than 0..
+        ///   Looks up a localized string similar to The value cannot be less than 0..
         /// </summary>
         internal static string VersionPartLessThanZero {
             get {

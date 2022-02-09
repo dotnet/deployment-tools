@@ -135,14 +135,20 @@
   <data name="InvalidMinorVersion" xml:space="preserve">
     <value>Invalid or missing minor version.</value>
   </data>
+  <data name="InvalidNumericIdentifier" xml:space="preserve">
+    <value>Invalid numeric identifier: '{0}'.</value>
+  </data>
   <data name="InvalidPatch" xml:space="preserve">
     <value>Invalid or missing patch version.</value>
   </data>
   <data name="InvalidPrerelease" xml:space="preserve">
     <value>The prerelease value is invalid: {0}</value>
   </data>
+  <data name="InvalidReleaseVersion" xml:space="preserve">
+    <value>The specified version is not a valid semantic version.</value>
+  </data>
   <data name="InvalidVersion" xml:space="preserve">
-    <value>Invalid version: {0}</value>
+    <value>The specified version does not contain a valid major, minor, and patch version: '{0}'.</value>
   </data>
   <data name="RuntimeReleaseName" xml:space="preserve">
     <value>.NET Core Runtime</value>
@@ -154,7 +160,7 @@
     <value>Value cannot be empty.</value>
   </data>
   <data name="VersionPartLessThanZero" xml:space="preserve">
-    <value>The '{0}' value cannot be less than 0.</value>
+    <value>The value cannot be less than 0.</value>
   </data>
   <data name="WindowsDesktopReleaseName" xml:space="preserve">
     <value>Desktop Runtime</value>

@@ -32,6 +32,11 @@
         <target state="translated">İkincil sürüm geçersiz veya eksik.</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidNumericIdentifier">
+        <source>Invalid numeric identifier: '{0}'.</source>
+        <target state="new">Invalid numeric identifier: '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidPatch">
         <source>Invalid or missing patch version.</source>
         <target state="translated">Düzeltme eki sürümü geçersiz veya eksik.</target>
@@ -42,9 +47,14 @@
         <target state="translated">Yayın öncesi sürüm değeri geçersiz: {0}</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidReleaseVersion">
+        <source>The specified version is not a valid semantic version.</source>
+        <target state="new">The specified version is not a valid semantic version.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Invalid version: {0}</source>
-        <target state="translated">Sürüm geçersiz: {0}</target>
+        <source>The specified version does not contain a valid major, minor, and patch version: '{0}'.</source>
+        <target state="new">The specified version does not contain a valid major, minor, and patch version: '{0}'.</target>
         <note />
       </trans-unit>
       <trans-unit id="RuntimeReleaseName">
@@ -63,8 +73,8 @@
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">
-        <source>The '{0}' value cannot be less than 0.</source>
-        <target state="translated">'{0}' değeri 0'dan küçük olamaz.</target>
+        <source>The value cannot be less than 0.</source>
+        <target state="new">The value cannot be less than 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsDesktopReleaseName">
