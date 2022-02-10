@@ -216,7 +216,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="obj">An object to compare or null.</param>
         /// <returns>
         /// Returns a signed integer indicating whether this instance precedes, follows or appears in the same position in 
-        /// the sort order as the specified <paramref name="obj"/>.
+        /// the sort order as the <paramref name="obj"/> parameter.
         /// </returns>
         public int CompareTo(object obj) => CompareTo((ReleaseVersion)obj);
 
@@ -224,7 +224,10 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// Compares this instance to the specified object and returns an indication of their relative values.
         /// </summary>
         /// <param name="other">An object to compare.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Returns a signed integer indicating whether this instance precedes, follows or appears in the same position in 
+        /// the sort order as the <paramref name="other"/> parameter.
+        /// </returns>
         public int CompareTo(ReleaseVersion other)
         {
             int result = ComparePrecedenceTo(other);
@@ -550,8 +553,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <param name="input">A string that contains a version to convert.</param>
         /// <returns>An object that is equivalent to the version number specified in the <paramref name="input"/> parameter.</returns>
-        /// <exception cref="ArgumentNullException" />
-        /// <exception cref="FormatException" />
+        /// <exception cref="ArgumentNullException">If <paramref name="input"/> is <see langword="null"/>.</exception>
+        /// <exception cref="FormatException">If <paramref name="input"/> contains an invalid version.</exception>
         public static ReleaseVersion Parse(string input)
         {
             if (input == null)
