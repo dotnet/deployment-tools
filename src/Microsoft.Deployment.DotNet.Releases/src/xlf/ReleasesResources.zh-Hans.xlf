@@ -7,6 +7,11 @@
         <target state="new">ASP.NET Core Runtime</target>
         <note />
       </trans-unit>
+      <trans-unit id="BuildMetadataCannotBeEmpty">
+        <source>The build metadata cannot be empty if a separator is provided.</source>
+        <target state="new">The build metadata cannot be empty if a separator is provided.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FileNotFound">
         <source>Could not find the specified file: {0}</source>
         <target state="new">Could not find the specified file: {0}</target>
@@ -55,6 +60,11 @@
       <trans-unit id="InvalidVersion">
         <source>The specified version does not contain a valid major, minor, and patch version: '{0}'.</source>
         <target state="new">The specified version does not contain a valid major, minor, and patch version: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PrereleaseCannotBeEmpty">
+        <source>The prerelease value cannot be empty if a separator is provided.</source>
+        <target state="new">The prerelease value cannot be empty if a separator is provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="RuntimeReleaseName">

@@ -70,6 +70,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The build metadata cannot be empty if a separator is provided..
+        /// </summary>
+        internal static string BuildMetadataCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("BuildMetadataCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find the specified file: {0}.
         /// </summary>
         internal static string FileNotFound {
@@ -156,6 +165,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         internal static string InvalidVersion {
             get {
                 return ResourceManager.GetString("InvalidVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The prerelease value cannot be empty if a separator is provided..
+        /// </summary>
+        internal static string PrereleaseCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("PrereleaseCannotBeEmpty", resourceCulture);
             }
         }
         

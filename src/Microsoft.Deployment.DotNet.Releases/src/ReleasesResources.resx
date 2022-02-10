@@ -120,6 +120,9 @@
   <data name="AspNetCoreReleaseName" xml:space="preserve">
     <value>ASP.NET Core Runtime</value>
   </data>
+  <data name="BuildMetadataCannotBeEmpty" xml:space="preserve">
+    <value>The build metadata cannot be empty if a separator is provided.</value>
+  </data>
   <data name="FileNotFound" xml:space="preserve">
     <value>Could not find the specified file: {0}</value>
   </data>
@@ -149,6 +152,9 @@
   </data>
   <data name="InvalidVersion" xml:space="preserve">
     <value>The specified version does not contain a valid major, minor, and patch version: '{0}'.</value>
+  </data>
+  <data name="PrereleaseCannotBeEmpty" xml:space="preserve">
+    <value>The prerelease value cannot be empty if a separator is provided.</value>
   </data>
   <data name="RuntimeReleaseName" xml:space="preserve">
     <value>.NET Core Runtime</value>

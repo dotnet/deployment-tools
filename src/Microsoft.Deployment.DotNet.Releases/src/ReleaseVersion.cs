@@ -26,7 +26,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             @"(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)";
 
         /// <summary>
-        /// A regular expression pattern to capture a semantic version (2.0).
+        /// A regular expression pattern to capture a semantic version (2.0) into named groups called "major", "minor", "patch", "prerelease",
+        /// and "buildmetadata".
         /// </summary>
         public static readonly string SemanticVersionPattern =
             $@"^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-{PrereleasePattern})?(?:\+{BuildMetadataPattern})?$";
@@ -125,6 +126,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="prerelease">The prerelease label.</param>
         /// <param name="buildMetadata">The build metadata.</param>
         /// <exception cref="FormatException">Thrown if the content of any field is invalid.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the major, minor, or patch version is less than 0.</exception>
         public ReleaseVersion(int major, int minor, int patch, string prerelease = null, string buildMetadata = null)
         {
             if (major < 0)
@@ -146,43 +148,26 @@ namespace Microsoft.Deployment.DotNet.Releases
             Minor = minor;
             Patch = patch;
 
-            if (prerelease != null)
+            if (!IsValidPreleae(prerelease))
             {
-                string[] dotSeparatedPrereleaseIdentifiers = prerelease.Split('.');
-
-                if (dotSeparatedPrereleaseIdentifiers.Length > 0)
-                {
-                    for (int i = 0; i < dotSeparatedPrereleaseIdentifiers.Length; i++)
-                    {
-                        if (!IsPrereleaseIdentifier(dotSeparatedPrereleaseIdentifiers[i]))
-                        {
-                            throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
-                        }
-                    }
-                }
+                throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
             }
 
             Prerelease = prerelease;
 
-            if (buildMetadata != null)
+            if (!IsValidBuildMetadata(buildMetadata))
             {
-                string[] dotSeperatedBuildIdentifiers = buildMetadata.Split('.');
-
-                if (dotSeperatedBuildIdentifiers.Length > 0)
-                {
-                    for (int i = 0; i < dotSeperatedBuildIdentifiers.Length; ++i)
-                    {
-                        if (!IsBuildIdentifier(dotSeperatedBuildIdentifiers[i]))
-                        {
-                            throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
-                        }
-                    }
-                }
+                throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
             }
 
             BuildMetadata = buildMetadata;
             SdkFeatureBand = (Patch / 100) * 100;
             SdkPatchLevel = Patch % 100;
+        }
+
+        private ReleaseVersion()
+        {
+
         }
 
         /// <summary>
@@ -485,8 +470,8 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 // Can't use int.TryParse, e.g. 2147483648 will fail to convert, return false and not set the out
                 // paramenter.
-                bool isNumericIdentifierA = IsDigits(dotPartsA[i]);
-                bool isNumericIdentifierB = IsDigits(dotPartsB[i]);
+                bool isNumericIdentifierA = IsAllDigits(dotPartsA[i]);
+                bool isNumericIdentifierB = IsAllDigits(dotPartsB[i]);
 
                 int compareResult;
                 if (isNumericIdentifierA && isNumericIdentifierB)
@@ -574,7 +559,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(input));
             }
 
-            if (!TryParse(input, canThrow: true, out ReleaseVersion parsedVersion))
+            if (!TryParse(input, throwOnFailure: true, out ReleaseVersion parsedVersion))
             {
                 throw new FormatException(ReleasesResources.InvalidReleaseVersion);
             }
@@ -592,7 +577,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the string could be converted; <see langword="false"> otherwise.</see> </returns>
         public static bool TryParse(string input, out ReleaseVersion result)
         {
-            return TryParse(input, canThrow: false, out result);
+            return TryParse(input, throwOnFailure: false, out result);
         }
 
         /// <summary>
@@ -608,15 +593,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 return false;
             }
 
-            for (int i = 0; i < input.Length; i++)
-            {
-                if (!char.IsDigit(input[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return IsAllDigits(input);
         }
 
         /// <summary>
@@ -624,7 +601,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <param name="input">The string to check.</param>
         /// <returns><see langword="true"/> if the string only contains digits; <see langword="false"> otherwise.</see></returns>
-        internal static bool IsDigits(string input)
+        internal static bool IsAllDigits(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -649,7 +626,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the string is a build identifier; <see langword="false"> otherwise.</see></returns>
         internal static bool IsBuildIdentifier(string input)
         {
-            return IsAlphaNumericIdentifier(input) || IsDigits(input);
+            return IsAlphaNumericIdentifier(input) || IsAllDigits(input);
         }
 
         /// <summary>
@@ -693,144 +670,247 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="input">A string that contains a version to convert.</param>
         /// <param name="version">Contains the <see cref="ReleaseVersion"/> equivalent of the value in <paramref name="input"/> if
         /// successful; otherwise <see langword="null"/>.</param>
-        /// <param name="canThrow">A boolean indicating whether an exception should be raised if the conversion failed.</param>
+        /// <param name="throwOnFailure">A boolean indicating whether an exception should be raised if the conversion failed.</param>
         /// <returns><see langword="true"/> if the string could be converted; <see langword="false"> otherwise.</see> </returns>
-        /// <exception cref="FormatException" />
-        /// <exception cref="ArgumentOutOfRangeException" />
-        internal static bool TryParse(string input, bool canThrow, out ReleaseVersion version)
+        /// <exception cref="FormatException">If the string is an invalid semantic version.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the major, minor, or patch version exceeds <see cref="int.MaxValue"/>.</exception>
+        internal static bool TryParse(string input, bool throwOnFailure, out ReleaseVersion version)
         {
             version = null;
 
-            try
+            string build = null;
+            string prerelease = null;
+            string versionCore;
+
+            if (input == null)
             {
-                string build = null;
-                string prerelease = null;
-                string versionCore = null;
-
-                int buildSeparatorIndex = input.IndexOf('+');
-                int prereleaseSeparatorIndex = input.IndexOf('-');
-
-                if (buildSeparatorIndex == -1)
+                if (throwOnFailure)
                 {
-                    if (prereleaseSeparatorIndex == -1)
-                    {
-                        // <valid semver> ::= <version core>
-                        versionCore = input;
-                    }
-                    else
-                    {
-                        // <valid semver> ::= <version core> "-" <pre-release>
-                        if (prereleaseSeparatorIndex + 1 > input.Length)
-                        {
-                            throw new FormatException();
-                        }
-
-                        prerelease = input.Substring(prereleaseSeparatorIndex + 1);
-                        versionCore = input.Substring(0, prereleaseSeparatorIndex);
-                    }
-                }
-                else
-                {
-                    if (prereleaseSeparatorIndex == -1 || prereleaseSeparatorIndex > buildSeparatorIndex)
-                    {
-                        // <valid semver> ::= <version core> "+" <build>
-                        if (buildSeparatorIndex + 1 > input.Length)
-                        {
-                            throw new FormatException();
-                        }
-
-                        build = input.Substring(buildSeparatorIndex + 1);
-                        versionCore = input.Substring(0, buildSeparatorIndex);
-                    }
-                    else
-                    {
-                        // <valid semver> ::= <version core> "-" <pre-release> "+" <build>
-                        if (prereleaseSeparatorIndex + 1 < buildSeparatorIndex)
-                        {
-                            if (buildSeparatorIndex + 1 > input.Length)
-                            {
-                                throw new FormatException();
-                            }
-
-                            build = input.Substring(buildSeparatorIndex + 1);
-                            prerelease = input.Substring(prereleaseSeparatorIndex + 1, buildSeparatorIndex - prereleaseSeparatorIndex - 1);
-                            versionCore = input.Substring(0, prereleaseSeparatorIndex);
-                        }
-                        else
-                        {
-                            throw new FormatException();
-                        }
-                    }
-                }
-
-                string[] versionParts = versionCore.Split('.');
-
-                if (versionParts.Length != 3)
-                {
-                    // <version core> ::= <major> "." <minor> "." <patch>
-                    throw new FormatException(string.Format(ReleasesResources.InvalidVersion, versionCore));
-                }
-
-                int[] versions = new int[3] { 0, 0, 0 };
-
-                for (int i = 0; i < 3; i++)
-                {
-                    if (!TryParseCoreVersionPart(versionParts[i], canThrow, out versions[i]))
-                    {
-                        return false;
-                    }
-                }
-
-                version = new ReleaseVersion(versions[0], versions[1], versions[2], prerelease, build);
-
-                return true;
-            }
-            catch
-            {
-                if (canThrow)
-                {
-                    throw;
+                    throw new ArgumentNullException(nameof(input));
                 }
 
                 return false;
             }
+
+            int buildSeparatorIndex = input.IndexOf('+');
+            int prereleaseSeparatorIndex = input.IndexOf('-');
+
+            if (buildSeparatorIndex == -1)
+            {
+                if (prereleaseSeparatorIndex == -1)
+                {
+                    // <valid semver> ::= <version core>
+                    versionCore = input;
+                }
+                else
+                {
+                    // <valid semver> ::= <version core> "-" <pre-release>
+                    if (prereleaseSeparatorIndex + 1 > input.Length)
+                    {
+                        if (throwOnFailure)
+                        {
+                            throw new FormatException(ReleasesResources.PrereleaseCannotBeEmpty);
+                        }
+
+                        return false;
+                    }
+
+                    prerelease = input.Substring(prereleaseSeparatorIndex + 1);
+                    versionCore = input.Substring(0, prereleaseSeparatorIndex);
+                }
+            }
+            else
+            {
+                if (prereleaseSeparatorIndex == -1 || prereleaseSeparatorIndex > buildSeparatorIndex)
+                {
+                    // <valid semver> ::= <version core> "+" <build>
+                    if (buildSeparatorIndex + 1 > input.Length)
+                    {
+                        if (throwOnFailure)
+                        {
+                            throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
+                        }
+
+                        return false;
+                    }
+
+                    build = input.Substring(buildSeparatorIndex + 1);
+                    versionCore = input.Substring(0, buildSeparatorIndex);
+                }
+                else
+                {
+                    // <valid semver> ::= <version core> "-" <pre-release> "+" <build>
+                    if (prereleaseSeparatorIndex + 1 < buildSeparatorIndex)
+                    {
+                        if (buildSeparatorIndex + 1 > input.Length)
+                        {
+                            if (throwOnFailure)
+                            {
+                                throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
+                            }
+
+                            return false;
+                        }
+
+                        build = input.Substring(buildSeparatorIndex + 1);
+                        prerelease = input.Substring(prereleaseSeparatorIndex + 1, buildSeparatorIndex - prereleaseSeparatorIndex - 1);
+                        versionCore = input.Substring(0, prereleaseSeparatorIndex);
+                    }
+                    else
+                    {
+                        if (throwOnFailure)
+                        {
+                            throw new FormatException(ReleasesResources.PrereleaseCannotBeEmpty);
+                        }
+
+                        return false;
+                    }
+                }
+            }
+
+            string[] versionParts = versionCore.Split('.');
+
+            if (versionParts.Length != 3)
+            {
+                // <version core> ::= <major> "." <minor> "." <patch>
+                if (throwOnFailure)
+                {
+                    throw new FormatException(string.Format(ReleasesResources.InvalidVersion, versionCore));
+                }
+
+                return false;
+            }
+
+            int[] versions = new int[3] { 0, 0, 0 };
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (!TryParseCoreVersionPart(versionParts[i], throwOnFailure, out versions[i]))
+                {
+                    return false;
+                }
+            }
+
+            if (!IsValidPreleae(prerelease))
+            {
+                if (throwOnFailure)
+                {
+                    throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
+                }
+
+                return false;
+            }
+
+            if (!IsValidBuildMetadata(build))
+            {
+                if (throwOnFailure)
+                {
+                    throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, build));
+                }
+
+                return false;
+            }
+
+            version = new ReleaseVersion
+            {
+                Major = versions[0],
+                Minor = versions[1],
+                Patch = versions[2],
+                Prerelease = prerelease,
+                BuildMetadata = build,
+                SdkFeatureBand = (versions[2] / 100) * 100,
+                SdkPatchLevel = versions[2] % 100
+            };
+
+            return true;
         }
 
         /// <summary>
         /// Tries to convert a part of the core version to an integer.
         /// </summary>
         /// <param name="input">A string containing the major, minor, or patch value of the version.</param>
-        /// <param name="canThrow">A boolean indicating whether an exception should be raised if the conversion failed.</param>
+        /// <param name="throwOnFailure">A boolean indicating whether an exception should be raised if the conversion failed.</param>
         /// <param name="value">The converted value.</param>
         /// <returns><see langword="true"/> if the string could be converted; <see langword="false"> otherwise.</see> </returns>
-        /// <exception cref="FormatException" />
-        /// <exception cref="ArgumentOutOfRangeException" />
-        internal static bool TryParseCoreVersionPart(string input, bool canThrow, out int value)
+        /// <exception cref="FormatException">If the input string is an invalid major, minor or patch value.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If <paramref name="throwOnFailure"/> is <see langword="true"/> and the value is less than 0.</exception>
+        /// <exception cref="OverflowException">If <paramref name="throwOnFailure"/> is <see langword="true"/> and the value exceeds <see cref="int.MaxValue"/>.</exception>
+        internal static bool TryParseCoreVersionPart(string input, bool throwOnFailure, out int value)
         {
             value = -1;
 
-            try
+            if (!IsNumericIdentifier(input))
             {
-                if (!IsNumericIdentifier(input))
+                if (throwOnFailure)
                 {
                     throw new FormatException(string.Format(ReleasesResources.InvalidNumericIdentifier, input));
                 }
 
-                value = int.Parse(input);
+                return false;
+            }
 
-                if (value < 0)
+            if (throwOnFailure)
+            {
+                value = int.Parse(input);
+            }
+            else
+            {
+                if (!int.TryParse(input, out value))
+                {
+                    return false;
+                }
+            }
+
+            if (value < 0)
+            {
+                if (throwOnFailure)
                 {
                     throw new ArgumentOutOfRangeException(nameof(input), ReleasesResources.VersionPartLessThanZero);
                 }
-            }
-            catch
-            {
-                if (canThrow)
-                {
-                    throw;
-                }
 
                 return false;
+            }
+
+            return true;
+        }
+
+        private static bool IsValidPreleae(string prerelease)
+        {
+            if (prerelease != null)
+            {
+                string[] dotSeparatedPrereleaseIdentifiers = prerelease.Split('.');
+
+                if (dotSeparatedPrereleaseIdentifiers.Length > 0)
+                {
+                    for (int i = 0; i < dotSeparatedPrereleaseIdentifiers.Length; i++)
+                    {
+                        if (!IsPrereleaseIdentifier(dotSeparatedPrereleaseIdentifiers[i]))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private static bool IsValidBuildMetadata(string buildMetadata)
+        {
+            if (buildMetadata != null)
+            {
+                string[] dotSeperatedBuildIdentifiers = buildMetadata.Split('.');
+
+                if (dotSeperatedBuildIdentifiers.Length > 0)
+                {
+                    for (int i = 0; i < dotSeperatedBuildIdentifiers.Length; ++i)
+                    {
+                        if (!IsBuildIdentifier(dotSeperatedBuildIdentifiers[i]))
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
 
             return true;
