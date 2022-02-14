@@ -4,9 +4,9 @@
       <Uri>https://github.com/dotnet/standard</Uri>
       <Sha>cfe95a23647c7de1fe1a349343115bd7720d6949</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build" Version="0.1.0-alpha.1.21460.1" CoherentParentDependency="Microsoft.NET.Sdk">
-      <Uri>https://github.com/dotnet/source-build</Uri>
-      <Sha>ca07d8763334fa66011ed496d444d68355fb9511</Sha>
+    <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-externals" Version="7.0.0-alpha.1.22110.1">
+      <Uri>https://github.com/dotnet/source-build-externals</Uri>
+      <Sha>a28332454bd70964205fb18bf3d0a1146a228b25</Sha>
       <SourceBuild RepoName="source-build" ManagedOnly="true" />
     </Dependency>
   </ProductDependencies>
