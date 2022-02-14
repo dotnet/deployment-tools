@@ -7,6 +7,11 @@
         <target state="translated">ASP.NET Core ランタイム</target>
         <note />
       </trans-unit>
+      <trans-unit id="BuildMetadataCannotBeEmpty">
+        <source>The build metadata cannot be empty if a separator is provided.</source>
+        <target state="new">The build metadata cannot be empty if a separator is provided.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="FileNotFound">
         <source>Could not find the specified file: {0}</source>
         <target state="translated">指定されたファイルが見つかりませんでした: {0}</target>
@@ -32,6 +37,11 @@
         <target state="translated">マイナー バージョンが無効か、存在しません。</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidNumericIdentifier">
+        <source>Invalid numeric identifier: '{0}'.</source>
+        <target state="new">Invalid numeric identifier: '{0}'.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidPatch">
         <source>Invalid or missing patch version.</source>
         <target state="translated">修正プログラムのバージョンが無効か、見つかりません。</target>
@@ -42,9 +52,19 @@
         <target state="translated">プレリリースの値が無効です: {0}</target>
         <note />
       </trans-unit>
+      <trans-unit id="InvalidReleaseVersion">
+        <source>The specified version is not a valid semantic version.</source>
+        <target state="new">The specified version is not a valid semantic version.</target>
+        <note />
+      </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Invalid version: {0}</source>
-        <target state="translated">無効なバージョン: {0}</target>
+        <source>The specified version does not contain a valid major, minor, and patch version: '{0}'.</source>
+        <target state="new">The specified version does not contain a valid major, minor, and patch version: '{0}'.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="PrereleaseCannotBeEmpty">
+        <source>The prerelease value cannot be empty if a separator is provided.</source>
+        <target state="new">The prerelease value cannot be empty if a separator is provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="RuntimeReleaseName">
@@ -63,8 +83,8 @@
         <note />
       </trans-unit>
       <trans-unit id="VersionPartLessThanZero">
-        <source>The '{0}' value cannot be less than 0.</source>
-        <target state="translated">'{0}' 値は、0 未満にできません。</target>
+        <source>The value cannot be less than 0.</source>
+        <target state="new">The value cannot be less than 0.</target>
         <note />
       </trans-unit>
       <trans-unit id="WindowsDesktopReleaseName">

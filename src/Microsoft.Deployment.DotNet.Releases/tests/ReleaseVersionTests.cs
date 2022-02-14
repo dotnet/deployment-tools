@@ -9,15 +9,14 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
     public class ReleaseVersionTests
     {
         [Theory]
-        [InlineData(-1, -1, -1, "*", "$$")]
-        [InlineData(1, 0, 0, null, "$$")]
-        [InlineData(1, 0, 0, "00", "12345")]
-        [InlineData(1, 0, 0, null, "+12345")]
-        public void CtorThrowsIfVersionPartsAreInvalid(int major, int minor, int patch, string prerelease, string buildMetadata)
+        [InlineData(-1, -1, -1, "*", "$$", typeof(ArgumentOutOfRangeException))]
+        [InlineData(1, 0, 0, null, "$$", typeof(FormatException))]
+        [InlineData(1, 0, 0, null, "+12345", typeof(FormatException))]
+        public void CtorThrowsIfVersionPartsAreInvalid(int major, int minor, int patch, string prerelease, string buildMetadata, Type expectedException)
         {
-            var e = Assert.Throws<FormatException>(() =>
+            Exception e = Assert.Throws(expectedException, () =>
             {
-                var v = new ReleaseVersion(major, minor, patch, prerelease, buildMetadata);
+                ReleaseVersion v = new ReleaseVersion(major, minor, patch, prerelease, buildMetadata);
             });
         }
 
@@ -26,7 +25,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [InlineData("2.1.807", 800, 7)]
         public void ItSupportsFeatureBandsAndPatchLevelsForSdkVersions(string version, int expectedFeatureBand, int expectedPatchLevel)
         {
-            var v = new ReleaseVersion(version);
+            ReleaseVersion v = new ReleaseVersion(version);
 
             Assert.Equal(expectedFeatureBand, v.SdkFeatureBand);
             Assert.Equal(expectedPatchLevel, v.SdkPatchLevel);
@@ -43,7 +42,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.Equal(expectedMinor, v.Minor);
             Assert.Equal(expectedPatch, v.Patch);
             Assert.Equal(expectedPrerelease, v.Prerelease);
-        }       
+        }
 
         [Theory]
         [InlineData(1, 2, 3, "preview.4", "1.2.3-preview.4", -1, -1)]
@@ -106,14 +105,14 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void ItThrowsFormatExceptionIfStringVersionInvalid()
         {
-            var e = Assert.Throws<FormatException>(
+            Exception e = Assert.Throws<FormatException>(
                 delegate
                 {
                     ReleaseVersion v = new ReleaseVersion("1");
                 }
                 );
 
-            Assert.Equal("Invalid version: 1", e.Message);
+            Assert.Equal("The specified version does not contain a valid major, minor, and patch version: '1'.", e.Message);
         }
 
         [Fact]
@@ -286,6 +285,72 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             ReleaseVersion v1 = new ReleaseVersion("4.9.7+build.12345");
 
             Assert.Equal("4.9.7+build.12345", v1.ToString());
+        }
+
+        [Theory]
+        [InlineData("15.16.18", true)]
+        [InlineData("15.16.18-preview.8", true)]
+        [InlineData("15.16.18+000000", true)]
+        [InlineData("15.16.18-preview.8+000000", true)]
+        [InlineData("x", false)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        [InlineData("1.2.3.", false)]
+        [InlineData("5.3.00", false)]
+        [InlineData("0.1.1-", false)]
+        [InlineData("0.1.1+", false)]
+        [InlineData("0.1.1-+", false)]
+        [InlineData("0.1.1+-", true)]
+        [InlineData("0.1.1--", true)]
+        [InlineData("0.1.1++", false)]
+        [InlineData("0.1.1-+abcdef", false)]
+        [InlineData("0.1.1-+abcdef.", false)]
+        public void ItCanParseAVersionString(string input, bool expectedResult)
+        {
+            bool result = ReleaseVersion.TryParse(input, false, out ReleaseVersion _);
+
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("123a+#@!", false)]
+        [InlineData("01", false)]
+        [InlineData("0", true)]
+        [InlineData("123456", true)]
+        public void ItCanClassifyNumericIdentifiers(string input, bool expectedResult)
+        {
+            Assert.Equal(expectedResult, ReleaseVersion.IsNumericIdentifier(input));
+        }
+
+        [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("123a+#@!", false)]
+        [InlineData("01", true)]
+        [InlineData("0", true)]
+        [InlineData("123456", true)]
+        [InlineData("--3--", true)]
+        public void ItCanClassifyPrereleaseIdentifiers(string input, bool expectedResult)
+        {
+            Assert.Equal(expectedResult, ReleaseVersion.IsPrereleaseIdentifier(input));
+        }
+
+        [Theory]
+        [InlineData("00", false, -1)]
+        [InlineData("-1", false, -1)]
+        [InlineData("0", true, 0)]
+        [InlineData("12345", true, 12345)]
+        [InlineData(null, false, -1)]
+        [InlineData("", false, -1)]
+        [InlineData("hello", false, -1)]
+        public void ItCanParseNumericIdentifiers(string input, bool expectedResult, int expectedValue)
+        {
+            bool result = ReleaseVersion.TryParseCoreVersionPart(input, false, out int value);
+
+            Assert.Equal(expectedResult, result);
+            Assert.Equal(expectedResult ? expectedValue : -1, value);
         }
     }
 }

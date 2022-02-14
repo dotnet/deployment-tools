@@ -19,7 +19,7 @@ namespace Microsoft.Deployment.DotNet.Releases {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ReleasesResources {
@@ -70,6 +70,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The build metadata cannot be empty if a separator is provided..
+        /// </summary>
+        internal static string BuildMetadataCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("BuildMetadataCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find the specified file: {0}.
         /// </summary>
         internal static string FileNotFound {
@@ -115,6 +124,15 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid numeric identifier: &apos;{0}&apos;..
+        /// </summary>
+        internal static string InvalidNumericIdentifier {
+            get {
+                return ResourceManager.GetString("InvalidNumericIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid or missing patch version..
         /// </summary>
         internal static string InvalidPatch {
@@ -133,11 +151,29 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid version: {0}.
+        ///   Looks up a localized string similar to The specified version is not a valid semantic version..
+        /// </summary>
+        internal static string InvalidReleaseVersion {
+            get {
+                return ResourceManager.GetString("InvalidReleaseVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified version does not contain a valid major, minor, and patch version: &apos;{0}&apos;..
         /// </summary>
         internal static string InvalidVersion {
             get {
                 return ResourceManager.GetString("InvalidVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The prerelease value cannot be empty if a separator is provided..
+        /// </summary>
+        internal static string PrereleaseCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("PrereleaseCannotBeEmpty", resourceCulture);
             }
         }
         
@@ -169,7 +205,7 @@ namespace Microsoft.Deployment.DotNet.Releases {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The &apos;{0}&apos; value cannot be less than 0..
+        ///   Looks up a localized string similar to The value cannot be less than 0..
         /// </summary>
         internal static string VersionPartLessThanZero {
             get {
