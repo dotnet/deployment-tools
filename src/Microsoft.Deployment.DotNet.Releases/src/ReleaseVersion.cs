@@ -148,19 +148,12 @@ namespace Microsoft.Deployment.DotNet.Releases
             Minor = minor;
             Patch = patch;
 
-            if (!IsValidPreleae(prerelease))
-            {
-                throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
-            }
-
+            IsValidPrerelease(prerelease, throwOnFailure: true);
             Prerelease = prerelease;
 
-            if (!IsValidBuildMetadata(buildMetadata))
-            {
-                throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
-            }
-
+            IsValidBuildMetadata(buildMetadata, throwOnFailure: true);
             BuildMetadata = buildMetadata;
+
             SdkFeatureBand = (Patch / 100) * 100;
             SdkPatchLevel = Patch % 100;
         }
@@ -627,10 +620,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <param name="input">The string to check.</param>
         /// <returns><see langword="true"/> if the string is a build identifier; <see langword="false"> otherwise.</see></returns>
-        internal static bool IsBuildIdentifier(string input)
-        {
-            return IsAlphaNumericIdentifier(input) || IsAllDigits(input);
-        }
+        internal static bool IsBuildIdentifier(string input) => IsAlphaNumericIdentifier(input) || IsAllDigits(input);
 
         /// <summary>
         /// Determines whether a string is a valid alphanumeric identifier.
@@ -660,11 +650,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <param name="input">The string to check.</param>
         /// <returns><see langword="true"/> if the string is a prerelease identifier; <see langword="false"> otherwise.</see></returns>
-        internal static bool IsPrereleaseIdentifier(string input)
-        {
-            return IsNumericIdentifier(input) || IsAlphaNumericIdentifier(input);
-        }
-
+        internal static bool IsPrereleaseIdentifier(string input) => IsNumericIdentifier(input) || IsAlphaNumericIdentifier(input);
 
         /// <summary>
         /// Tries to convert the string representation of a version to an equivalent <see cref="ReleaseVersion"/> object,
@@ -722,53 +708,47 @@ namespace Microsoft.Deployment.DotNet.Releases
                     versionCore = input.Substring(0, prereleaseSeparatorIndex);
                 }
             }
+            else if (prereleaseSeparatorIndex == -1 || prereleaseSeparatorIndex > buildSeparatorIndex)
+            {
+                // <valid semver> ::= <version core> "+" <build>
+                if (buildSeparatorIndex + 1 > input.Length)
+                {
+                    if (throwOnFailure)
+                    {
+                        throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
+                    }
+
+                    return false;
+                }
+
+                build = input.Substring(buildSeparatorIndex + 1);
+                versionCore = input.Substring(0, buildSeparatorIndex);
+            }
+            else if (prereleaseSeparatorIndex + 1 < buildSeparatorIndex)
+            {
+                // <valid semver> ::= <version core> "-" <pre-release> "+" <build>
+                if (buildSeparatorIndex + 1 > input.Length)
+                {
+                    if (throwOnFailure)
+                    {
+                        throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
+                    }
+
+                    return false;
+                }
+
+                build = input.Substring(buildSeparatorIndex + 1);
+                prerelease = input.Substring(prereleaseSeparatorIndex + 1, buildSeparatorIndex - prereleaseSeparatorIndex - 1);
+                versionCore = input.Substring(0, prereleaseSeparatorIndex);
+            }
             else
             {
-                if (prereleaseSeparatorIndex == -1 || prereleaseSeparatorIndex > buildSeparatorIndex)
+                if (throwOnFailure)
                 {
-                    // <valid semver> ::= <version core> "+" <build>
-                    if (buildSeparatorIndex + 1 > input.Length)
-                    {
-                        if (throwOnFailure)
-                        {
-                            throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
-                        }
-
-                        return false;
-                    }
-
-                    build = input.Substring(buildSeparatorIndex + 1);
-                    versionCore = input.Substring(0, buildSeparatorIndex);
+                    throw new FormatException(ReleasesResources.PrereleaseCannotBeEmpty);
                 }
-                else
-                {
-                    // <valid semver> ::= <version core> "-" <pre-release> "+" <build>
-                    if (prereleaseSeparatorIndex + 1 < buildSeparatorIndex)
-                    {
-                        if (buildSeparatorIndex + 1 > input.Length)
-                        {
-                            if (throwOnFailure)
-                            {
-                                throw new FormatException(ReleasesResources.BuildMetadataCannotBeEmpty);
-                            }
 
-                            return false;
-                        }
-
-                        build = input.Substring(buildSeparatorIndex + 1);
-                        prerelease = input.Substring(prereleaseSeparatorIndex + 1, buildSeparatorIndex - prereleaseSeparatorIndex - 1);
-                        versionCore = input.Substring(0, prereleaseSeparatorIndex);
-                    }
-                    else
-                    {
-                        if (throwOnFailure)
-                        {
-                            throw new FormatException(ReleasesResources.PrereleaseCannotBeEmpty);
-                        }
-
-                        return false;
-                    }
-                }
+                return false;
             }
 
             string[] versionParts = versionCore.Split('.');
@@ -794,23 +774,13 @@ namespace Microsoft.Deployment.DotNet.Releases
                 }
             }
 
-            if (!IsValidPreleae(prerelease))
+            if (!IsValidPrerelease(prerelease, throwOnFailure))
             {
-                if (throwOnFailure)
-                {
-                    throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
-                }
-
                 return false;
             }
 
-            if (!IsValidBuildMetadata(build))
+            if (!IsValidBuildMetadata(build, throwOnFailure))
             {
-                if (throwOnFailure)
-                {
-                    throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, build));
-                }
-
                 return false;
             }
 
@@ -856,12 +826,9 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 value = int.Parse(input);
             }
-            else
+            else if (!int.TryParse(input, out value))
             {
-                if (!int.TryParse(input, out value))
-                {
-                    return false;
-                }
+                return false;
             }
 
             if (value < 0)
@@ -877,7 +844,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             return true;
         }
 
-        private static bool IsValidPreleae(string prerelease)
+        private static bool IsValidPrerelease(string prerelease, bool throwOnFailure)
         {
             if (prerelease != null)
             {
@@ -889,6 +856,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                     {
                         if (!IsPrereleaseIdentifier(dotSeparatedPrereleaseIdentifiers[i]))
                         {
+                            if (throwOnFailure)
+                            {
+                                throw new FormatException(string.Format(ReleasesResources.InvalidPrerelease, prerelease));
+                            }
+
                             return false;
                         }
                     }
@@ -898,7 +870,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             return true;
         }
 
-        private static bool IsValidBuildMetadata(string buildMetadata)
+        private static bool IsValidBuildMetadata(string buildMetadata, bool throwOnFailure)
         {
             if (buildMetadata != null)
             {
@@ -910,6 +882,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                     {
                         if (!IsBuildIdentifier(dotSeperatedBuildIdentifiers[i]))
                         {
+                            if (throwOnFailure)
+                            {
+                                throw new FormatException(string.Format(ReleasesResources.InvalidBuildMetadata, buildMetadata));
+                            }
+
                             return false;
                         }
                     }
