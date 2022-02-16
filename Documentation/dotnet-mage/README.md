@@ -22,7 +22,7 @@ Adds Launcher to target directory and sets binary to be launched.
 Example:
 `-AddLauncher myapp.dll -TargetDirectory bin/release`
 
-Launcher is required for all .NET 5 (and .NET Core 3.1) apps in ClickOnce.
+Launcher is required for all .NET 6, .NET 5 (and .NET Core 3.1) apps in ClickOnce.
 
 You can obtain all command-line options by running `dotnet mage` or for verbose help `dotnet mage -help verbose`.
 
