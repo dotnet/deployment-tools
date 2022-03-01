@@ -3,12 +3,19 @@
   <PropertyGroup>
     <PrepareArtifacts>true</PrepareArtifacts>
   </PropertyGroup>
+  <Import Project="../tools/Sign.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
+
+  <!-- Since this repo doesn't use publish.proj, update the incoming arcade defaults to use MicrosoftDotNet500 -->
+  <ItemGroup>
+    <FileExtensionSignInfo Update="@(FileExtensionSignInfo->WithMetadataValue('CertificateName','Microsoft400'))" CertificateName="$(DotNetCertificateName)" />
+    <StrongNameSignInfo Update="@(StrongNameSignInfo->WithMetadataValue('CertificateName','Microsoft400'))" CertificateName="$(DotNetCertificateName)" />
+    <FileSignInfo Update="@(FileSignInfo->WithMetadataValue('CertificateName','Microsoft400'))" CertificateName="$(DotNetCertificateName)" />
+  </ItemGroup>
 
   <UsingTask TaskName="GenerateChecksums" AssemblyFile="$(InstallerTasksAssemblyPath)" />
 
   <PropertyGroup>
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
-    <SkipSigning>true</SkipSigning>
   </PropertyGroup>
 
   <Target Name="CreateChecksums">
@@ -21,15 +28,6 @@
     </ItemGroup>
 
     <GenerateChecksums Items="@(ArtifactsForGeneratingChecksums)" />
-  </Target>
-
-  <Target Name="SignPackages"
-          Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'">
-    <Message Importance="High" Text="Signing final packages" />
-    <MSBuild
-      Projects="$(SigningToolsDir)\SignFinalPackages.proj"
-      Targets="Build"
-      Properties="DownloadDirectory=$(DownloadDirectory)" />
   </Target>
 
   <Target Name="UploadPreparedArtifactsToPipeline"
@@ -152,7 +150,6 @@
   -->
   <Target Name="Build"
           DependsOnTargets="
-            SignPackages;
             CreateChecksums;
             UploadPreparedArtifactsToPipeline;
             PreparePublishToAzureBlobFeed">
