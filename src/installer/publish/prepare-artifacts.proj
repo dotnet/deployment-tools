@@ -1,10 +1,14 @@
-<Project DefaultTargets="Build">
+<Project>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <PrepareArtifacts>true</PrepareArtifacts>
+  </PropertyGroup>
 
   <UsingTask TaskName="GenerateChecksums" AssemblyFile="$(InstallerTasksAssemblyPath)" />
 
   <PropertyGroup>
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
+    <SkipSigning>true</SkipSigning>
   </PropertyGroup>
 
   <Target Name="CreateChecksums">
@@ -28,11 +32,32 @@
       Properties="DownloadDirectory=$(DownloadDirectory)" />
   </Target>
 
-  <Target Name="PreparePublishToAzureBlobFeed">
-    <Error Condition="'$(PackagesUrl)'==''" Text="Missing property PackagesUrl" />
+  <Target Name="UploadPreparedArtifactsToPipeline"
+          DependsOnTargets="
+            FindDownloadedArtifacts;
+            CreateChecksums">
+    <PropertyGroup>
+      <PreparedFileUploadDir>$(ArtifactsObjDir)PreparedFileUpload\</PreparedFileUploadDir>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <AllFilesToBlobStorage Include="@(UploadToBlobStorageFile);@(UploadToBlobStorageFile)" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(AllFilesToBlobStorage)" DestinationFolder="$(PreparedFileUploadDir)">
+      <Output TaskParameter="CopiedFiles" ItemName="CopiedUploadToBlobStorageFile" />
+    </Copy>
+
+    <Message Importance="High" Text="Uploading PreparedArtifacts to pipeline" />
+    <Message
+      Text="##vso[artifact.upload containerfolder=PreparedArtifacts;artifactname=PreparedArtifacts]%(CopiedUploadToBlobStorageFile.Identity)"
+      Importance="High" />
+  </Target>
+
+  <Target Name="PreparePublishToAzureBlobFeed"
+          DependsOnTargets="GetProductVersions;FindDownloadedArtifacts">
 
     <PropertyGroup>
-      <ExpectedFeedUrl>$(PackagesUrl)</ExpectedFeedUrl>
       <AssetManifestFilename>Manifest.xml</AssetManifestFilename>
       <AssetManifestFile>$(ArtifactsLogDir)AssetManifest/$(AssetManifestFilename)</AssetManifestFile>
 
@@ -55,79 +80,68 @@
       <ItemsToPush Include="@(ShippingNupkgToPublishFile)" />
       <ItemsToPush Include="@(NonShippingNupkgToPublishFile)" ManifestArtifactData="NonShipping=true" />
       <ItemsToPush Include="@(SymbolNupkgToPublishFile)" />
-    </ItemGroup>
-
-    <!-- Push items to AzDO as build artifacts, generating the asset manifest as a side effect. -->
-    <PushToAzureDevOpsArtifacts
-      ItemsToPush="@(ItemsToPush)"
-      ManifestBuildData="Location=$(ExpectedFeedUrl)"
-      ManifestRepoUri="$(BUILD_REPOSITORY_URI)"
-      ManifestBranch="$(BUILD_SOURCEBRANCH)"
-      ManifestBuildId="$(BUILD_BUILDNUMBER)"
-      ManifestCommit="$(BUILD_SOURCEVERSION)"
-      IsStableBuild="$(IsStableBuild)"
-      AssetManifestPath="$(AssetManifestFile)"
-      AssetsTemporaryDirectory="$(TempWorkingDir)"
-      PublishingVersion="3" />
-
-    <!-- Copy the generated manifest to the build's artifacts -->
-    <Copy SourceFiles="$(AssetManifestFile)" DestinationFolder="$(TempWorkingDir)" />
-
-    <Message Importance="High" Text="Uploading $(AssetManifestFilename) to pipeline" />
-    <Message
-      Text="##vso[artifact.upload containerfolder=AssetManifests;artifactname=AssetManifests]$(TempWorkingDir)$(AssetManifestFilename)"
-      Importance="High" />
-  </Target>
-
-  <Target Name="PreparePublishFilesToAzureBlobFeed"
-          DependsOnTargets="GetProductVersions">
-    <Error Condition="'$(PackagesUrl)'==''" Text="Missing property PackagesUrl" />
-
-    <PropertyGroup>
-      <ExpectedFeedUrl>$(PackagesUrl)</ExpectedFeedUrl>
-      <AssetManifestFilename>Manifest_Installers.xml</AssetManifestFilename>
-      <AssetManifestFile>$(ArtifactsLogDir)AssetManifest/$(AssetManifestFilename)</AssetManifestFile>
-
-      <!-- Create temp dir to store generated asset manifest, per Arcade guidance. -->
-      <TempWorkingDir>$(ArtifactsObjDir)TempWorkingDir\$([System.Guid]::NewGuid())\</TempWorkingDir>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ItemsToPush Remove="@(ItemsToPush)" />
 
       <ItemsToPush
         Include="@(UploadToBlobStorageFile)"
         Exclude="@(NupkgToPublishFile);@(SymbolNupkgToPublishFile)">
         <RelativeBlobPath>$(InstallersRelativePath)%(Filename)%(Extension)</RelativeBlobPath>
+        <PublishFlatContainer>true</PublishFlatContainer>
       </ItemsToPush>
 
       <ItemsToPush Include="@(GeneratedChecksumFile)">
         <RelativeBlobPath>$(InstallersRelativePath)%(Filename)%(Extension)</RelativeBlobPath>
         <Category>Checksum</Category>
+        <PublishFlatContainer>true</PublishFlatContainer>
       </ItemsToPush>
     </ItemGroup>
 
+    <!--
+      The new Maestro/BAR build model keeps separate Azure DevOps and GitHub build information.
+      The GitHub information will be extracted based on the Azure DevOps repository.
+    -->
+
+    <PropertyGroup>
+      <CollectionUri>$(SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)</CollectionUri>
+      <!-- When we have dev.azure.com/<account>/ -->
+      <AzureDevOpsAccount Condition="$(CollectionUri.IndexOf('dev.azure.com')) >= 0">$(CollectionUri.Split('/')[3])</AzureDevOpsAccount>
+      <!-- When we have <account>.visualstudio.com -->
+      <AzureDevOpsAccount Condition="$(CollectionUri.IndexOf('visualstudio.com')) >= 0">$(CollectionUri.Split('.')[0].Split('/')[2])</AzureDevOpsAccount>
+    </PropertyGroup>
+    <ItemGroup>
+      <ManifestBuildData Include="InitialAssetsLocation=$(SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$(SYSTEM_TEAMPROJECT)/_apis/build/builds/$(BUILD_BUILDID)/artifacts" />
+      <ManifestBuildData Include="AzureDevOpsBuildId=$(BUILD_BUILDID)" />
+      <ManifestBuildData Include="AzureDevOpsBuildDefinitionId=$(SYSTEM_DEFINITIONID)" />
+      <ManifestBuildData Include="AzureDevOpsAccount=$(AzureDevOpsAccount)" />
+      <ManifestBuildData Include="AzureDevOpsProject=$(SYSTEM_TEAMPROJECT)" />
+      <ManifestBuildData Include="AzureDevOpsBuildNumber=$(BUILD_BUILDNUMBER)" />
+      <ManifestBuildData Include="AzureDevOpsRepository=$(BUILD_REPOSITORY_URI)" />
+      <ManifestBuildData Include="AzureDevOpsBranch=$(BUILD_SOURCEBRANCH)" />
+    </ItemGroup>
+
     <!-- Push items to AzDO as build artifacts, generating the asset manifest as a side effect. -->
+    <!-- TODO: remove "PublishingVersion" see https://github.com/dotnet/arcade/issues/6082 -->
     <PushToAzureDevOpsArtifacts
+      AzureDevOpsCollectionUri="$(SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)"
+      AzureDevOpsProject="$(SYSTEM_TEAMPROJECT)"
+      AzureDevOpsBuildId="$(BUILD_BUILDID)"
+      ItemsToSign="@(ItemsToSignPostBuild)"
+      StrongNameSignInfo="@(StrongNameSignInfo)"
+      FileSignInfo="@(FileSignInfo)"
+      FileExtensionSignInfo="@(FileExtensionSignInfo)"
+      CertificatesSignInfo="@(CertificatesSignInfo)"
       ItemsToPush="@(ItemsToPush)"
-      ManifestBuildData="Location=$(ExpectedFeedUrl)"
-      ManifestRepoUri="$(BUILD_REPOSITORY_URI)"
+      ManifestBuildData="@(ManifestBuildData)"
+      ManifestRepoUri="$(BUILD_REPOSITORY_NAME)"
       ManifestBranch="$(BUILD_SOURCEBRANCH)"
       ManifestBuildId="$(BUILD_BUILDNUMBER)"
       ManifestCommit="$(BUILD_SOURCEVERSION)"
       IsStableBuild="$(IsStableBuild)"
-      PublishFlatContainer="true"
       AssetManifestPath="$(AssetManifestFile)"
-      AssetsTemporaryDirectory="$(TempWorkingDir)"
       PublishingVersion="3" />
 
     <!-- Copy the generated manifest to the build's artifacts -->
     <Copy SourceFiles="$(AssetManifestFile)" DestinationFolder="$(TempWorkingDir)" />
 
-    <Message Importance="High" Text="Uploading $(AssetManifestFilename) to pipeline" />
-    <Message
-      Text="##vso[artifact.upload containerfolder=AssetManifests;artifactname=AssetManifests]$(TempWorkingDir)$(AssetManifestFilename)"
-      Importance="High" />
   </Target>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
@@ -138,11 +152,10 @@
   -->
   <Target Name="Build"
           DependsOnTargets="
-            FindDownloadedArtifacts;
             SignPackages;
             CreateChecksums;
-            PreparePublishToAzureBlobFeed;
-            PreparePublishFilesToAzureBlobFeed">
+            UploadPreparedArtifactsToPipeline;
+            PreparePublishToAzureBlobFeed">
     <Message Importance="High" Text="Complete!" />
   </Target>
 
