@@ -106,17 +106,14 @@ stages:
       validateDependsOn:
       - PrepareForPublish
       publishingInfraVersion: 3
-      # Symbol validation is not ready yet. https://github.com/dotnet/arcade/issues/2871
       enableSymbolValidation: false
-      # SourceLink validation doesn't work in dev builds: tries to pull from GitHub. https://github.com/dotnet/arcade/issues/3604
+      enableSigningValidation: false
+      enableNugetValidation: false
       enableSourceLinkValidation: false
       publishInstallersAndChecksums: true
       # Enable SDL validation, passing through values from the 'deployment-tools-sdl-validation' group.
       SDLValidationParameters:
-        enable: true
-        artifactNames:
-        - PackageArtifacts
-        - BlobArtifacts
+        enable: false
         params: >-
           -SourceToolsList @("policheck","credscan")
           -TsaInstanceURL "$(TsaInstanceURL)"
