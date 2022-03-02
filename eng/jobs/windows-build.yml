@@ -91,6 +91,12 @@ jobs:
         $(MsbuildSigningArguments)
       displayName: Package
 
+    # Generate SBOM for the internal leg only
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - template: ..\common\templates\steps\generate-sbom.yml
+        parameters:
+          name: Generate_SBOM_${{ parameters.name }}
+
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
       - task: NuGetToolInstaller@1
         displayName: 'Install NuGet.exe'
