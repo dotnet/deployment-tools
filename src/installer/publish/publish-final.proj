@@ -40,14 +40,15 @@
       AccountName="$(AzureAccountName)"
       AccountKey="$(AzureAccessToken)"
       ContainerName="$(ContainerName)"
-      SemaphoreBlob="DeploymentTools/$(Channel)/sharedFxPublishSemaphore"
+      ProductBlobStorageName="$(ProductBlobStorageName)"
+      SemaphoreBlob="$(ProductBlobStorageName)/$(Channel)/sharedFxPublishSemaphore"
       Channel="$(Channel)"
       Version="$(SharedFrameworkNugetVersion)"
       SharedFrameworkNugetVersion="$(SharedFrameworkNugetVersion)"
       SharedHostNuGetVersion="$(HostVersion)"
       ProductVersion="$(ProductVersion)"
       CommitHash="$(LatestCommit)"
-      FinalizeContainer="DeploymentTools/$(SharedFrameworkNugetVersion)"
+      FinalizeContainer="$(ProductBlobStorageName)/$(SharedFrameworkNugetVersion)"
       ForcePublish="true" />
 
     <Error Condition="'$(ChecksumAzureAccessToken)' == ''" Text="Missing required property 'ChecksumAzureAccessToken'" />
@@ -59,14 +60,15 @@
       AccountName="$(ChecksumAzureAccountName)"
       AccountKey="$(ChecksumAzureAccessToken)"
       ContainerName="$(ChecksumContainerName)"
-      SemaphoreBlob="DeploymentTools/$(Channel)/checksumPublishSemaphore"
+      ProductBlobStorageName="$(ProductBlobStorageName)"
+      SemaphoreBlob="$(ProductBlobStorageName)/$(Channel)/checksumPublishSemaphore"
       Channel="$(Channel)"
       Version="$(SharedFrameworkNugetVersion)"
       SharedFrameworkNugetVersion="$(SharedFrameworkNugetVersion)"
       SharedHostNuGetVersion="$(HostVersion)"
       ProductVersion="$(ProductVersion)"
       CommitHash="$(LatestCommit)"
-      FinalizeContainer="DeploymentTools/$(SharedFrameworkNugetVersion)"
+      FinalizeContainer="$(ProductBlobStorageName)/$(SharedFrameworkNugetVersion)"
       ForcePublish="true" />
   </Target>
 
