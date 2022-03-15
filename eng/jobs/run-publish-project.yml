@@ -15,7 +15,7 @@ jobs:
     dependencies.setupMaestroVars.outputs['setReleaseVars.InitialChannels'],
     format('[{0}]', variables['${{ parameters.dependency.channel.bar }}']))
   pool:
-    name: Hosted VS2017
+    name: Hosted VS2019
   # Double the default timeout.
   timeoutInMinutes: 120
   workspace:
