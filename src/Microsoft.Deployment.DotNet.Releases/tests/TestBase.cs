@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit;
@@ -13,6 +14,11 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 {
     public class TestBase : IAsyncLifetime
     {
+        /// <summary>
+        /// The path of the test directory.
+        /// </summary>
+        protected static string TestDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         /// <summary>
         /// A collection of all products.
         /// </summary>
