@@ -53,14 +53,13 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// Downloads a file from the specified address.
+        /// Downloads or copy a file from the specified address to the specified destination.
         /// </summary>
-        /// <param name="address"></param>
-        /// <param name="fileName"></param>
+        /// <param name="address">The address of the source file to download or copy.</param>
+        /// <param name="fileName">The path of the destination file.</param>
         /// <returns>The task object representing the asynchronous operation.</returns>
         internal static async Task DownloadFileAsync(Uri address, string fileName)
         {
-            using var httpClient = new HttpClient();
             string directory = Path.GetDirectoryName(fileName);
 
             if (!Directory.Exists(directory))
@@ -68,11 +67,21 @@ namespace Microsoft.Deployment.DotNet.Releases
                 Directory.CreateDirectory(directory);
             }
 
-            HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
-            httpResponse.EnsureSuccessStatusCode();
+            if (address.Scheme == Uri.UriSchemeFile)
+            {
+                using Stream source = File.Open(address.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                using Stream destination = File.Create(fileName);
+                await source.CopyToAsync(destination);
+            }
+            else
+            {
+                using var httpClient = new HttpClient();
+                HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
+                httpResponse.EnsureSuccessStatusCode();
 
-            using var fileStream = File.Create(fileName);
-            await httpResponse.Content.CopyToAsync(fileStream);
+                using var fileStream = File.Create(fileName);
+                await httpResponse.Content.CopyToAsync(fileStream);
+            }
         }
 
         /// <summary>
@@ -81,6 +90,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <param name="fileName">The path, including the filename and extension of the file to use.</param>
         /// <param name="hashAlgorithm">The hash algorithm to use.</param>
         /// <returns>A string containing the file hash.</returns>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentException" />
+        /// <exception cref="FileNotFoundException" />
         internal static string GetFileHash(string fileName, HashAlgorithm hashAlgorithm)
         {
             if (fileName is null)
