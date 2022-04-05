@@ -30,6 +30,15 @@
     <GenerateChecksums Items="@(ArtifactsForGeneratingChecksums)" />
   </Target>
 
+  <Target Name="SignPackages"
+          Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'">
+    <Message Importance="High" Text="Signing final packages" />
+    <MSBuild
+      Projects="$(SigningToolsDir)\SignFinalPackages.proj"
+      Targets="Build"
+      Properties="DownloadDirectory=$(DownloadDirectory)" />
+  </Target>
+
   <Target Name="UploadPreparedArtifactsToPipeline"
           DependsOnTargets="
             FindDownloadedArtifacts;
@@ -150,6 +159,7 @@
   -->
   <Target Name="Build"
           DependsOnTargets="
+            SignPackages;
             CreateChecksums;
             UploadPreparedArtifactsToPipeline;
             PreparePublishToAzureBlobFeed">
