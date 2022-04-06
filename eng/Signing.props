@@ -69,6 +69,8 @@
     <ItemsToSign Update="@(ItemsToSign)" Authenticode="$(CertificateId)" />
   </ItemGroup>
 
+  </Target>
+
   <ItemGroup>
     <FileExtensionSignInfo Include=".msi" CertificateName="Microsoft500" />
     <FileExtensionSignInfo Include=".pkg" CertificateName="8003" />
