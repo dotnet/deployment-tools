@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
-        <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">Možnost {0} se dá použít jenom s následujícími typy souborů: {1}</target>
+        <source>The "{0}" option can only be used with the following type of files: "{1}".</source>
+        <target state="needs-review-translation">Možnost {0} se dá použít jenom s následujícími typy souborů: {1}</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -95,7 +95,6 @@
 
 
 Options
-  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -121,7 +120,7 @@ Options
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">Příkazy
+        <target state="needs-review-translation">Příkazy
   -New &lt;typ_souboru&gt;	          -n
   -Update &lt;název_souboru&gt;	          -u
   -Sign &lt;název_souboru&gt;	          -s
@@ -166,7 +165,8 @@ Podrobnější nápovědu získáte zadáním příkazu mage -help verbose.</tar
 
   -New &lt;file_type&gt;        -n
       Generate a new application manifest, deployment manifest, or trust
-      license, using the options listed below.
+      license, using the options listed below.  Use SHA2 hashing algorithm
+      to generate digest values for references.
       Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
@@ -204,11 +204,6 @@ Podrobnější nápovědu získáte zadáním příkazu mage -help verbose.</tar
         -Help Verbose
 
 Options:
-
-  -Algorithm &lt;sha256RSA&gt;      -a
-      Specifies the algorithm to generate digests.
-      Example:
-         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -342,7 +337,7 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">Příkazy:
+        <target state="needs-review-translation">Příkazy:
 
   -New &lt;typ_souboru&gt;        -n
       Vygeneruje nový manifest aplikace, manifest nasazení nebo
@@ -539,69 +534,64 @@ Možnosti:
         <target state="translated">Možnost {0} nejde použít s příkazem -AddLauncher.</target>
         <note />
       </trans-unit>
-      <trans-unit id="InvalidAlgorithmValue">
-        <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">Algoritmus musí být sha256RSA. Je zadaná hodnota {0}.</target>
-        <note />
-      </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
         <target state="translated">Binární soubor, který se má spustit, nemůže obsahovat cestu, může to být jenom název souboru – {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
-        <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">Soubor certifikátu nemá správný formát – {0}</target>
+        <source>Cert file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Soubor certifikátu nemá správný formát – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
-        <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">Tento certifikát neobsahuje privátní klíč – {0}</target>
+        <source>This certificate does not contain a private key - "{0}".</source>
+        <target state="needs-review-translation">Tento certifikát neobsahuje privátní klíč – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
-        <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">Tento certifikát se nedá použít pro podepisování – {0}</target>
+        <source>This certificate cannot be used for signing - "{0}".</source>
+        <target state="needs-review-translation">Tento certifikát se nedá použít pro podepisování – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
-        <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Kódová báze je neplatná – {0}</target>
+        <source>The codebase is invalid - "{0}".</source>
+        <target state="needs-review-translation">Kódová báze je neplatná – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
-        <source>Directory not found - "{0}"</source>
-        <target state="translated">Adresář nešlo najít – {0}</target>
+        <source>Directory not found - "{0}".</source>
+        <target state="needs-review-translation">Adresář nešlo najít – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
-        <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">Neplatný typ souboru, je třeba zadat hodnotu Application nebo Deployment.</target>
+        <source>Invalid file type, must be "Application", or "Deployment".</source>
+        <target state="needs-review-translation">Neplatný typ souboru, je třeba zadat hodnotu Application nebo Deployment.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
-        <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">Nenašel se žádný certifikát odpovídající zadané hodnotě hash – {0}</target>
+        <source>No cert found matching specified hash - "{0}".</source>
+        <target state="needs-review-translation">Nenašel se žádný certifikát odpovídající zadané hodnotě hash – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
-        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">Možnost -IncludeProviderURL musí mít hodnotu true, false, t nebo f – {0}</target>
+        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">Možnost -IncludeProviderURL musí mít hodnotu true, false, t nebo f – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
-        <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">Nerozpoznaný typ souboru – {0}</target>
+        <source>Unrecognized file type - "{0}".</source>
+        <target state="needs-review-translation">Nerozpoznaný typ souboru – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
-        <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">Možnost -Install musí mít hodnotu true, false, t nebo f – {0}</target>
+        <source>The -Install option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">Možnost -Install musí mít hodnotu true, false, t nebo f – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
-        <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">Soubor klíče nemá správný formát – {0}</target>
+        <source>Key file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Soubor klíče nemá správný formát – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
@@ -620,13 +610,13 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
-        <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">Heslo certifikátu je nesprávné – {0}</target>
+        <source>Cert password is incorrect - "{0}".</source>
+        <target state="needs-review-translation">Heslo certifikátu je nesprávné – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
-        <source>File not found - "{0}"</source>
-        <target state="translated">Soubor nešlo najít – {0}</target>
+        <source>File not found - "{0}".</source>
+        <target state="needs-review-translation">Soubor nešlo najít – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
@@ -635,8 +625,8 @@ Možnosti:
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
-        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">Možnost -RequiredUpdate musí mít hodnotu true, false, t nebo f – {0}</target>
+        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">Možnost -RequiredUpdate musí mít hodnotu true, false, t nebo f – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
@@ -650,23 +640,23 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
-        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">Neplatná úroveň důvěryhodnosti, je třeba zadat hodnotu LocalIntranet, Internet nebo FullTrust – {0}</target>
+        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</source>
+        <target state="needs-review-translation">Neplatná úroveň důvěryhodnosti, je třeba zadat hodnotu LocalIntranet, Internet nebo FullTrust – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">
-        <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">Adresa URL nemá správný formát – {0}</target>
+        <source>The URL is not of the proper format - "{0}".</source>
+        <target state="needs-review-translation">Adresa URL nemá správný formát – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
-        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">Možnost -UseManifestForTrust musí mít hodnotu true, false, t nebo f – {0}</target>
+        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">Možnost -UseManifestForTrust musí mít hodnotu true, false, t nebo f – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">Verze musí být ve formátu X.X.X.X (například 1.0.0.0) – {0}</target>
+        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}".</source>
+        <target state="needs-review-translation">Verze musí být ve formátu X.X.X.X (například 1.0.0.0) – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
@@ -675,8 +665,8 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
-        <source>Not including locked file {0}</source>
-        <target state="translated">Nezahrne se uzamčený soubor {0}.</target>
+        <source>Not including locked file {0}.</source>
+        <target state="needs-review-translation">Nezahrne se uzamčený soubor {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
@@ -685,8 +675,8 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
-        <source>Missing value following the "{0}" option</source>
-        <target state="translated">Za možností {0} chybí hodnota.</target>
+        <source>Missing value following the "{0}" option.</source>
+        <target state="needs-review-translation">Za možností {0} chybí hodnota.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
@@ -695,8 +685,8 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
-        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">Tento certifikát neobsahuje privátní klíč – {0}. Pokud se jedná o certifikát veřejného klíče, zadejte prosím platné názvy zprostředkovatele kryptografických služeb a kontejneru klíčů.</target>
+        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names.</source>
+        <target state="needs-review-translation">Tento certifikát neobsahuje privátní klíč – {0}. Pokud se jedná o certifikát veřejného klíče, zadejte prosím platné názvy zprostředkovatele kryptografických služeb a kontejneru klíčů.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
@@ -740,8 +730,8 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
-        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">Prvním argumentem musí být jeden z těchto: -New, -Update, -Sign, -Verify, -AddLauncher.</target>
+        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher.</source>
+        <target state="needs-review-translation">Prvním argumentem musí být jeden z těchto: -New, -Update, -Sign, -Verify, -AddLauncher.</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
@@ -785,13 +775,13 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
-        <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">Nastavení úrovně důvěryhodnosti se v .NET Core nepodporuje.</target>
+        <source>Setting trust level is not supported on .NET Core.</source>
+        <target state="needs-review-translation">Nastavení úrovně důvěryhodnosti se v .NET Core nepodporuje.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
-        <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">Důvěryhodná licence není podepsaná – {0}</target>
+        <source>Trust license is not signed - "{0}".</source>
+        <target state="needs-review-translation">Důvěryhodná licence není podepsaná – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
@@ -800,8 +790,8 @@ Možnosti:
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
-        <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">Nepovedlo se najít uživatelské rozhraní Mage – {0}</target>
+        <source>Unable to locate Mage UI - "{0}".</source>
+        <target state="needs-review-translation">Nepovedlo se najít uživatelské rozhraní Mage – {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">

@@ -145,7 +145,6 @@
 
 
 Options
-  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -177,7 +176,8 @@ Use "mage -help verbose" for more detailed help</value>
 
   -New &lt;file_type&gt;        -n
       Generate a new application manifest, deployment manifest, or trust
-      license, using the options listed below.
+      license, using the options listed below.  Use SHA2 hashing algorithm
+      to generate digest values for references.
       Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
@@ -215,11 +215,6 @@ Use "mage -help verbose" for more detailed help</value>
         -Help Verbose
 
 Options:
-
-  -Algorithm &lt;sha256RSA&gt;      -a
-      Specifies the algorithm to generate digests.
-      Example:
-         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -358,17 +353,14 @@ Options:
     <value>Internal error, please try again.</value>
     <comment>trailing space is added at run-time</comment>
   </data>
-  <data name="InvalidAlgorithmValue" xml:space="preserve">
-    <value>Algorithm has to be sha256RSA. Specified - "{0}".</value>
-  </data>
   <data name="InvalidCertFile" xml:space="preserve">
-    <value>Cert file is not of proper format - "{0}"</value>
+    <value>Cert file is not of proper format - "{0}".</value>
   </data>
   <data name="InvalidCertNoPrivateKey" xml:space="preserve">
-    <value>This certificate does not contain a private key - "{0}"</value>
+    <value>This certificate does not contain a private key - "{0}".</value>
   </data>
   <data name="MissingCspOrContainer" xml:space="preserve">
-    <value>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</value>
+    <value>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names.</value>
   </data>
   <data name="VerifyIsExclusive" xml:space="preserve">
     <value>'verify' command can't be combined with any other command.</value>
@@ -377,47 +369,47 @@ Options:
     <value>'addlauncher' command can't be combined with any other command.</value>
   </data>
   <data name="InvalidCertUsage" xml:space="preserve">
-    <value>This certificate cannot be used for signing - "{0}"</value>
+    <value>This certificate cannot be used for signing - "{0}".</value>
   </data>
   <data name="InvalidCodebase" xml:space="preserve">
-    <value>The codebase is invalid - "{0}"</value>
+    <value>The codebase is invalid - "{0}".</value>
   </data>
   <data name="InvalidDirectory" xml:space="preserve">
-    <value>Directory not found - "{0}"</value>
+    <value>Directory not found - "{0}".</value>
   </data>
   <data name="InvalidFileType" xml:space="preserve">
-    <value>Invalid file type, must be "Application", or "Deployment"</value>
+    <value>Invalid file type, must be "Application", or "Deployment".</value>
   </data>
   <data name="InvalidHash" xml:space="preserve">
-    <value>No cert found matching specified hash - "{0}"</value>
+    <value>No cert found matching specified hash - "{0}".</value>
   </data>
   <data name="InvalidIncludeProviderURL" xml:space="preserve">
-    <value>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</value>
+    <value>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}".</value>
   </data>
   <data name="InvalidInputFile" xml:space="preserve">
-    <value>Unrecognized file type - "{0}"</value>
+    <value>Unrecognized file type - "{0}".</value>
   </data>
   <data name="InvalidInstall" xml:space="preserve">
-    <value>The -Install option must be "true", "false", "t", or "f" - "{0}"</value>
+    <value>The -Install option must be "true", "false", "t", or "f" - "{0}".</value>
   </data>
   <data name="InvalidKeyFile" xml:space="preserve">
-    <value>Key file is not of proper format - "{0}"</value>
+    <value>Key file is not of proper format - "{0}".</value>
   </data>
   <data name="FileTypeSpecificOption" xml:space="preserve">
-    <value>The "{0}" option can only be used with the following type of files: "{1}"</value>
+    <value>The "{0}" option can only be used with the following type of files: "{1}".</value>
   </data>
   <data name="InvalidPassword" xml:space="preserve">
-    <value>Cert password is incorrect - "{0}"</value>
+    <value>Cert password is incorrect - "{0}".</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>File not found - "{0}"</value>
+    <value>File not found - "{0}".</value>
   </data>
   <data name="InvalidProcessor" xml:space="preserve">
     <value>Unknown processor type "{0}".  Supported processor types are:</value>
     <comment>Will be followed by a list of processor types, after a newline is added at run-time</comment>
   </data>
   <data name="InvalidRequiredUpdate" xml:space="preserve">
-    <value>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</value>
+    <value>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}".</value>
   </data>
   <data name="InvalidNonManifestOption" xml:space="preserve">
     <value>The "{0}" option can only be used with the -Update or -New commands.</value>
@@ -429,25 +421,25 @@ Options:
     <value>The "{0}" option can only be used with -AddLauncher command.</value>
   </data>
   <data name="InvalidTrustLevel" xml:space="preserve">
-    <value>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</value>
+    <value>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</value>
   </data>
   <data name="TrustLevelsNotSupportedOnNETCore" xml:space="preserve">
-    <value>Setting trust level is not supported on .NET Core</value>
+    <value>Setting trust level is not supported on .NET Core.</value>
   </data>
   <data name="InvalidUrl" xml:space="preserve">
-    <value>The URL is not of the proper format - "{0}"</value>
+    <value>The URL is not of the proper format - "{0}".</value>
   </data>
   <data name="InvalidUseManifestForTrust" xml:space="preserve">
-    <value>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</value>
+    <value>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}".</value>
   </data>
   <data name="InvalidVersion" xml:space="preserve">
-    <value>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</value>
+    <value>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}".</value>
   </data>
   <data name="LockedFile" xml:space="preserve">
-    <value>Not including locked file {0}</value>
+    <value>Not including locked file {0}.</value>
   </data>
   <data name="MissingArgument" xml:space="preserve">
-    <value>Missing value following the "{0}" option</value>
+    <value>Missing value following the "{0}" option.</value>
   </data>
   <data name="MissingDeploymentProviderUrl" xml:space="preserve">
     <value>The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</value>
@@ -474,20 +466,20 @@ Options:
     <value>No output file was specified.  Please use -ToFile &lt;filename&gt;.</value>
   </data>
   <data name="NoVerb" xml:space="preserve">
-    <value>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</value>
+    <value>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher.</value>
     <comment>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</comment>
  </data>
   <data name="TooManyKeysSpecified" xml:space="preserve">
     <value>Only one of -KeyFile, -CertFile, or -CertHash can be used.</value>
   </data>
   <data name="TrustLicenseNotSigned" xml:space="preserve">
-    <value>Trust license is not signed - "{0}"</value>
+    <value>Trust license is not signed - "{0}".</value>
   </data>
   <data name="UnableToOpenCertificate" xml:space="preserve">
     <value>Unable to open certificate "{0}":</value>
   </data>
   <data name="UnableToStartGUI" xml:space="preserve">
-    <value>Unable to locate Mage UI - "{0}"</value>
+    <value>Unable to locate Mage UI - "{0}".</value>
   </data>
   <data name="InvalidMinVersion" xml:space="preserve">
     <value>The minimum version specified is not valid.</value>

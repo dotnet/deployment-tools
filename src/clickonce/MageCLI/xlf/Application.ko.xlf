@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
-        <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">"{0}" 옵션은 "{1}" 형식의 파일과 함께 사용해야 합니다.</target>
+        <source>The "{0}" option can only be used with the following type of files: "{1}".</source>
+        <target state="needs-review-translation">"{0}" 옵션은 "{1}" 형식의 파일과 함께 사용해야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -95,7 +95,6 @@
 
 
 Options
-  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -121,7 +120,7 @@ Options
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">명령
+        <target state="needs-review-translation">명령
   -New &lt;file_type&gt;	          -n
   -Update &lt;file_name&gt;	          -u
   -Sign &lt;file_name&gt;	          -s
@@ -166,7 +165,8 @@ Use "mage -help verbose" for more detailed help</source>
 
   -New &lt;file_type&gt;        -n
       Generate a new application manifest, deployment manifest, or trust
-      license, using the options listed below.
+      license, using the options listed below.  Use SHA2 hashing algorithm
+      to generate digest values for references.
       Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
@@ -204,11 +204,6 @@ Use "mage -help verbose" for more detailed help</source>
         -Help Verbose
 
 Options:
-
-  -Algorithm &lt;sha256RSA&gt;      -a
-      Specifies the algorithm to generate digests.
-      Example:
-         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -342,7 +337,7 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">명령:
+        <target state="needs-review-translation">명령:
 
   -New &lt;file_type&gt;        -n
       아래 나열된 옵션을 사용하여 새 애플리케이션 매니페스트, 배포 매니페스트 또는 트러스트
@@ -539,69 +534,64 @@ Options:
         <target state="translated">"{0}" 옵션은 -AddLauncher 명령과 함께 사용할 수 없습니다.</target>
         <note />
       </trans-unit>
-      <trans-unit id="InvalidAlgorithmValue">
-        <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">알고리즘은 sha256RSA여야 합니다. 지정됨 - "{0}".</target>
-        <note />
-      </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
         <target state="translated">시작할 이진에 경로를 포함할 수 없습니다. 파일 이름 - {0}이어야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
-        <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">인증서 파일의 형식이 잘못되었습니다. "{0}"</target>
+        <source>Cert file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">인증서 파일의 형식이 잘못되었습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
-        <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">이 인증서에 개인 키가 없습니다. "{0}"</target>
+        <source>This certificate does not contain a private key - "{0}".</source>
+        <target state="needs-review-translation">이 인증서에 개인 키가 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
-        <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">이 인증서는 서명하는 데 사용할 수 없습니다. "{0}"</target>
+        <source>This certificate cannot be used for signing - "{0}".</source>
+        <target state="needs-review-translation">이 인증서는 서명하는 데 사용할 수 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
-        <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">코드베이스가 잘못되었습니다. "{0}"</target>
+        <source>The codebase is invalid - "{0}".</source>
+        <target state="needs-review-translation">코드베이스가 잘못되었습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
-        <source>Directory not found - "{0}"</source>
-        <target state="translated">디렉터리가 없습니다. "{0}"</target>
+        <source>Directory not found - "{0}".</source>
+        <target state="needs-review-translation">디렉터리가 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
-        <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">파일 형식이 잘못되었습니다. "Application" 또는 "Deployment"여야 합니다.</target>
+        <source>Invalid file type, must be "Application", or "Deployment".</source>
+        <target state="needs-review-translation">파일 형식이 잘못되었습니다. "Application" 또는 "Deployment"여야 합니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
-        <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">지정한 해시와 일치하는 인증서가 없습니다. "{0}"</target>
+        <source>No cert found matching specified hash - "{0}".</source>
+        <target state="needs-review-translation">지정한 해시와 일치하는 인증서가 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
-        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-IncludeProviderURL 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
+        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-IncludeProviderURL 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
-        <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">인식할 수 없는 파일 형식입니다. "{0}"</target>
+        <source>Unrecognized file type - "{0}".</source>
+        <target state="needs-review-translation">인식할 수 없는 파일 형식입니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
-        <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-Install 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
+        <source>The -Install option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-Install 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
-        <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">키 파일의 형식이 잘못되었습니다. "{0}"</target>
+        <source>Key file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">키 파일의 형식이 잘못되었습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
@@ -620,13 +610,13 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
-        <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">인증서 암호가 잘못되었습니다. "{0}"</target>
+        <source>Cert password is incorrect - "{0}".</source>
+        <target state="needs-review-translation">인증서 암호가 잘못되었습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
-        <source>File not found - "{0}"</source>
-        <target state="translated">파일을 찾을 수 없습니다. "{0}"</target>
+        <source>File not found - "{0}".</source>
+        <target state="needs-review-translation">파일을 찾을 수 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
@@ -635,8 +625,8 @@ Options:
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
-        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-RequiredUpdate 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
+        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-RequiredUpdate 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
@@ -650,23 +640,23 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
-        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">신뢰 수준이 잘못되었습니다. 신뢰 수준은 "LocalIntranet", "Internet" 또는 "FullTrust"여야 합니다. "{0}"</target>
+        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</source>
+        <target state="needs-review-translation">신뢰 수준이 잘못되었습니다. 신뢰 수준은 "LocalIntranet", "Internet" 또는 "FullTrust"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">
-        <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">URL의 형식이 잘못되었습니다. "{0}"</target>
+        <source>The URL is not of the proper format - "{0}".</source>
+        <target state="needs-review-translation">URL의 형식이 잘못되었습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
-        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-UseManifestForTrust 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
+        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-UseManifestForTrust 옵션은 "true", "false", "t" 또는 "f"여야 합니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">버전은 X.X.X.X 형식이어야 합니다(예: 1.0.0.0). "{0}"</target>
+        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}".</source>
+        <target state="needs-review-translation">버전은 X.X.X.X 형식이어야 합니다(예: 1.0.0.0). "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
@@ -675,8 +665,8 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
-        <source>Not including locked file {0}</source>
-        <target state="translated">잠긴 파일 {0}이(가) 포함되어 있지 않습니다.</target>
+        <source>Not including locked file {0}.</source>
+        <target state="needs-review-translation">잠긴 파일 {0}이(가) 포함되어 있지 않습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
@@ -685,8 +675,8 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
-        <source>Missing value following the "{0}" option</source>
-        <target state="translated">"{0}" 옵션 다음에 오는 값이 없습니다.</target>
+        <source>Missing value following the "{0}" option.</source>
+        <target state="needs-review-translation">"{0}" 옵션 다음에 오는 값이 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
@@ -695,8 +685,8 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
-        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">이 인증서에 개인 키 "{0}"이(가) 업습니다. 공개 키 인증서인 경우 유효한 암호화 서비스 공급자와 키 컨테이너 이름을 지정하세요.</target>
+        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names.</source>
+        <target state="needs-review-translation">이 인증서에 개인 키 "{0}"이(가) 업습니다. 공개 키 인증서인 경우 유효한 암호화 서비스 공급자와 키 컨테이너 이름을 지정하세요.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
@@ -740,8 +730,8 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
-        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">첫 번째 인수는 -New, -Update, -Sign, -Verify, -AddLauncher 중 하나여야 합니다.</target>
+        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher.</source>
+        <target state="needs-review-translation">첫 번째 인수는 -New, -Update, -Sign, -Verify, -AddLauncher 중 하나여야 합니다.</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
@@ -785,13 +775,13 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
-        <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">.NET Core에서는 신뢰 수준을 설정할 수 없습니다.</target>
+        <source>Setting trust level is not supported on .NET Core.</source>
+        <target state="needs-review-translation">.NET Core에서는 신뢰 수준을 설정할 수 없습니다.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
-        <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">신뢰 라이선스에 서명이 없습니다. "{0}"</target>
+        <source>Trust license is not signed - "{0}".</source>
+        <target state="needs-review-translation">신뢰 라이선스에 서명이 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
@@ -800,8 +790,8 @@ Options:
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
-        <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">Mage UI를 찾을 수 없습니다. "{0}"</target>
+        <source>Unable to locate Mage UI - "{0}".</source>
+        <target state="needs-review-translation">Mage UI를 찾을 수 없습니다. "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">

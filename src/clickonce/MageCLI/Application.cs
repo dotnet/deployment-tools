@@ -391,11 +391,6 @@ namespace Microsoft.Deployment.MageCLI
         UnableToStartGUI,
 
         /// <summary>
-        /// The -Algorithm option value must be "sha256RSA" - "{0}"
-        /// </summary>
-        InvalidAlgorithmValue,
-
-        /// <summary>
         /// This certificate cannot be used for signing - "{0}"
         /// </summary>
         InvalidCertUsage,

@@ -54,11 +54,19 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="useApplicationManifestForTrustInfo">Specifies if Application manifest is used for trust info</param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
-        /// <param name="targetFrameworkVersion">Target Framework version</param>
         /// <returns>ApplicationManifest object</returns>
-        public static ApplicationManifest GenerateApplicationManifest(List<string> filesToIgnore, string nameArgument, string appName, Version version,
-            Processors processor, Command.TrustLevels trustLevel, string fromDirectory, 
-            string iconFile, TriStateBool useApplicationManifestForTrustInfo, string publisherName, string supportUrl, string targetFrameworkVersion)
+        public static ApplicationManifest GenerateApplicationManifest(
+            List<string> filesToIgnore, 
+            string nameArgument,
+            string appName, 
+            Version version,
+            Processors processor, 
+            Command.TrustLevels trustLevel, 
+            string fromDirectory, 
+            string iconFile, 
+            TriStateBool useApplicationManifestForTrustInfo, 
+            string publisherName, 
+            string supportUrl)
         {
             ApplicationManifest manifest = new ApplicationManifest();
 
@@ -86,9 +94,19 @@ namespace Microsoft.Deployment.MageCLI
                 processor = Processors.msil;
             }
 
-            UpdateApplicationManifest(filesToIgnore, manifest, nameArgument, appName, version,
-                processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, 
-                publisherName, supportUrl, targetFrameworkVersion);
+            UpdateApplicationManifest(
+                filesToIgnore, 
+                manifest, 
+                nameArgument, 
+                appName, 
+                version,
+                processor, 
+                trustLevel, 
+                fromDirectory, 
+                iconFile, 
+                useApplicationManifestForTrustInfo, 
+                publisherName, 
+                supportUrl);
 
             return manifest;
         }
@@ -109,13 +127,21 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="includeDeploymentProviderUrl"></param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
-        /// <param name="targetFrameworkVersion">Target Framework version</param>
         /// <returns>DeploymentManifest object</returns>
-        public static DeployManifest GenerateDeploymentManifest(string deploymentManifestPath,
-            string appName, Version version, Processors processor,
-            ApplicationManifest applicationManifest, string applicationManifestPath, string appCodeBase,
-            string appProviderUrl, string minVersion, TriStateBool install, TriStateBool includeDeploymentProviderUrl,
-            string publisherName, string supportUrl, string targetFrameworkVersion)
+        public static DeployManifest GenerateDeploymentManifest(
+            string deploymentManifestPath,
+            string appName, 
+            Version version, 
+            Processors processor,
+            ApplicationManifest applicationManifest, 
+            string applicationManifestPath, 
+            string appCodeBase,
+            string appProviderUrl, 
+            string minVersion, 
+            TriStateBool install, 
+            TriStateBool includeDeploymentProviderUrl,
+            string publisherName, 
+            string supportUrl)
         {
             /*
               Mage running on Core cannot obtain .NET FX version for targeting.
@@ -125,7 +151,7 @@ namespace Microsoft.Deployment.MageCLI
               As always, version can be modified in deployment manifest, if needed.
             */
             Version shortVersion = new Version(4, 5);
-            string frameworkIdentifier = ".NETFramework";
+            const string frameworkIdentifier = ".NETFramework";
 
             DeployManifest manifest = new DeployManifest((new FrameworkName(frameworkIdentifier, shortVersion)).FullName);
 
@@ -165,9 +191,21 @@ namespace Microsoft.Deployment.MageCLI
                 appProviderUrl = "";
             }
 
-            UpdateDeploymentManifest(manifest, deploymentManifestPath, appName, version, processor,
-                applicationManifest, applicationManifestPath, appCodeBase,
-                appProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, targetFrameworkVersion);
+            UpdateDeploymentManifest(
+                manifest, 
+                deploymentManifestPath, 
+                appName, 
+                version, 
+                processor,
+                applicationManifest, 
+                applicationManifestPath, 
+                appCodeBase,
+                appProviderUrl, 
+                minVersion, 
+                install, 
+                includeDeploymentProviderUrl, 
+                publisherName, 
+                supportUrl);
 
             return manifest;
         }
@@ -187,9 +225,19 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="useApplicationManifestForTrustInfo">Specifies if ApplicationManifest should be used for trust info</param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
-        /// <param name="targetFrameworkVersion">Target Framework version</param>
-        public static void UpdateApplicationManifest(List<string> filesToIgnore, ApplicationManifest manifest, string nameArgument, string appName, Version version, Processors processor, Command.TrustLevels trustLevel, string fromDirectory,
-            string iconFile, TriStateBool useApplicationManifestForTrustInfo, string publisherName, string supportUrl, string targetFrameworkVersion)
+        public static void UpdateApplicationManifest(
+            List<string> filesToIgnore, 
+            ApplicationManifest manifest, 
+            string nameArgument, 
+            string appName, 
+            Version version, 
+            Processors processor, 
+            Command.TrustLevels trustLevel, 
+            string fromDirectory,
+            string iconFile, 
+            TriStateBool useApplicationManifestForTrustInfo, 
+            string publisherName, 
+            string supportUrl)
         {
             if (appName != null)
             {
@@ -285,7 +333,7 @@ namespace Microsoft.Deployment.MageCLI
                 // because in this case we want to report any missing files in the manifest.
                 manifest.OutputMessages.Clear();
                 manifest.ResolveFiles();
-                manifest.UpdateFileInfo(targetFrameworkVersion);
+                manifest.UpdateFileInfo(Constants.TargetFrameworkVersion);
 
                 // Set entry point and config files
                 Utilities.AppMan.SetSpecialFiles(manifest);
@@ -293,9 +341,9 @@ namespace Microsoft.Deployment.MageCLI
             else
             {
                 // -FromDirectory was not specified, but try to update 
-                // existing references if possible.  
-                                
-                Utilities.AppMan.UpdateReferenceInfo(manifest, "", null, null, targetFrameworkVersion);
+                // existing references if possible.
+ 
+                Utilities.AppMan.UpdateReferenceInfo(manifest, string.Empty, null, null);
             }
         }
 
@@ -316,14 +364,21 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="includeDeploymentProviderUrl"></param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
-        /// <param name="targetFrameworkVersion">Target Framework version</param>
-        public static void UpdateDeploymentManifest(DeployManifest manifest, string deploymentManifestPath,
-            string appName, Version version, Processors processor,
-            ApplicationManifest applicationManifest, string applicationManifestPath,
-            string appCodeBase, string appProviderUrl, string minVersion,
+        public static void UpdateDeploymentManifest(
+            DeployManifest manifest, 
+            string deploymentManifestPath,
+            string appName, 
+            Version version, 
+            Processors processor,
+            ApplicationManifest applicationManifest, 
+            string applicationManifestPath,
+            string appCodeBase, 
+            string appProviderUrl,
+             string minVersion,
             TriStateBool install,
             TriStateBool includeDeploymentProviderUrl,
-            string publisherName, string supportUrl, string targetFrameworkVersion)
+            string publisherName, 
+            string supportUrl)
         {
             if (install != TriStateBool.Undefined)
             {
@@ -423,7 +478,7 @@ namespace Microsoft.Deployment.MageCLI
 
             if (applicationManifest != null)
             {
-                SetApplicationManifestReference(manifest, deploymentManifestPath, applicationManifest, applicationManifestPath, targetFrameworkVersion);
+                SetApplicationManifestReference(manifest, deploymentManifestPath, applicationManifest, applicationManifestPath);
             }
 
             if (appCodeBase != null)
@@ -449,13 +504,11 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="deploymentManifestPath">Deployment manifest path</param>
         /// <param name="applicationManifest">ApplicationManifest object</param>
         /// <param name="applicationManifestPath">Application manifest path</param>
-        /// <param name="targetFrameworkVersion">Target Framework version</param>
         private static void SetApplicationManifestReference(
             DeployManifest deploymentManifest,
             string deploymentManifestPath,
             ApplicationManifest applicationManifest,
-            string applicationManifestPath,
-            string targetFrameworkVersion)
+            string applicationManifestPath)
         {
             // Validate parameters
             if ((deploymentManifest == null) || (applicationManifest == null) ||
@@ -504,7 +557,7 @@ namespace Microsoft.Deployment.MageCLI
             deploymentManifest.AssemblyReferences.Add(ar);
             deploymentManifest.EntryPoint = ar;
             deploymentManifest.ResolveFiles();
-            deploymentManifest.UpdateFileInfo(targetFrameworkVersion);
+            deploymentManifest.UpdateFileInfo(Constants.TargetFrameworkVersion);
 
             // Update the codebase so the canonical one gets used even if the application manifest
             // happens to live somewhere else at the moment.

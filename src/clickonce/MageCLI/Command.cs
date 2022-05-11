@@ -75,12 +75,6 @@ namespace Microsoft.Deployment.MageCLI
             None, FullTrust, LocalIntranet, Internet
         }
 
-        public enum DigestAlgorithmValue
-        {
-            // Supporting only sha256
-            sha256RSA
-        }
-
         /// <summary>
         /// File to be updated or signed.
         /// </summary>
@@ -159,19 +153,10 @@ namespace Microsoft.Deployment.MageCLI
         [CommandLineArgument(LongName = "SupportUrl", ShortName = "s")]
         public string supportUrl = null;
 
-        [CommandLineArgument(LongName = "Algorithm", ShortName = "a")]
-        public string digestAlgorithmValue = null;
-
         [CommandLineArgument(LongName = "TargetDirectory", ShortName = "td")]
         public string targetDirectory = null;
 
 #endregion
-
-
-        /// <summary>
-        /// Algorithm used to calculate the digest hashes inside a manifest
-        /// </summary>
-        private DigestAlgorithmValue algorithm = DigestAlgorithmValue.sha256RSA;
 
         /// <summary>
         /// Application version object, parsed from applicationVersionString member
@@ -598,23 +583,6 @@ namespace Microsoft.Deployment.MageCLI
                 }
             }
 
-            // The default is sha256
-            algorithm = DigestAlgorithmValue.sha256RSA;
-
-            if (digestAlgorithmValue != null)
-            {
-                // Supporting only sha256
-                if (digestAlgorithmValue.Equals(DigestAlgorithmValue.sha256RSA.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    algorithm = DigestAlgorithmValue.sha256RSA;
-                }
-                else
-                {
-                    result = false;
-                    Application.PrintErrorMessage(ErrorMessages.InvalidAlgorithmValue, digestAlgorithmValue);
-                }
-            }
-
             // Validate the processor type, if given
             if (processorString != null)
             {
@@ -883,7 +851,6 @@ namespace Microsoft.Deployment.MageCLI
                 errors += CheckForInvalidLauncherOption("CryptoProvider", cryptoProviderName);
                 errors += CheckForInvalidLauncherOption("Publisher", publisherName);
                 errors += CheckForInvalidLauncherOption("SupportUrl", supportUrl);
-                errors += CheckForInvalidLauncherOption("Algorithm", digestAlgorithmValue);
             }
 
             // A signing operation can be caused by the -sign verb, or with 
@@ -1305,34 +1272,27 @@ namespace Microsoft.Deployment.MageCLI
                 }
             }
 
-            // Choose hashing algorithm - SHA256 for v4.5, which is the only supported algorithm now.
-            string targetFrameworkVersion = "v4.0";
-            if (algorithm == DigestAlgorithmValue.sha256RSA)
-            {
-                targetFrameworkVersion = "v4.5";
-            }
-
             // Generate operations
             if (Requested(Operations.GenerateApplicationManifest))
             {
                 applicationName += ".exe";
-                manifest = Mage.GenerateApplicationManifest(filesToIgnore, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl, targetFrameworkVersion);
+                manifest = Mage.GenerateApplicationManifest(filesToIgnore, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl);
             }
             else if (Requested(Operations.GenerateDeploymentManifest))
             {
                 applicationName += ".app";
-                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, targetFrameworkVersion);
+                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl);
             }
 
             // Update operations
             if (Requested(Operations.UpdateApplicationManifest))
             {
-                Mage.UpdateApplicationManifest(filesToIgnore, cachedAppManifest, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl, targetFrameworkVersion);
+                Mage.UpdateApplicationManifest(filesToIgnore, cachedAppManifest, nameArgument, applicationName, applicationVersion, processor, trustLevel, fromDirectory, iconFile, useApplicationManifestForTrustInfo, publisherName, supportUrl);
                 manifest = cachedAppManifest;
             }
             else if (Requested(Operations.UpdateDeploymentManifest))
             {
-                Mage.UpdateDeploymentManifest(cachedDepManifest, outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, targetFrameworkVersion);
+                Mage.UpdateDeploymentManifest(cachedDepManifest, outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl);
                 manifest = cachedDepManifest;
             }
 
@@ -1382,10 +1342,8 @@ namespace Microsoft.Deployment.MageCLI
             // Save the manifest or license
             if (manifest != null)
             {
-                // Framework version is used for determining which algorithm to use for
-                // generating manifest digests. For v4.5+, sha256 is used.
-                string frameworkVersion = "v4.5";
-                ManifestWriter.WriteManifest(manifest, outputPath, frameworkVersion);
+                // Use SHA2 hashing to generate reference digest.
+                ManifestWriter.WriteManifest(manifest, outputPath, Constants.TargetFrameworkVersion);
             }
 
             if (shouldSign)

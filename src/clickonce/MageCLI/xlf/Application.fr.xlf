@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
-        <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">L'option "{0}" peut uniquement être utilisée avec les types de fichier suivants : "{1}"</target>
+        <source>The "{0}" option can only be used with the following type of files: "{1}".</source>
+        <target state="needs-review-translation">L'option "{0}" peut uniquement être utilisée avec les types de fichier suivants : "{1}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -95,7 +95,6 @@
 
 
 Options
-  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -121,7 +120,7 @@ Options
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">Commandes
+        <target state="needs-review-translation">Commandes
   -New &lt;file_type&gt;	          -n
   -Update &lt;file_name&gt;	          -u
   -Sign &lt;file_name&gt;	          -s
@@ -166,7 +165,8 @@ Utilisez "mage -help verbose" pour une aide plus détaillée</target>
 
   -New &lt;file_type&gt;        -n
       Generate a new application manifest, deployment manifest, or trust
-      license, using the options listed below.
+      license, using the options listed below.  Use SHA2 hashing algorithm
+      to generate digest values for references.
       Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
@@ -204,11 +204,6 @@ Utilisez "mage -help verbose" pour une aide plus détaillée</target>
         -Help Verbose
 
 Options:
-
-  -Algorithm &lt;sha256RSA&gt;      -a
-      Specifies the algorithm to generate digests.
-      Example:
-         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -342,7 +337,7 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">Commandes :
+        <target state="needs-review-translation">Commandes :
 
   -New &lt;file_type&gt;        -n
       Permet de générer un nouveau manifeste de l'application, un nouveau manifeste de déploiement ou une
@@ -539,69 +534,64 @@ Options :
         <target state="translated">Impossible d'utiliser l'option "{0}" avec la commande -AddLauncher.</target>
         <note />
       </trans-unit>
-      <trans-unit id="InvalidAlgorithmValue">
-        <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">L'algorithme doit être sha256RSA. Spécification de "{0}".</target>
-        <note />
-      </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
         <target state="translated">Le fichier binaire à lancer ne peut pas inclure de chemin. Il ne peut s'agir que d'un nom de fichier - {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
-        <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">Le format du fichier de certificat n'est pas correct - "{0}"</target>
+        <source>Cert file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Le format du fichier de certificat n'est pas correct - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
-        <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">Ce certificat ne contient aucune clé privée - "{0}"</target>
+        <source>This certificate does not contain a private key - "{0}".</source>
+        <target state="needs-review-translation">Ce certificat ne contient aucune clé privée - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
-        <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">Ce certificat ne peut pas être utilisé pour la signature - "{0}"</target>
+        <source>This certificate cannot be used for signing - "{0}".</source>
+        <target state="needs-review-translation">Ce certificat ne peut pas être utilisé pour la signature - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
-        <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Le codebase n'est pas valide - "{0}"</target>
+        <source>The codebase is invalid - "{0}".</source>
+        <target state="needs-review-translation">Le codebase n'est pas valide - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
-        <source>Directory not found - "{0}"</source>
-        <target state="translated">Répertoire introuvable - "{0}"</target>
+        <source>Directory not found - "{0}".</source>
+        <target state="needs-review-translation">Répertoire introuvable - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
-        <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">Type de fichier non valide. Doit être "Application" ou "Deployment".</target>
+        <source>Invalid file type, must be "Application", or "Deployment".</source>
+        <target state="needs-review-translation">Type de fichier non valide. Doit être "Application" ou "Deployment".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
-        <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">Aucun certificat correspondant au hachage spécifié n'a été trouvé - "{0}"</target>
+        <source>No cert found matching specified hash - "{0}".</source>
+        <target state="needs-review-translation">Aucun certificat correspondant au hachage spécifié n'a été trouvé - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
-        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">L'option -IncludeProviderURL doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
+        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">L'option -IncludeProviderURL doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
-        <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">Type de fichier non reconnu - "{0}"</target>
+        <source>Unrecognized file type - "{0}".</source>
+        <target state="needs-review-translation">Type de fichier non reconnu - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
-        <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">L'option -Install doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
+        <source>The -Install option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">L'option -Install doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
-        <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">Le format du fichier de clé n'est pas correct - "{0}"</target>
+        <source>Key file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Le format du fichier de clé n'est pas correct - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
@@ -620,13 +610,13 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
-        <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">Le mot de passe du certificat est incorrect - "{0}"</target>
+        <source>Cert password is incorrect - "{0}".</source>
+        <target state="needs-review-translation">Le mot de passe du certificat est incorrect - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
-        <source>File not found - "{0}"</source>
-        <target state="translated">Fichier introuvable - "{0}"</target>
+        <source>File not found - "{0}".</source>
+        <target state="needs-review-translation">Fichier introuvable - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
@@ -635,8 +625,8 @@ Options :
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
-        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">L'option -RequiredUpdate doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
+        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">L'option -RequiredUpdate doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
@@ -650,23 +640,23 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
-        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">Niveau de confiance non valide ; doit être "LocalIntranet", "Internet" ou "FullTrust" - "{0}"</target>
+        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</source>
+        <target state="needs-review-translation">Niveau de confiance non valide ; doit être "LocalIntranet", "Internet" ou "FullTrust" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">
-        <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">Le format de l'URL n'est pas correct - "{0}"</target>
+        <source>The URL is not of the proper format - "{0}".</source>
+        <target state="needs-review-translation">Le format de l'URL n'est pas correct - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
-        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">L'option -UseManifestForTrust doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
+        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">L'option -UseManifestForTrust doit avoir la valeur "true", "false", "t" ou "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">La version doit se présenter sous la forme X.X.X.X (par exemple : 1.0.0.0) - "{0}"</target>
+        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}".</source>
+        <target state="needs-review-translation">La version doit se présenter sous la forme X.X.X.X (par exemple : 1.0.0.0) - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
@@ -675,8 +665,8 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
-        <source>Not including locked file {0}</source>
-        <target state="translated">Fichier verrouillé {0} non inclus</target>
+        <source>Not including locked file {0}.</source>
+        <target state="needs-review-translation">Fichier verrouillé {0} non inclus</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
@@ -685,8 +675,8 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
-        <source>Missing value following the "{0}" option</source>
-        <target state="translated">Valeur manquante après l'option "{0}"</target>
+        <source>Missing value following the "{0}" option.</source>
+        <target state="needs-review-translation">Valeur manquante après l'option "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
@@ -695,8 +685,8 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
-        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">Ce certificat ne contient pas de clé privée - "{0}". S'il s'agit d'un certificat à clé publique, indiquez des noms valides pour le fournisseur de services de chiffrement et le conteneur de clé</target>
+        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names.</source>
+        <target state="needs-review-translation">Ce certificat ne contient pas de clé privée - "{0}". S'il s'agit d'un certificat à clé publique, indiquez des noms valides pour le fournisseur de services de chiffrement et le conteneur de clé</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
@@ -740,8 +730,8 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
-        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">Le premier argument doit être l'un des suivants : -New, -Update, -Sign, -Verify, -AddLauncher</target>
+        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher.</source>
+        <target state="needs-review-translation">Le premier argument doit être l'un des suivants : -New, -Update, -Sign, -Verify, -AddLauncher</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
@@ -785,13 +775,13 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
-        <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">La définition du niveau de confiance n'est pas prise en charge sur .NET Core</target>
+        <source>Setting trust level is not supported on .NET Core.</source>
+        <target state="needs-review-translation">La définition du niveau de confiance n'est pas prise en charge sur .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
-        <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">La licence de confiance n'est pas signée - "{0}"</target>
+        <source>Trust license is not signed - "{0}".</source>
+        <target state="needs-review-translation">La licence de confiance n'est pas signée - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
@@ -800,8 +790,8 @@ Options :
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
-        <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">Impossible de localiser Mage UI - "{0}"</target>
+        <source>Unable to locate Mage UI - "{0}".</source>
+        <target state="needs-review-translation">Impossible de localiser Mage UI - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">

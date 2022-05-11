@@ -78,8 +78,8 @@
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
-        <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">"{0}" seçeneği yalnızca şu dosya türleriyle kullanılabilir: "{1}"</target>
+        <source>The "{0}" option can only be used with the following type of files: "{1}".</source>
+        <target state="needs-review-translation">"{0}" seçeneği yalnızca şu dosya türleriyle kullanılabilir: "{1}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -95,7 +95,6 @@
 
 
 Options
-  -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
   -CertFile &lt;file_name&gt;	            -cf
@@ -121,7 +120,7 @@ Options
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">Komutlar
+        <target state="needs-review-translation">Komutlar
   -New &lt;dosya_türü&gt;	          -n
   -Update &lt;dosya_adı&gt;	          -u
   -Sign &lt;dosya_adı&gt;	          -s
@@ -166,7 +165,8 @@ Daha ayrıntılı bilgi için "mage -help verbose" komutunu kullanın</target>
 
   -New &lt;file_type&gt;        -n
       Generate a new application manifest, deployment manifest, or trust
-      license, using the options listed below.
+      license, using the options listed below.  Use SHA2 hashing algorithm
+      to generate digest values for references.
       Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
@@ -204,11 +204,6 @@ Daha ayrıntılı bilgi için "mage -help verbose" komutunu kullanın</target>
         -Help Verbose
 
 Options:
-
-  -Algorithm &lt;sha256RSA&gt;      -a
-      Specifies the algorithm to generate digests.
-      Example:
-         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
       Specifies the code base of the app manifest to be placed in the
@@ -342,7 +337,7 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">Komutlar:
+        <target state="needs-review-translation">Komutlar:
 
   -New &lt;dosya_türü&gt;        -n
       Aşağıda listelenen seçenekleri kullanarak yeni bir uygulama bildirimi, dağıtım bildirimi veya güven
@@ -539,69 +534,64 @@ Seçenekler:
         <target state="translated">"{0}" seçeneği -AddLauncher komutuyla kullanılamaz.</target>
         <note />
       </trans-unit>
-      <trans-unit id="InvalidAlgorithmValue">
-        <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">Algoritma sha256RSA olmalıdır. Belirtilen: "{0}".</target>
-        <note />
-      </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
         <target state="translated">Başlatılacak ikili, yol içeremez, yalnızca dosya adı olabilir: {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
-        <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">Sertifika dosyası düzgün biçimde değil: "{0}"</target>
+        <source>Cert file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Sertifika dosyası düzgün biçimde değil: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
-        <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">Bu sertifika özel anahtar içermiyor: "{0}"</target>
+        <source>This certificate does not contain a private key - "{0}".</source>
+        <target state="needs-review-translation">Bu sertifika özel anahtar içermiyor: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
-        <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">Bu sertifika, imzalama için kullanılamıyor: "{0}"</target>
+        <source>This certificate cannot be used for signing - "{0}".</source>
+        <target state="needs-review-translation">Bu sertifika, imzalama için kullanılamıyor: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
-        <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">Kod temeli geçersiz: "{0}"</target>
+        <source>The codebase is invalid - "{0}".</source>
+        <target state="needs-review-translation">Kod temeli geçersiz: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
-        <source>Directory not found - "{0}"</source>
-        <target state="translated">Dizin bulunamadı: "{0}"</target>
+        <source>Directory not found - "{0}".</source>
+        <target state="needs-review-translation">Dizin bulunamadı: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
-        <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">Dosya türü geçersiz. "Application" veya "Deployment" olmalıdır</target>
+        <source>Invalid file type, must be "Application", or "Deployment".</source>
+        <target state="needs-review-translation">Dosya türü geçersiz. "Application" veya "Deployment" olmalıdır</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
-        <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">Belirtilen karma ile eşleşen sertifika bulunamadı: "{0}"</target>
+        <source>No cert found matching specified hash - "{0}".</source>
+        <target state="needs-review-translation">Belirtilen karma ile eşleşen sertifika bulunamadı: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
-        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-IncludeProviderURL seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
+        <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-IncludeProviderURL seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
-        <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">Tanınmayan dosya türü: "{0}"</target>
+        <source>Unrecognized file type - "{0}".</source>
+        <target state="needs-review-translation">Tanınmayan dosya türü: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
-        <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-Install seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
+        <source>The -Install option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-Install seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
-        <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">Anahtar dosyası düzgün biçimde değil: "{0}"</target>
+        <source>Key file is not of proper format - "{0}".</source>
+        <target state="needs-review-translation">Anahtar dosyası düzgün biçimde değil: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
@@ -620,13 +610,13 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
-        <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">Sertifika parolası yanlış: "{0}"</target>
+        <source>Cert password is incorrect - "{0}".</source>
+        <target state="needs-review-translation">Sertifika parolası yanlış: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
-        <source>File not found - "{0}"</source>
-        <target state="translated">Dosya bulunamadı: "{0}"</target>
+        <source>File not found - "{0}".</source>
+        <target state="needs-review-translation">Dosya bulunamadı: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
@@ -635,8 +625,8 @@ Seçenekler:
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
-        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-RequiredUpdate seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
+        <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-RequiredUpdate seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
@@ -650,23 +640,23 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
-        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">Güven düzeyi geçersiz. "LocalIntranet", "Internet" veya "FullTrust" olmalıdır: "{0}"</target>
+        <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</source>
+        <target state="needs-review-translation">Güven düzeyi geçersiz. "LocalIntranet", "Internet" veya "FullTrust" olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">
-        <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">URL doğru biçimde değil: "{0}"</target>
+        <source>The URL is not of the proper format - "{0}".</source>
+        <target state="needs-review-translation">URL doğru biçimde değil: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
-        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-UseManifestForTrust seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
+        <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}".</source>
+        <target state="needs-review-translation">-UseManifestForTrust seçeneği "true", "false", "t" veya "f" olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
-        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">Sürüm X.X.X.X (ör. 1.0.0.0) biçiminde olmalıdır: "{0}"</target>
+        <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}".</source>
+        <target state="needs-review-translation">Sürüm X.X.X.X (ör. 1.0.0.0) biçiminde olmalıdır: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
@@ -675,8 +665,8 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
-        <source>Not including locked file {0}</source>
-        <target state="translated">Kilitlenmiş {0} dosyası dahil değil</target>
+        <source>Not including locked file {0}.</source>
+        <target state="needs-review-translation">Kilitlenmiş {0} dosyası dahil değil</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
@@ -685,8 +675,8 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
-        <source>Missing value following the "{0}" option</source>
-        <target state="translated">"{0}" seçeneğini izleyen değer eksik</target>
+        <source>Missing value following the "{0}" option.</source>
+        <target state="needs-review-translation">"{0}" seçeneğini izleyen değer eksik</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
@@ -695,8 +685,8 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
-        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">Bu sertifika özel anahtar içermiyor: "{0}". Bu bir ortak anahtar sertifikasıysa lütfen geçerli bir şifreleme hizmeti sağlayıcısı ve anahtar kapsayıcısı adları belirtin</target>
+        <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names.</source>
+        <target state="needs-review-translation">Bu sertifika özel anahtar içermiyor: "{0}". Bu bir ortak anahtar sertifikasıysa lütfen geçerli bir şifreleme hizmeti sağlayıcısı ve anahtar kapsayıcısı adları belirtin</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
@@ -740,8 +730,8 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
-        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">İlk bağımsız değişken şunlardan biri olmalıdır: -New, -Update, -Sign, -Verify, -AddLauncher</target>
+        <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher.</source>
+        <target state="needs-review-translation">İlk bağımsız değişken şunlardan biri olmalıdır: -New, -Update, -Sign, -Verify, -AddLauncher</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
@@ -785,13 +775,13 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
-        <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">Güven düzeyinin ayarlanması .NET Core'da desteklenmiyor</target>
+        <source>Setting trust level is not supported on .NET Core.</source>
+        <target state="needs-review-translation">Güven düzeyinin ayarlanması .NET Core'da desteklenmiyor</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
-        <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">Güven lisansı imzalanmadı: "{0}"</target>
+        <source>Trust license is not signed - "{0}".</source>
+        <target state="needs-review-translation">Güven lisansı imzalanmadı: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
@@ -800,8 +790,8 @@ Seçenekler:
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
-        <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">Mage kullanıcı arabirimi bulunamıyor: "{0}"</target>
+        <source>Unable to locate Mage UI - "{0}".</source>
+        <target state="needs-review-translation">Mage kullanıcı arabirimi bulunamıyor: "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">
