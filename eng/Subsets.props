@@ -37,7 +37,7 @@
   -->
 
   <PropertyGroup>
-    <DefaultSubsets>clickonce+installer+dotnet_releases</DefaultSubsets>
+    <DefaultSubsets>clickonce+installer+dotnet_releases+hostpath</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">clickonce+installer</DefaultSubsets>
     <DefaultSubsets Condition="'$(DotNetBuildFromSource)' == 'true'">dotnet_releases</DefaultSubsets>
   </PropertyGroup>
@@ -58,12 +58,14 @@
     <DefaultClickOnceSubsets>clickonce</DefaultClickOnceSubsets>
     <DefaultInstallerSubsets>installer.pkgprojs</DefaultInstallerSubsets>
     <DefaultDotNetReleasesSubsets>dotnet_releases</DefaultDotNetReleasesSubsets>
+    <DefaultHostPathSubsets>hostpath</DefaultHostPathSubsets>
   </PropertyGroup>
 
   <PropertyGroup>
     <_subset>$(_subset.Replace('+clickonce+', '+$(DefaultClickOnceSubsets)+'))</_subset>
     <_subset>$(_subset.Replace('+installer+', '+$(DefaultInstallerSubsets)+'))</_subset>
     <_subset>$(_subset.Replace('+dotnet_releases+', '+$(DefaultDotNetReleasesSubsets)+'))</_subset>
+    <_subset>$(_subset.Replace('+hostpath+', '+$(DefaultHostPathSubsets)+'))</_subset>
 
     <!-- Surround _subset in dashes to simplify checks below -->
     <_subset>+$(_subset.Trim('+'))+</_subset>
@@ -85,6 +87,9 @@
 
     <!-- DotNetReleases -->
     <SubsetName Include="dotnet_releases" Description="Libary for accessing .NET release data." />
+
+    <!-- HostPath -->
+    <SubsetName Include="hostpath" Description=".NET Framework EXE to remove x86 dotnet from PATH." />
   </ItemGroup>
 
   <!-- Default targets, parallelization and configurations. -->
@@ -121,6 +126,12 @@
     <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
     <DotNetReleasesProjectToBuild Include="$(DotNetReleasesProjectRoot)tests\**\*.csproj" Test="$(Test)" Condition="'$(DotNetBuildFromSource)' != 'true'"/>
     <ProjectToBuild Include="@(DotNetReleasesProjectToBuild)" BuildInParallel="true" Category="dotnet_releases" />
+  </ItemGroup>
+
+  <!-- HostPath sets -->
+  <ItemGroup Condition="$(_subset.Contains('+hostpath+'))">
+    <HostPathProjectToBuild Include="$(HostPathProjectRoot)src\**\*.csproj" Pack="true" SignPhase="Binaries" />
+    <ProjectToBuild Include="@(HostPathProjectToBuild)" BuildInParallel="true" Category="hostpath" />
   </ItemGroup>
 
   <!-- Set default configurations. -->
