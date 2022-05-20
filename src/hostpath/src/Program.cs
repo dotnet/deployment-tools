@@ -23,31 +23,30 @@ namespace HostPath
                     return;
                 }
 
-                using (RegistryKey envKey = Registry.LocalMachine.OpenSubKey(s_EnvironmentKeyName))
+                using RegistryKey envKey = Registry.LocalMachine.OpenSubKey(s_EnvironmentKeyName);
+
+                if (envKey == null)
                 {
-                    if (envKey == null)
-                    {
-                        return;
-                    }
-
-                    // Environment.GetEnvironmentVariable will expand environment variables inside the PATH variable
-                    string path = (string)envKey.GetValue("Path", string.Empty, RegistryValueOptions.DoNotExpandEnvironmentNames);
-
-                    // Check for paths with and without a trailing backslash
-                    string x86DotNetPath1 = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                        "dotnet");
-                    string x86DotNetPath2 = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-                        @"dotnet\");
-
-                    List<string> paths = path.Split(';').ToList();
-                    paths.Remove(x86DotNetPath1);
-                    paths.Remove(x86DotNetPath2);
-                    path = string.Join(";", paths);
-
-                    Environment.SetEnvironmentVariable("Path", path, EnvironmentVariableTarget.Machine);
+                    return;
                 }
+
+                // Environment.GetEnvironmentVariable will expand environment variables inside the PATH variable
+                string path = (string)envKey.GetValue("Path", string.Empty, RegistryValueOptions.DoNotExpandEnvironmentNames);
+
+                // Check for paths with and without a trailing backslash
+                string x86DotNetPath1 = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                    "dotnet");
+                string x86DotNetPath2 = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                    @"dotnet\");
+
+                List<string> paths = path.Split(';').ToList();
+                paths.RemoveAll(s => s.Equals(x86DotNetPath1, StringComparison.OrdinalIgnoreCase) ||
+                    s.Equals(x86DotNetPath2, StringComparison.OrdinalIgnoreCase));
+                path = string.Join(";", paths);
+
+                Environment.SetEnvironmentVariable("Path", path, EnvironmentVariableTarget.Machine);
             }
             catch
             {
