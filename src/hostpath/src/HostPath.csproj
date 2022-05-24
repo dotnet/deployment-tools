@@ -12,7 +12,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <Description>.NET Framework 4.5 executable to remove the x86 dotnet path.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageVersion>6.0.2</PackageVersion>
+    <PackageVersion>6.0.3-preview.1</PackageVersion>
 
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
