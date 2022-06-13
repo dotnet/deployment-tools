@@ -75,16 +75,20 @@ namespace Microsoft.Deployment.Launcher
         {
             get
             {
-                string proc = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
-                if (!string.IsNullOrEmpty(proc) && proc.ToLower() == ArchArm64)
+                try
                 {
-                    return true;
+                    if (NativeMethods.Kernel32.IsWow64Process2(new IntPtr(-1), out _, out ushort nativeMachine))
+                    {
+                        if (nativeMachine == NativeMethods.Kernel32.IMAGE_FILE_MACHINE_ARM64)
+                        {
+                            return true;
+                        }
+                    }
                 }
-
-                proc = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432");
-                if (!string.IsNullOrEmpty(proc) && proc.ToLower() == ArchArm64)
+                catch (EntryPointNotFoundException)
                 {
-                    return true;
+                    // kernel32.dll does not export IsWow64Process2 on systems before Win10
+                    // API is available on all systems that support arm64.
                 }
 
                 return false;
