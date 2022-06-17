@@ -16,14 +16,7 @@ namespace ClickOnceHelper
             {
                 if (!isNetworkDeployedInitialized)
                 {
-                    ApplicationDeployment.isNetworkDeployed = false;
-
-                    string value = Environment.GetEnvironmentVariable("ClickOnce_IsNetworkDeployed");
-                    if (value?.ToLower() == "true")
-                    {
-                        ApplicationDeployment.isNetworkDeployed = true;
-                    }
-
+                    bool.TryParse(Environment.GetEnvironmentVariable("ClickOnce_IsNetworkDeployed"), out ApplicationDeployment.isNetworkDeployed);
                     ApplicationDeployment.isNetworkDeployedInitialized = true;
                 }
 
