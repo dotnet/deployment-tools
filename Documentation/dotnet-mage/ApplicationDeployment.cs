@@ -49,8 +49,8 @@ namespace ClickOnceHelper
         {
             get
             {
-                string value = Environment.GetEnvironmentVariable("ClickOnce_ActivationUri");
-                return string.IsNullOrEmpty(value) ? null : new Uri(value);
+                Uri.TryCreate(Environment.GetEnvironmentVariable("ClickOnce_ActivationUri"), UriKind.Absolute, out Uri val);
+                return val;
             }
         }
 
@@ -58,8 +58,8 @@ namespace ClickOnceHelper
         {
             get
             {
-                string value = Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion");
-                return string.IsNullOrEmpty(value) ? null : new Version(value);
+                Version.TryParse(Environment.GetEnvironmentVariable("ClickOnce_CurrentVersion"), out Version val);
+                return val;
             }
         }
         public string DataDirectory
@@ -71,8 +71,7 @@ namespace ClickOnceHelper
         {
             get
             {
-                bool val;
-                bool.TryParse(Environment.GetEnvironmentVariable("ClickOnce_IsFirstRun"), out val);
+                bool.TryParse(Environment.GetEnvironmentVariable("ClickOnce_IsFirstRun"), out bool val);
                 return val;
             }
         }
@@ -81,8 +80,7 @@ namespace ClickOnceHelper
         {
             get
             {
-                DateTime value;
-                DateTime.TryParse(Environment.GetEnvironmentVariable("ClickOnce_TimeOfLastUpdateCheck"), out value);
+                DateTime.TryParse(Environment.GetEnvironmentVariable("ClickOnce_TimeOfLastUpdateCheck"), out DateTime value);
                 return value;
             }
         }
@@ -98,8 +96,8 @@ namespace ClickOnceHelper
         {
             get
             {
-                string value = Environment.GetEnvironmentVariable("ClickOnce_UpdatedVersion");
-                return string.IsNullOrEmpty(value) ? null : new Version(value);
+                Version.TryParse(Environment.GetEnvironmentVariable("ClickOnce_UpdatedVersion"), out Version val);
+                return val;
             }
         }
 
@@ -107,8 +105,8 @@ namespace ClickOnceHelper
         {
             get
             {
-                string value = Environment.GetEnvironmentVariable("ClickOnce_UpdateLocation");
-                return string.IsNullOrEmpty(value) ? null : new Uri(value);
+                Uri.TryCreate(Environment.GetEnvironmentVariable("ClickOnce_UpdateLocation"), UriKind.Absolute, out Uri val);
+                return val;
             }
         }
 
@@ -116,8 +114,9 @@ namespace ClickOnceHelper
         {
             get
             {
-                string value = Environment.GetEnvironmentVariable("ClickOnce_LauncherVersion");
-                return string.IsNullOrEmpty(value) ? null : new Version(value);
+
+                Version.TryParse(Environment.GetEnvironmentVariable("ClickOnce_LauncherVersion"), out Version val);
+                return val;
             }
         }
 
