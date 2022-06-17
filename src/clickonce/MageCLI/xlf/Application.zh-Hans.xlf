@@ -117,11 +117,12 @@ Options
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
+  -TrustURLParameters &lt;true|false&gt;  -tu
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">命令
+        <target state="new">Commands
   -New &lt;file_type&gt;	          -n
   -Update &lt;file_name&gt;	          -u
   -Sign &lt;file_name&gt;	          -s
@@ -155,10 +156,11 @@ Options
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
+  -TrustURLParameters &lt;true|false&gt;  -tu
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
 
-使用 "mage -help verbose" 获取更详细的帮助信息</target>
+Use "mage -help verbose" for more detailed help</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbose">
@@ -333,6 +335,9 @@ Options:
       Example:
         -TrustLevel FullTrust
 
+  -TrustURLParameters &lt;true|false&gt;  -tu
+      Specifies if URL parameters will be trusted and passed to the application.
+            
   -UseManifestForTrust &lt;true|false&gt; -um
       Specifies if the application manifest will be used for certification and
       branding information.
@@ -342,185 +347,188 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">命令:
+        <target state="new">Commands:
 
   -New &lt;file_type&gt;        -n
-      使用下面列出的选项生成新的应用程序清单、部署清单或
-      信任许可证。
-      示例:
+      Generate a new application manifest, deployment manifest, or trust
+      license, using the options listed below.
+      Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
     
   -Update &lt;file_name&gt;     -u
-      更新现有的应用程序清单、部署清单或信任
-     许可证，按照下面列出的选项所指定的方式对其进行更新。
-      示例:
+      Update an existing application manifest, deployment manifest, or trust
+      License, updating it as specified by the options listed below.
+      Examples:
         -Update MyApp.manifest -FromDirectory bin/release
         -Update MyApp.application -Version 2.1.0.123 -ToFile MyApp21.application 
           
   -Sign &lt;file_name&gt;       -s
-      使用密钥对或 X509 证书为现有清单或许可证
-      签名。
-      示例:
+      Sign an existing manifest or license with a keypair or an X509
+      certificate.
+      Examples:
         -Sign MyApp.manifest -CertFile MyCert.pfx -Password mycertpassword
     
   -Verify &lt;manifest_file_name&gt;       -ver
-     验证清单是否正确签名。不能与其他命令组合。
-      示例:
+      Verify if the manifest is signed correctly. Cannot be combined with other commands.
+      Example:
         -Verify MyApp.manifest
   
   -AddLauncher &lt;binary_to_launch&gt;    -al
-      向目标目录添加启动器并设置要启动的二进制文件。
-      示例:
+      Adds Launcher to target directory and sets its binary to launch.
+      Example:
         -AddLauncher myapp.dll -TargetDirectory bin/release
 
   -ClearApplicationCache  -cc
-      清除所有仅限联机的应用程序的已下载应用程序缓存。
+      Clear the downloaded application cache of all online-only applications. 
 
   -Help [verbose]         -h -?
-     打印使用说明。
-      示例:
+      Print usage instructions.
+      Examples:
         -Help
         -Help Verbose
 
 Options:
 
-  -Algorithm &lt;sha256RSA&gt;  -a
-    指定用于生成摘要的算法。
-      示例:
-         -Algorithm sha1RSA
+  -Algorithm &lt;sha256RSA&gt;      -a
+      Specifies the algorithm to generate digests.
+      Example:
+         -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
-      指定要放在所生成或更新的部署清单中
-      的应用清单的代码库。
-      示例:
+      Specifies the code base of the app manifest to be placed in the
+      deployment manifest being generated or updated.
+      Example:
          -AppCodeBase 1.0.0.0/myapp.manifest
       
   -AppManifest &lt;path&gt;     -appm
-     指定从所生成或更新的部署清单中引用的
-     应用程序清单的本地路径。
-      示例:
+      Specifies the local path to an application manifest that is being
+      referenced from the deployment manifest being generated or updated.
+      Example:
         -AppManifest MyApp.manifest
 
   -CertFile &lt;file_name&gt;   -cf
-      指定要使用其来为
-      清单或证书文件签名的 X509 证书文件的名称。如果证书需要密码来获取个人信息交换(PFX)文件，此选项可以与 
-      -Password 选项
-      结合使用。如果文件不
-     包含私匙，则需要 -CryptoProvider 和 
-      -KeyContainer 选项的组合。
-      示例:
+      Specifies the name of an X509 certificate file with which to sign a
+      manifest or license file.  This option can be used in conjunction 
+      with the -Password option, if the certificate requires a password
+      for Personal Information Exchange (PFX) files. If the file does not 
+      contain private key a combination of -CryptoProvider and 
+      -KeyContainer options is required.
+      Example:
         -CertFile MyCert.pfx
         -CertFile MyCert.pfx -Password mycertpassword
         -CertFile PublicKey.cer -KeyContainer name -CryptoProvider MyCspName
 
   -CertHash &lt;hash&gt;        -ch
-      在本地证书存储中指定 X509 证书的哈希。
-      示例:
+      Specifies the hash of an X509 certificate in your local cert store.
+      Example:
         -CertHash a1b2c3d4e5f6g7h8i9j0
 
   -CryptoProvider &lt;name&gt;  -csp
-     指定包含私钥容器的
-      加密服务提供程序(CSP)的名称。此选项需要 -KeyContainer  选项。
-     示例:
+      Specifies the name of cryptographic service provider (CSP) that contains
+      the private key container.  This option requires the -KeyContainer option.
+      Example:
         -CryptoProvider "Microsoft Enhanced Cryptographic Provider v1.0" -KeyContainer name
 
   -FromDirectory &lt;path&gt;   -fd
-     指定用于递归搜索文件以将其包含
-      在应用程序清单中的目录。
-      示例:
+      Specifies the directory to recursively search for files to include in
+      an application manifest.  
+      Example:
         -FromDirectory bin/release
         
   -IconFile &lt;file_path&gt;   -if
-      指定应用程序图标的相对路径和文件名。
+      Specifies relative path and filename for the application icon.
         
   -IncludeProviderURL &lt;true|false&gt; -ip
-      指定部署清单是否将包含
-      部署提供程序 URL。
+      Specifies if the deployment manifest will include the deployment 
+      provider URL.
       
   -Install &lt;true|false&gt;   -i
-      指定应用程序是安装的应用程序还是仅限联机的
-      应用程序。
+      Specifies if the application will be an installed or an online only 
+      application.
 
   -KeyContainer &lt;name&gt;    -kc
-     指定包含私钥名称的密钥容器。 
-     此选项需要 -CryptoProvider 选项。  
-      示例:
+      Specifies the key container that contains the name of the private key.
+      This option requires the -CryptoProvider option.
+      Example:
         -KeyContainer name -CryptoProvider "Microsoft Enhanced Cryptographic Provider v1.0"
 
   -MinVersion &lt;version #|none&gt;   -mv
-     指定要生成的清单是否指定最低版本。
-      格式必须为 "0.0.0.0"。如果指定 "none"，则会从清单中移除此项。
-      示例:
+      Specifies whether the manifest being generated specifies a minimum version.
+      Must be of the form "0.0.0.0".  Specifying "none" removes this from the manifest.
+      Example:
         -MinVersion 1.2.3.4
         -MinVersion none
 
   -Name &lt;name&gt;            -n
-     指定正在生成或更新其清单的 
-     应用程序名称。包含空格的名称需用
-      引号括起来。
-      示例:
+      Specifies the name of the application whose manifest is being 
+      generated or updated.  Names which include spaces should be enclosed
+      in quotes.
+      Examples:
         -Name MyApp
         -Name "My Application"
         
   -Password &lt;password&gt;    -pwd
-     指定要在对清单或许可证文件进行签名时用于
-      X509 证书的密码。参阅以上示例。
+      Specifies the password to use with an X509 certificate when signing
+      a manifest or license file.  See example above.
 
   -Processor &lt;processor&gt;  -p
-     指定正在生成或更新其清单的应用程序的
-      处理器架构。
-      示例:
+      Specifies the processor architecture of the application whose manifest
+      is being generated or updated.
+      Examples:
         -Processor MSIL
         -Processor i386
 
   -ProviderURL &lt;url&gt;      -pu
-      指定要用在所生成或更新的部署清单中的
-     提供程序 URL。 
-      示例:
+      Specifies the provider URL to be use in the deployment manifest being
+      generated or updated.
+      Example:
         -ProviderURL http://www.whatever.net/application
 
   -Publisher &lt;publisher_name&gt;    -pub
-     指定发行者的名称。包含空格的名称应用
-      引号括起来。
-      示例:
+      Specifies the name of the publisher.  Names which include spaces should 
+      be enclosed in quotes.
+      Examples:
         -Publisher MyCompany
         -Publisher "My Company"
 
   -SupportURL &lt;url&gt;       -s
-      指定应用程序的支持 URL。
-      示例:
+      Specifies the support URL for the application.
+      Example:
         -SupportURL http://www.whatever.net/application/support
 
   -TargetDirectory &lt;path&gt;	  -td
-      指定要添加 Launcher 的目录。
-      示例:
+      Specifies the directory to which to add the Launcher.
+      Example:
         -TargetDirectory bin/release
 
   -ToFile &lt;file_name&gt;     -t
-       指定要保存 sign、new 或
-      update 命令的输出的文件名称。
-      示例:
+      Specifies the name of the file to save the output of a sign, new, or 
+      update command.
+      Example:
         -ToFile MyApp.manifest
 
   -TimeStampUri &lt;uri&gt;     -ti
-      指定要用于在签名过程中盖时间戳的 URI。
+      Specifies the URI to use for timestamping during signing.
 
   -TrustLevel &lt;level&gt;     -tr
-      指定要包括在所生成或更新的应用程序清单中的
-     信任级别。有效值包括: "Internet"、"LocalIntranet" 
-      和 "FullTrust"。and "FullTrust".
-      示例:
+      Specifies the trust level to be included in the application manifest
+      being generated or updated. Valid values are: "Internet", "LocalIntranet",
+      and "FullTrust".
+      Example:
         -TrustLevel FullTrust
 
+  -TrustURLParameters &lt;true|false&gt;  -tu
+      Specifies if URL parameters will be trusted and passed to the application.
+            
   -UseManifestForTrust &lt;true|false&gt; -um
-      指定应用程序清单是否将用于认证和
-     署名信息。
+      Specifies if the application manifest will be used for certification and
+      branding information.
             
   -Version &lt;version&gt;                -v
-      指定正在生成或更新其清单的
-     应用程序的版本。格式必须为 "0.0.0.0"。 
-      示例:
+      Specifies the version of the application whose manifest is being 
+      generated or updated.  Must be of the form "0.0.0.0".
+      Example:
         -Version 1.2.3.2112</target>
         <note />
       </trans-unit>
@@ -652,6 +660,11 @@ Options:
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
         <target state="translated">信任级别无效，必须为“LocalIntranet”、“Internet”或“FullTrust”-“{0}”</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidTrustURLParameters">
+        <source>The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</source>
+        <target state="new">The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">

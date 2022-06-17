@@ -117,11 +117,12 @@ Options
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
+  -TrustURLParameters &lt;true|false&gt;  -tu
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
 
 Use "mage -help verbose" for more detailed help</source>
-        <target state="translated">コマンド
+        <target state="new">Commands
   -New &lt;file_type&gt;	          -n
   -Update &lt;file_name&gt;	          -u
   -Sign &lt;file_name&gt;	          -s
@@ -132,7 +133,7 @@ Use "mage -help verbose" for more detailed help</source>
 
 
 
-オプション
+Options
   -Algorithm &lt;sha256RSA&gt;           -a
   -AppCodeBase &lt;path&gt;	            -appc
   -AppManifest &lt;path&gt;	            -appm
@@ -155,10 +156,11 @@ Use "mage -help verbose" for more detailed help</source>
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
+  -TrustURLParameters &lt;true|false&gt;  -tu
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
 
-詳細なヘルプを表示するには、"mage -help verbose" を使用してください</target>
+Use "mage -help verbose" for more detailed help</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpVerbose">
@@ -333,6 +335,9 @@ Options:
       Example:
         -TrustLevel FullTrust
 
+  -TrustURLParameters &lt;true|false&gt;  -tu
+      Specifies if URL parameters will be trusted and passed to the application.
+            
   -UseManifestForTrust &lt;true|false&gt; -um
       Specifies if the application manifest will be used for certification and
       branding information.
@@ -342,185 +347,188 @@ Options:
       generated or updated.  Must be of the form "0.0.0.0".
       Example:
         -Version 1.2.3.2112</source>
-        <target state="translated">コマンド:
+        <target state="new">Commands:
 
   -New &lt;file_type&gt;        -n
-      以下に一覧表示されているオプションを使用して、新しいアプリケーション マニフェスト、配置
-      マニフェスト、信頼ライセンスを生成します。
-      例:
+      Generate a new application manifest, deployment manifest, or trust
+      license, using the options listed below.
+      Examples:
         -New Application -ToFile MyApp.manifest -Name MyApp -Processor X86
         -New Deployment -ToFile MyApp.application -Name MyApp -Version 1.0.0.0
     
   -Update &lt;file_name&gt;     -u
-      既存のアプリケーション マニフェスト、配置マニフェスト、信頼
-      ライセンスを更新します。以下に一覧表示されているオプションで指定する場合と同様に更新されます。
-      例:
+      Update an existing application manifest, deployment manifest, or trust
+      License, updating it as specified by the options listed below.
+      Examples:
         -Update MyApp.manifest -FromDirectory bin/release
         -Update MyApp.application -Version 2.1.0.123 -ToFile MyApp21.application 
           
   -Sign &lt;file_name&gt;       -s
-      キー ペアまたは X509 証明書を使用して、既存のマニフェストまたはライセンスに
-      署名します。
-      例:
+      Sign an existing manifest or license with a keypair or an X509
+      certificate.
+      Examples:
         -Sign MyApp.manifest -CertFile MyCert.pfx -Password mycertpassword
     
   -Verify &lt;manifest_file_name&gt;       -ver
-      マニフェストが正しく署名されているかどうかを検証します。他のコマンドと組み合わせて使用することはできません。
-      例:
+      Verify if the manifest is signed correctly. Cannot be combined with other commands.
+      Example:
         -Verify MyApp.manifest
   
   -AddLauncher &lt;binary_to_launch&gt;    -al
-      起動ツールがターゲット ディレクトリに追加され、起動するバイナリが設定されます。
-      例:
+      Adds Launcher to target directory and sets its binary to launch.
+      Example:
         -AddLauncher myapp.dll -TargetDirectory bin/release
 
   -ClearApplicationCache  -cc
-      すべてのオンライン専用アプリケーションのダウンロード済みアプリケーション キャッシュをクリアします。
+      Clear the downloaded application cache of all online-only applications. 
 
   -Help [verbose]         -h -?
-      使用方法の手順を印刷します。
-      例:
+      Print usage instructions.
+      Examples:
         -Help
         -Help Verbose
 
-オプション:
+Options:
 
   -Algorithm &lt;sha256RSA&gt;      -a
-      ダイジェストを生成するためのアルゴリズムが指定されます。
-      例:
+      Specifies the algorithm to generate digests.
+      Example:
          -Algorithm sha256RSA
 
   -AppCodeBase &lt;path&gt;     -appc
-      生成または更新されている配置マニフェストに配置する
-      アプリ マニフェストのコード ベースが指定されます。
-      例:
+      Specifies the code base of the app manifest to be placed in the
+      deployment manifest being generated or updated.
+      Example:
          -AppCodeBase 1.0.0.0/myapp.manifest
       
   -AppManifest &lt;path&gt;     -appm
-      生成または更新されている配置マニフェストから参照されている
-      アプリケーション マニフェストへのローカル パスが指定されます。
-      例:
+      Specifies the local path to an application manifest that is being
+      referenced from the deployment manifest being generated or updated.
+      Example:
         -AppManifest MyApp.manifest
 
   -CertFile &lt;file_name&gt;   -cf
-      マニフェストまたはライセンス ファイルを署名するのに使用する X509 証明書
-      ファイルの名前が指定されます。このオプションは、
-      証明書に Personal Information Exchange (PFX) ファイルのパスワードが求められる場合に、
-      -Password オプションと組み合わせて使用できます。ファイルに秘密キーが含まれていない場合は、
-      -CryptoProvider と -KeyContainer のオプションの
-      組み合わせが必要です。
-      例:
+      Specifies the name of an X509 certificate file with which to sign a
+      manifest or license file.  This option can be used in conjunction 
+      with the -Password option, if the certificate requires a password
+      for Personal Information Exchange (PFX) files. If the file does not 
+      contain private key a combination of -CryptoProvider and 
+      -KeyContainer options is required.
+      Example:
         -CertFile MyCert.pfx
         -CertFile MyCert.pfx -Password mycertpassword
         -CertFile PublicKey.cer -KeyContainer name -CryptoProvider MyCspName
 
   -CertHash &lt;hash&gt;        -ch
-      ローカル証明書ストアの X509 証明書のハッシュが指定されます。
-      例:
+      Specifies the hash of an X509 certificate in your local cert store.
+      Example:
         -CertHash a1b2c3d4e5f6g7h8i9j0
 
   -CryptoProvider &lt;name&gt;  -csp
-      秘密キーのコンテナーを含む暗号化サービス プロバイダー (CSP) の
-      名前が指定されます。このオプションには -KeyContainer オプションが必要です。
-      例:
+      Specifies the name of cryptographic service provider (CSP) that contains
+      the private key container.  This option requires the -KeyContainer option.
+      Example:
         -CryptoProvider "Microsoft Enhanced Cryptographic Provider v1.0" -KeyContainer name
 
   -FromDirectory &lt;path&gt;   -fd
-      アプリケーション マニフェストに含めるファイルを再帰的に検索するための
-      ディレクトリが指定されます。
-      例:
+      Specifies the directory to recursively search for files to include in
+      an application manifest.  
+      Example:
         -FromDirectory bin/release
         
   -IconFile &lt;file_path&gt;   -if
-      アプリケーション アイコンの相対パスおよびファイル名が指定されます。
+      Specifies relative path and filename for the application icon.
         
   -IncludeProviderURL &lt;true|false&gt; -ip
-      配置マニフェストに配置プロバイダー URL が含まれる場合に
-      指定されます。
+      Specifies if the deployment manifest will include the deployment 
+      provider URL.
       
   -Install &lt;true|false&gt;   -i
-      アプリケーションがインストールまたはオンライン専用のアプリケーションの場合に
-      指定されます。
+      Specifies if the application will be an installed or an online only 
+      application.
 
   -KeyContainer &lt;name&gt;    -kc
-      秘密キーの名前を含むキー コンテナーが指定されます。
-      このオプションには -CryptoProvider オプションが必要です。
-      例:
+      Specifies the key container that contains the name of the private key.
+      This option requires the -CryptoProvider option.
+      Example:
         -KeyContainer name -CryptoProvider "Microsoft Enhanced Cryptographic Provider v1.0"
 
   -MinVersion &lt;version #|none&gt;   -mv
-      生成されているマニフェストで最小バージョンが指定されるかどうかが指定されます。
-      "0.0.0.0" の形式でなければなりません。"none" を指定すると、マニフェストから削除されます。
-      例:
+      Specifies whether the manifest being generated specifies a minimum version.
+      Must be of the form "0.0.0.0".  Specifying "none" removes this from the manifest.
+      Example:
         -MinVersion 1.2.3.4
         -MinVersion none
 
   -Name &lt;name&gt;            -n
-      マニフェストが生成または更新されているアプリケーションの
-      名前が指定されます。スペースを含む名前は単一引用符で囲む
-      必要があります。
-      例:
+      Specifies the name of the application whose manifest is being 
+      generated or updated.  Names which include spaces should be enclosed
+      in quotes.
+      Examples:
         -Name MyApp
         -Name "My Application"
         
   -Password &lt;password&gt;    -pwd
-      マニフェストまたはライセンス ファイルを署名する場合に X509 証明書に使用する
-      パスワードが指定されます。上記の例をご確認ください。
+      Specifies the password to use with an X509 certificate when signing
+      a manifest or license file.  See example above.
 
   -Processor &lt;processor&gt;  -p
-      マニフェストが生成または更新されているアプリケーションの
-      プロセッサ アーキテクチャが指定されます。
-      例:
+      Specifies the processor architecture of the application whose manifest
+      is being generated or updated.
+      Examples:
         -Processor MSIL
         -Processor i386
 
   -ProviderURL &lt;url&gt;      -pu
-      生成または更新されている配置マニフェストで使用される
-      プロバイダー URL が指定されます。
-      例:
+      Specifies the provider URL to be use in the deployment manifest being
+      generated or updated.
+      Example:
         -ProviderURL http://www.whatever.net/application
 
   -Publisher &lt;publisher_name&gt;    -pub
-      パブリッシャーの名前が指定されます。スペースを含む名前は単一引用符で
-      囲む必要があります。
-      例:
+      Specifies the name of the publisher.  Names which include spaces should 
+      be enclosed in quotes.
+      Examples:
         -Publisher MyCompany
         -Publisher "My Company"
 
   -SupportURL &lt;url&gt;       -s
-      アプリケーションのサポート URL が指定されます。
-      例:
+      Specifies the support URL for the application.
+      Example:
         -SupportURL http://www.whatever.net/application/support
 
   -TargetDirectory &lt;path&gt;	  -td
-      起動ツールを追加するディレクトリが指定されます。
-      例:
+      Specifies the directory to which to add the Launcher.
+      Example:
         -TargetDirectory bin/release
 
   -ToFile &lt;file_name&gt;     -t
-      署名、新規、更新コマンドの出力を保存するファイルの
-      名前が指定されます。
-      例:
+      Specifies the name of the file to save the output of a sign, new, or 
+      update command.
+      Example:
         -ToFile MyApp.manifest
 
   -TimeStampUri &lt;uri&gt;     -ti
-      署名中のタイムスタンプの設定に使用する URI が指定されます。
+      Specifies the URI to use for timestamping during signing.
 
   -TrustLevel &lt;level&gt;     -tr
-      生成または更新されたアプリケーション マニフェストに含める
-      信頼レベルが指定されます。有効な値: "Internet"、"LocalIntranet"、
-      "FullTrust"。
-      例:
+      Specifies the trust level to be included in the application manifest
+      being generated or updated. Valid values are: "Internet", "LocalIntranet",
+      and "FullTrust".
+      Example:
         -TrustLevel FullTrust
 
+  -TrustURLParameters &lt;true|false&gt;  -tu
+      Specifies if URL parameters will be trusted and passed to the application.
+            
   -UseManifestForTrust &lt;true|false&gt; -um
-      アプリケーション マニフェストを認定およびブランド情報に
-      使用するかどうかが指定されます。
+      Specifies if the application manifest will be used for certification and
+      branding information.
             
   -Version &lt;version&gt;                -v
-      マニフェストが生成または更新されているアプリケーションの
-      バージョンが指定されます。"0.0.0.0" の形式でなければなりません。
-      例:
+      Specifies the version of the application whose manifest is being 
+      generated or updated.  Must be of the form "0.0.0.0".
+      Example:
         -Version 1.2.3.2112</target>
         <note />
       </trans-unit>
@@ -652,6 +660,11 @@ Options:
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
         <target state="translated">無効な信頼レベルです。信頼レベルは、"LocalIntranet"、"Internet"、"FullTrust" のいずれかでなければなりません - "{0}"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidTrustURLParameters">
+        <source>The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</source>
+        <target state="new">The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">
