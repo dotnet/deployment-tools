@@ -16,13 +16,12 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         public async Task ItReturnsAllSupportPhases()
         {
             ProductCollection products = await ProductCollection.GetFromFileAsync(@"data\\releases-index.json", false);
-            IEnumerable<SupportPhase> supportPhases = products.GetSupportPhases();
+            IEnumerable<ReleaseLabel> supportPhases = products.GetSupportPhases();
 
-            Assert.Equal(4, supportPhases.Count());
-            Assert.Contains(SupportPhase.Current, supportPhases);
-            Assert.Contains(SupportPhase.EOL, supportPhases);
-            Assert.Contains(SupportPhase.LTS, supportPhases);
-            Assert.Contains(SupportPhase.Preview, supportPhases);
+            Assert.Equal(3, supportPhases.Count());
+            Assert.Contains(ReleaseLabel.EOL, supportPhases);
+            Assert.Contains(ReleaseLabel.LTS, supportPhases);
+            Assert.Contains(ReleaseLabel.Preview, supportPhases);
         }
 
         [Fact]

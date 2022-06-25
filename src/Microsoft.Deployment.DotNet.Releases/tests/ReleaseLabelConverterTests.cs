@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Microsoft.Deployment.DotNet.Releases.Tests
 {
-    public class SupportPhaseConverterTests : TestBase
+    public class ReleaseLabelConverterTests : TestBase
     {
         public class TestObject
         {
-            public SupportPhase SupportPhase
+            public ReleaseLabel SupportPhase
             {
                 get;
                 set;
@@ -18,14 +18,14 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         }
 
         [Theory]
-        [InlineData("eoL", SupportPhase.EOL)]
-        [InlineData("LTS", SupportPhase.LTS)]
-        [InlineData("current", SupportPhase.Current)]
-        [InlineData("rC", SupportPhase.RC)]
-        public void ItIsCaseInsenitive(string supportPhaseValue, SupportPhase expectedSupportPhase)
+        [InlineData("eoL", ReleaseLabel.EOL)]
+        [InlineData("LTS", ReleaseLabel.LTS)]
+        [InlineData("sts", ReleaseLabel.STS)]
+        [InlineData("go-live", ReleaseLabel.GoLive)]
+        public void ItIsCaseInsenitive(string supportPhaseValue, ReleaseLabel expectedSupportPhase)
         {
             var json = $@"{{""SupportPhase"":""{supportPhaseValue}""}}";
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, new SupportPhaseConverter());
+            var testObject = JsonConvert.DeserializeObject<TestObject>(json, new ReleaseLabelConverter());
 
             Assert.Equal(expectedSupportPhase, testObject.SupportPhase);
         }
@@ -36,9 +36,9 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         public void ItReturnsUnknownIfParsingFails(string supportPhaseValue)
         {
             var json = $@"{{""SupportPhase"":""{supportPhaseValue}""}}";
-            var testObject = JsonConvert.DeserializeObject<TestObject>(json, new SupportPhaseConverter());
+            var testObject = JsonConvert.DeserializeObject<TestObject>(json, new ReleaseLabelConverter());
 
-            Assert.Equal(SupportPhase.Unknown, testObject.SupportPhase);
+            Assert.Equal(ReleaseLabel.Unknown, testObject.SupportPhase);
         }
     }
 }

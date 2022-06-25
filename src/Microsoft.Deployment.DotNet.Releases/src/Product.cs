@@ -44,7 +44,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// <see langword="True"/> if the latest release of the product contained a security update;
+        /// <see langword="true"/> if the latest release of the product contained a security update;
         /// <see langword="false"/> otherwise.
         /// </summary>
         [JsonProperty(PropertyName = "security")]
@@ -120,6 +120,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
+        /// The release type of the product. If the <see cref="ReleaseType"/> and <see cref="SupportPhase"/> are equal, the product
+        /// should be considered to be in active support and receive both security and servicing updates.
+        /// </summary>
+        [JsonProperty(PropertyName = "release-type")]
+        public ReleaseLabel ReleaseType
+        {
+            get;
+            private set;
+        } = ReleaseLabel.Unknown;
+
+        /// <summary>
         /// The support phase of the Product. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
         /// be checked to confirm whether a release is still supported.
         /// </summary>
@@ -128,14 +139,14 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// data.
         /// </remarks>
         [JsonProperty(PropertyName = "support-phase")]
-        public SupportPhase SupportPhase
+        public ReleaseLabel SupportPhase
         {
             get;
             private set;
-        } = SupportPhase.Unknown;
+        } = ReleaseLabel.Unknown;
 
         /// <summary>
-        /// <see langword="true"/> if the support phase is not <see cref="SupportPhase.EOL"/>
+        /// <see langword="true"/> if the support phase is not <see cref="ReleaseLabel.EOL"/>
         /// and the current date is less than the EOL date of the product, 
         /// <see langword="false"/> otherwise.
         /// </summary>
@@ -188,14 +199,14 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// <see langword="true"/> if the support phase is <see cref="SupportPhase.EOL"/>
+        /// <see langword="true"/> if the support phase is <see cref="ReleaseLabel.EOL"/>
         /// or the current date is greater than or equal to the EOL date of the product, 
         /// <see langword="false"/> otherwise.
         /// </summary>
         /// <returns><see langword="true"/> if the product is out of support; <see langword="false"/> otherwise.</returns>
         public bool IsOutOfSupport()
         {
-            return SupportPhase == SupportPhase.EOL || EndOfLifeDate?.Date <= DateTime.Now.Date;
+            return SupportPhase == ReleaseLabel.EOL || EndOfLifeDate?.Date <= DateTime.Now.Date;
         }
 
         /// <summary>

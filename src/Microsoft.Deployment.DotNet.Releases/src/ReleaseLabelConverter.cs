@@ -7,43 +7,44 @@ using Newtonsoft.Json;
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// Custom converter for <see cref="SupportPhase"/> enumeration.
+    /// Custom converter for <see cref="ReleaseLabel"/> enumeration.
     /// </summary>
-    internal class SupportPhaseConverter : JsonConverter<SupportPhase>
+    internal class ReleaseLabelConverter : JsonConverter<ReleaseLabel>
     {
         /// <summary>
-        /// Reads a string value and converts it into a <see cref="SupportPhase"/> enumeration.
+        /// Reads a string value and converts it into a <see cref="ReleaseLabel"/> enumeration.
         /// </summary>
         /// <param name="reader">The <see cref="JsonReader"/> to use for reading the object value.</param>
         /// <param name="objectType">The type of the object.</param>
         /// <param name="existingValue">The existing value of the object.</param>
         /// <param name="hasExistingValue">The existing value of the object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
-        /// <returns>A <see cref="SupportPhase"/> created from the object value.</returns>
-        public override SupportPhase ReadJson(
-            JsonReader reader, Type objectType, SupportPhase existingValue, bool hasExistingValue, JsonSerializer serializer)
+        /// <returns>A <see cref="ReleaseLabel"/> created from the object value.</returns>
+        public override ReleaseLabel ReadJson(
+            JsonReader reader, Type objectType, ReleaseLabel existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.String)
             {
-                var tokenValue = reader.Value.ToString();
+                // Strip out dashes and underscores so we can parse the enum.
+                string tokenValue = reader.Value.ToString().Replace("-", "").Replace("_", "");
                 if (!string.IsNullOrWhiteSpace(tokenValue))
                 {
-                    return Enum.TryParse(tokenValue, ignoreCase: true, out SupportPhase result)
+                    return Enum.TryParse(tokenValue, ignoreCase: true, out ReleaseLabel result)
                         ? result
-                        : SupportPhase.Unknown;
+                        : ReleaseLabel.Unknown;
                 }
             }
 
-            return SupportPhase.Unknown;
+            return ReleaseLabel.Unknown;
         }
 
         /// <summary>
-        /// Converts the specified <see cref="SupportPhase"/> to a string 
+        /// Converts the specified <see cref="ReleaseLabel"/> to a string 
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to use for writing the value.</param>
-        /// <param name="value">The <see cref="SupportPhase"/> to write.</param>
+        /// <param name="value">The <see cref="ReleaseLabel"/> to write.</param>
         /// <param name="serializer">The calling serializer</param>
-        public override void WriteJson(JsonWriter writer, SupportPhase value, JsonSerializer serializer) =>
+        public override void WriteJson(JsonWriter writer, ReleaseLabel value, JsonSerializer serializer) =>
             throw new NotImplementedException();
     }
 }

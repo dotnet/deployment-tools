@@ -37,7 +37,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// Gets an enumerable of all the support phases across all products.
         /// </summary>
-        public IEnumerable<SupportPhase> GetSupportPhases()
+        public IEnumerable<ReleaseLabel> GetSupportPhases()
         {
             return this.Select(p => p.SupportPhase).Distinct();
         }

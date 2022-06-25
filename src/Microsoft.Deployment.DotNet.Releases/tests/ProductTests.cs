@@ -47,11 +47,13 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void Properties()
         {
-            var product = Products.Where(p => p.ProductVersion == "3.1").FirstOrDefault();
+            var product = Products.Where(p => p.ProductVersion == "2.1").FirstOrDefault();
 
             Assert.Equal(".NET Core", product.ProductName);
-            Assert.Equal("2021-02-09", product.LatestReleaseDate.ToString("yyyy-MM-dd"));
+            Assert.Equal("2021-08-19", product.LatestReleaseDate.ToString("yyyy-MM-dd"));
             Assert.True(product.LatestReleaseIncludesSecurityUpdate);
+            Assert.Equal(ReleaseLabel.LTS, product.ReleaseType);
+            Assert.Equal(ReleaseLabel.EOL, product.SupportPhase);
         }
     }
 }

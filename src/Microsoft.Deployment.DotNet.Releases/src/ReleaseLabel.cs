@@ -6,38 +6,44 @@ using Newtonsoft.Json;
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// An enumeration describing the different support phases of a <see cref="Product"/>.
+    /// An enumeration describing the different types of releases and support phases of a <see cref="Product"/>.
     /// </summary>
-    [JsonConverter(typeof(SupportPhaseConverter))]
-    public enum SupportPhase
+    [JsonConverter(typeof(ReleaseLabelConverter))]
+    public enum ReleaseLabel
     {
-        /// <summary>
-        /// The product is actively supported and will receive updates.
-        /// </summary>
-        Current = 0,
         /// <summary>
         /// The product is considered end-of-life and will not receive any updates.
         /// </summary>
         EOL,
+
         /// <summary>
-        /// The product is in long term support and will continue to receive updates.
+        /// The product is supported for production applications.
+        /// </summary>
+        GoLive,
+
+        /// <summary>
+        /// The product will receive long-term support..
         /// </summary>
         LTS,
+
         /// <summary>
         /// The product is no longer in active support and will be declared end-of-life (see <see cref="Product.EndOfLifeDate"/>).
         /// Only security fixes are provided until the product reaches end-of-life status.
         /// </summary>
         Maintenance,
+
         /// <summary>
         /// The product is a preview release.
         /// </summary>
         Preview,
+
         /// <summary>
-        /// The support phase designates a release candidate.
+        /// The product will receive short-term support.
         /// </summary>
-        RC,
+        STS,
+
         /// <summary>
-        /// The support phase is unrecognized.
+        /// The support policy is unrecognized.
         /// </summary>
         Unknown = 99
     }
