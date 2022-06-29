@@ -4,82 +4,82 @@
     <body>
       <trans-unit id="AddLauncherIsExclusive">
         <source>'addlauncher' command can't be combined with any other command.</source>
-        <target state="translated">El comando "addlauncher" no se puede combinar con ningún otro comando.</target>
+        <target state="new">'addlauncher' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationCacheCleared">
         <source>Application cache cleared.</source>
-        <target state="translated">Se borró la memoria caché de la aplicación.</target>
+        <target state="new">Application cache cleared.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestCannotHaveHostInBrowserTag">
         <source>The specified application manifest includes unsupported HostInBrowser tag.</source>
-        <target state="translated">El manifiesto de aplicación especificado incluye una etiqueta HostInBrowser no admitida.</target>
+        <target state="new">The specified application manifest includes unsupported HostInBrowser tag.</target>
         <note />
       </trans-unit>
       <trans-unit id="DefaultAppName">
         <source>New Application</source>
-        <target state="translated">Nueva aplicación</target>
+        <target state="new">New Application</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestNotSigned">
         <source>Deployment manifest is not signed - "{0}"</source>
-        <target state="translated">El manifiesto de implementación no está firmado - "{0}"</target>
+        <target state="new">Deployment manifest is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestSignatureInvalid">
         <source>Deployment manifest contains invalid signature - "{0}"</source>
-        <target state="translated">El manifiesto de implementación contiene una signatura no válida - "{0}"</target>
+        <target state="new">Deployment manifest contains invalid signature - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorApplicactionCachedCleared">
         <source>Failed to clear application cache.</source>
-        <target state="translated">Error al borrar la memoria caché de la aplicación.</target>
+        <target state="new">Failed to clear application cache.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidSignature">
         <source>Manifest does not have a valid signature.</source>
-        <target state="translated">El manifiesto no tiene una firma váida.</target>
+        <target state="new">Manifest does not have a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidTimestampFormat">
         <source>Timestamp is not encoded as a base64 string.</source>
-        <target state="translated">La marca de hora no está codificada como una cadena base64.</target>
+        <target state="new">Timestamp is not encoded as a base64 string.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMessage">
         <source>Error</source>
-        <target state="translated">Error</target>
+        <target state="new">Error</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMissingSignatureNode">
         <source>Signature node is missing.</source>
-        <target state="translated">Falta el nodo de firma.</target>
+        <target state="new">Signature node is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorWritingOutputFile">
         <source>Error writing output file "{0}".</source>
-        <target state="translated">Error al escribir en el archivo de resultados "{0}".</target>
+        <target state="new">Error writing output file "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">No se pudo agregar Launcher.</target>
+        <target state="new">Failed to add Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">No se pudieron actualizar los recursos de Launcher.</target>
+        <target state="new">Failed to update Launcher resources.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
         <source>Cannot write to file "{0}"</source>
-        <target state="translated">No se puede escribir en el archivo "{0}"</target>
+        <target state="new">Cannot write to file "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
         <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">La opción "{0}" solo se puede usar con el tipo de archivos siguiente: "{1}"</target>
+        <target state="new">The "{0}" option can only be used with the following type of files: "{1}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -534,132 +534,132 @@ Options:
       </trans-unit>
       <trans-unit id="InfoMessage">
         <source>Info</source>
-        <target state="translated">Información</target>
+        <target state="new">Info</target>
         <note />
       </trans-unit>
       <trans-unit id="InternalError">
         <source>Internal error, please try again.</source>
-        <target state="translated">Error interno; vuelva a intentarlo.</target>
+        <target state="new">Internal error, please try again.</target>
         <note>trailing space is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidAddLauncherOption">
         <source>The "{0}" option can not be used with -AddLauncher command.</source>
-        <target state="translated">No se puede usar la opción "{0}" con el comando -AddLauncher.</target>
+        <target state="new">The "{0}" option can not be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAlgorithmValue">
         <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">El algoritmo tiene que ser sha256RSA. Se especificó "{0}".</target>
+        <target state="new">Algorithm has to be sha256RSA. Specified - "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
-        <target state="translated">El binario para iniciar no puede incluir una ruta de acceso; solo puede ser un nombre de archivo: {0}.</target>
+        <target state="new">Binary to launch cannot include a path, it can only be a filename - {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
         <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">El archivo de certificado no tiene un formato correcto - "{0}"</target>
+        <target state="new">Cert file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
         <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">Este certificado no contiene una clave privada - "{0}"</target>
+        <target state="new">This certificate does not contain a private key - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
         <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">Este certificado no se puede utilizar para firmar - "{0}"</target>
+        <target state="new">This certificate cannot be used for signing - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">El código base no es válido - "{0}"</target>
+        <target state="new">The codebase is invalid - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
         <source>Directory not found - "{0}"</source>
-        <target state="translated">Directorio no encontrado - "{0}"</target>
+        <target state="new">Directory not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
         <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">Tipo de archivo no válido; debe ser "Application" o "Deployment"</target>
+        <target state="new">Invalid file type, must be "Application", or "Deployment"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
         <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">No se encuentra ningún certificado que coincida con el hash especificado - "{0}"</target>
+        <target state="new">No cert found matching specified hash - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
         <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">La opción -IncludeProviderURL debe ser "true", "false", "t" o "f" - "{0}"</target>
+        <target state="new">The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
         <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">Tipo de archivo no reconocido - "{0}"</target>
+        <target state="new">Unrecognized file type - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
         <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">La opción -Install debe ser "true", "false", "t" o "f" - "{0}"</target>
+        <target state="new">The -Install option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
         <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">El archivo de clave no tiene el formato correcto - "{0}"</target>
+        <target state="new">Key file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
         <source>The minimum version specified is not valid.</source>
-        <target state="translated">La versión mínima especificada no es válida.</target>
+        <target state="new">The minimum version specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonAddLauncherOption">
         <source>The "{0}" option can only be used with -AddLauncher command.</source>
-        <target state="translated">La opción "{0}" solo se puede usar con el comando -AddLauncher.</target>
+        <target state="new">The "{0}" option can only be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonManifestOption">
         <source>The "{0}" option can only be used with the -Update or -New commands.</source>
-        <target state="translated">La opción "{0}" sólo se puede utilizar con los comandos -Update o -New.</target>
+        <target state="new">The "{0}" option can only be used with the -Update or -New commands.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
         <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">La contraseña del certificado es incorrecta - "{0}"</target>
+        <target state="new">Cert password is incorrect - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
         <source>File not found - "{0}"</source>
-        <target state="translated">Archivo no encontrado - "{0}"</target>
+        <target state="new">File not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
         <source>Unknown processor type "{0}".  Supported processor types are:</source>
-        <target state="translated">Tipo de procesador no compatible "{0}". Los tipos de procesador compatibles son:</target>
+        <target state="new">Unknown processor type "{0}".  Supported processor types are:</target>
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
         <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">La opción -RequiredUpdate debe ser "true", "false", "t" o "f" - "{0}"</target>
+        <target state="new">The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
         <source>Signing is only supported on Windows.</source>
-        <target state="translated">La firma solo se admite en Windows.</target>
+        <target state="new">Signing is only supported on Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
-        <target state="translated">El URI de marca de tiempo especificado no es válido.</target>
+        <target state="new">The timestamp URI specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">Nivel de confianza no válido; debe ser "LocalIntranet", "Internet" o "FullTrust" - "{0}"</target>
+        <target state="new">Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustURLParameters">
@@ -669,167 +669,167 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidUrl">
         <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">La dirección URL no tiene el formato correcto - "{0}"</target>
+        <target state="new">The URL is not of the proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
         <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">La opción -UseManifestForTrust debe ser "true", "false", "t" o "f" - "{0}"</target>
+        <target state="new">The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
         <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">La versión debe tener el formato X.X.X.X (ejemplo: 1.0.0.0) - "{0}"</target>
+        <target state="new">Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Launcher se agregó correctamente.</target>
+        <target state="new">Launcher successfully added.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
         <source>Not including locked file {0}</source>
-        <target state="translated">No se ha incluido el archivo bloqueado {0}</target>
+        <target state="new">Not including locked file {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
         <source>Missing {0} option, it is required with AddLauncher command.</source>
-        <target state="translated">Falta la opción {0}, que es necesaria con el comando AddLauncher.</target>
+        <target state="new">Missing {0} option, it is required with AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
         <source>Missing value following the "{0}" option</source>
-        <target state="translated">Falta el valor detrás de la opción "{0}"</target>
+        <target state="new">Missing value following the "{0}" option</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
         <source>Binary to launch cannot be empty.</source>
-        <target state="translated">El binario para iniciar no puede estar vacío.</target>
+        <target state="new">Binary to launch cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
         <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">Este certificado no contiene una clave privada - "{0}", si es un certificado de clave pública, proporcione nombres válidos de un proveedor de servicios criptográficos y un contenedor de claves</target>
+        <target state="new">This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
         <source>The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</source>
-        <target state="translated">La opción IncludeProviderURL se ha establecido en true, pero no se ha especificado ninguna dirección Url del proveedor de implementación.</target>
+        <target state="new">The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">La plantilla de Launcher "{0}" no existe.</target>
+        <target state="new">Launcher template "{0}" does not exist.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
         <source>Missing Password option, this is required when using the CertFile option.</source>
-        <target state="translated">Falta la opción Password, necesaria cuando se utiliza la opción CertFile.</target>
+        <target state="new">Missing Password option, this is required when using the CertFile option.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingUseApplicationManifestForTrustInfo">
         <source>When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</source>
-        <target state="translated">Al generar o actualizar un manifiesto de aplicación, la opción {0} sólo se puede utilizar cuando la opción UseManifestForTrust está establecida en true.</target>
+        <target state="new">When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeys">
         <source>Only one type of signing method may be specified.</source>
-        <target state="translated">Sólo se puede especificar un tipo de método de firma.</target>
+        <target state="new">Only one type of signing method may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewLicense">
         <source>New License</source>
-        <target state="translated">Nueva licencia</target>
+        <target state="new">New License</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySpecified">
         <source>The -Sign command requires one of -CertFile, or -CertHash.</source>
-        <target state="translated">El comando -Sign requiere un comando -CertFile o -CertHash.</target>
+        <target state="new">The -Sign command requires one of -CertFile, or -CertHash.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoOutputFileSpecified">
         <source>No output file was specified.  Please use -ToFile &lt;filename&gt;.</source>
-        <target state="translated">No se ha especificado ningún archivo de resultados. Utilice -ToFile &lt;nombre_de_archivo&gt;.</target>
+        <target state="new">No output file was specified.  Please use -ToFile &lt;filename&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
         <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">El primer argumento debe ser alguno de los siguientes: -New, -Update, -Sign, - Verify, -AddLauncher</target>
+        <target state="new">The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
         <source>ClearApplicationCache should not be used with any other switch.</source>
-        <target state="translated">ClearApplicationCache no se debe utilizar con ningún otro modificador.</target>
+        <target state="new">ClearApplicationCache should not be used with any other switch.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSomeErrorsEncountered">
         <source>However, some errors were encountered.</source>
-        <target state="translated">Sin embargo, se han detectado errores.</target>
+        <target state="new">However, some errors were encountered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyCreated">
         <source>successfully created</source>
-        <target state="translated">creado correctamente</target>
+        <target state="new">successfully created</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullySigned">
         <source>successfully signed</source>
-        <target state="translated">firmado correctamente</target>
+        <target state="new">successfully signed</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyUpdated">
         <source>successfully updated</source>
-        <target state="translated">actualizado correctamente</target>
+        <target state="new">successfully updated</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">Mage no tiene los permisos de seguridad necesarios para su ejecución. Asegúrese de que mage no se está ejecutando desde un origen que no es de confianza, como un recurso compartido de red o un sitio web.</target>
+        <target state="new">Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">
         <source>Manifest has a valid signature.</source>
-        <target state="translated">El manifiesto tiene una firma válida.</target>
+        <target state="new">Manifest has a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="TooManyKeysSpecified">
         <source>Only one of -KeyFile, -CertFile, or -CertHash can be used.</source>
-        <target state="translated">Sólo se puede utilizar -KeyFile, -CertFile o -CertHash.</target>
+        <target state="new">Only one of -KeyFile, -CertFile, or -CertHash can be used.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
         <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">La configuración del nivel de confianza no se admite en .NET Core.</target>
+        <target state="new">Setting trust level is not supported on .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
         <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">La licencia de confianza no está firmada - "{0}"</target>
+        <target state="new">Trust license is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
         <source>Unable to open certificate "{0}":</source>
-        <target state="translated">No se puede abrir el certificado "{0}":</target>
+        <target state="new">Unable to open certificate "{0}":</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
         <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">No se encuentra Mage UI - "{0}"</target>
+        <target state="new">Unable to locate Mage UI - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">
         <source>Parameter not recognized - "{0}"</source>
-        <target state="translated">Parámetro no reconocido - "{0}"</target>
+        <target state="new">Parameter not recognized - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="VerifyIsExclusive">
         <source>'verify' command can't be combined with any other command.</source>
-        <target state="translated">El comando 'verify' no se puede combinar con ningún otro comando.</target>
+        <target state="new">'verify' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMessage">
         <source>Warning</source>
-        <target state="translated">Advertencia</target>
+        <target state="new">Warning</target>
         <note />
       </trans-unit>
     </body>

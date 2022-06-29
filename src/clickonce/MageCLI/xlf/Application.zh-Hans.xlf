@@ -4,82 +4,82 @@
     <body>
       <trans-unit id="AddLauncherIsExclusive">
         <source>'addlauncher' command can't be combined with any other command.</source>
-        <target state="translated">"addlauncher" 命令不能与任何其他命令组合。</target>
+        <target state="new">'addlauncher' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationCacheCleared">
         <source>Application cache cleared.</source>
-        <target state="translated">已清除应用程序缓存。</target>
+        <target state="new">Application cache cleared.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestCannotHaveHostInBrowserTag">
         <source>The specified application manifest includes unsupported HostInBrowser tag.</source>
-        <target state="translated">指定的应用程序清单包含不支持的 HostInBrowser 标记。</target>
+        <target state="new">The specified application manifest includes unsupported HostInBrowser tag.</target>
         <note />
       </trans-unit>
       <trans-unit id="DefaultAppName">
         <source>New Application</source>
-        <target state="translated">新应用程序</target>
+        <target state="new">New Application</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestNotSigned">
         <source>Deployment manifest is not signed - "{0}"</source>
-        <target state="translated">部署清单未签名 -“{0}”</target>
+        <target state="new">Deployment manifest is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestSignatureInvalid">
         <source>Deployment manifest contains invalid signature - "{0}"</source>
-        <target state="translated">部署清单包含无效的签名 -“{0}”</target>
+        <target state="new">Deployment manifest contains invalid signature - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorApplicactionCachedCleared">
         <source>Failed to clear application cache.</source>
-        <target state="translated">未能清除应用程序缓存。</target>
+        <target state="new">Failed to clear application cache.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidSignature">
         <source>Manifest does not have a valid signature.</source>
-        <target state="translated">清单不具有有效的签名。</target>
+        <target state="new">Manifest does not have a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidTimestampFormat">
         <source>Timestamp is not encoded as a base64 string.</source>
-        <target state="translated">时间戳未编码为 base64 字符串。</target>
+        <target state="new">Timestamp is not encoded as a base64 string.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMessage">
         <source>Error</source>
-        <target state="translated">错误</target>
+        <target state="new">Error</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMissingSignatureNode">
         <source>Signature node is missing.</source>
-        <target state="translated">签名节点丢失。</target>
+        <target state="new">Signature node is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorWritingOutputFile">
         <source>Error writing output file "{0}".</source>
-        <target state="translated">写入输出文件“{0}”时出错。</target>
+        <target state="new">Error writing output file "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">未能添加 Launcher。</target>
+        <target state="new">Failed to add Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">未能更新 Launcher 资源。</target>
+        <target state="new">Failed to update Launcher resources.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
         <source>Cannot write to file "{0}"</source>
-        <target state="translated">无法写入到文件“{0}”</target>
+        <target state="new">Cannot write to file "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
         <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">“{0}”选项只能用于以下类型的文件:“{1}”</target>
+        <target state="new">The "{0}" option can only be used with the following type of files: "{1}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -534,132 +534,132 @@ Options:
       </trans-unit>
       <trans-unit id="InfoMessage">
         <source>Info</source>
-        <target state="translated">信息</target>
+        <target state="new">Info</target>
         <note />
       </trans-unit>
       <trans-unit id="InternalError">
         <source>Internal error, please try again.</source>
-        <target state="translated">内部错误，请重试。</target>
+        <target state="new">Internal error, please try again.</target>
         <note>trailing space is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidAddLauncherOption">
         <source>The "{0}" option can not be used with -AddLauncher command.</source>
-        <target state="translated">“{0}”选项不能与 -AddLauncher 命令一起使用。</target>
+        <target state="new">The "{0}" option can not be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAlgorithmValue">
         <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">算法必须为 sha256RSA。指定值 -“{0}”。</target>
+        <target state="new">Algorithm has to be sha256RSA. Specified - "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
-        <target state="translated">要启动的二进制文件不能包含路径，它只能是一个文件名 - {0}。</target>
+        <target state="new">Binary to launch cannot include a path, it can only be a filename - {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
         <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">证书文件的格式不正确 -“{0}”</target>
+        <target state="new">Cert file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
         <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">此证书不包含私钥 -“{0}”</target>
+        <target state="new">This certificate does not contain a private key - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
         <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">此证书不能用于签名 -“{0}”</target>
+        <target state="new">This certificate cannot be used for signing - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">代码库无效 -“{0}”</target>
+        <target state="new">The codebase is invalid - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
         <source>Directory not found - "{0}"</source>
-        <target state="translated">找不到目录 -“{0}”</target>
+        <target state="new">Directory not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
         <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">文件类型无效，必须为“Application”或“Deployment”</target>
+        <target state="new">Invalid file type, must be "Application", or "Deployment"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
         <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">未找到与指定哈希匹配的证书 -“{0}”</target>
+        <target state="new">No cert found matching specified hash - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
         <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-IncludeProviderURL 选项必须为“true”、“false”、“t”或“f”-“{0}”</target>
+        <target state="new">The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
         <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">无法识别的文件类型 -“{0}”</target>
+        <target state="new">Unrecognized file type - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
         <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-Install 选项必须为“true”、“false”、“t”或“f”-“{0}”</target>
+        <target state="new">The -Install option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
         <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">密钥文件的格式不正确 -“{0}”</target>
+        <target state="new">Key file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
         <source>The minimum version specified is not valid.</source>
-        <target state="translated">指定的最低版本无效。</target>
+        <target state="new">The minimum version specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonAddLauncherOption">
         <source>The "{0}" option can only be used with -AddLauncher command.</source>
-        <target state="translated">“{0}”选项只能用于 -AddLauncher 命令。</target>
+        <target state="new">The "{0}" option can only be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonManifestOption">
         <source>The "{0}" option can only be used with the -Update or -New commands.</source>
-        <target state="translated">“{0}”选项只能与 -Update 或 -New 命令一起使用。</target>
+        <target state="new">The "{0}" option can only be used with the -Update or -New commands.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
         <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">证书密码不正确 -“{0}”</target>
+        <target state="new">Cert password is incorrect - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
         <source>File not found - "{0}"</source>
-        <target state="translated">找不到文件 -“{0}”</target>
+        <target state="new">File not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
         <source>Unknown processor type "{0}".  Supported processor types are:</source>
-        <target state="translated">未知处理器类型“{0}”。支持的处理器类型包括:</target>
+        <target state="new">Unknown processor type "{0}".  Supported processor types are:</target>
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
         <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-RequiredUpdate 选项必须为“true”、“false”、“t”或“f”-“{0}”</target>
+        <target state="new">The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
         <source>Signing is only supported on Windows.</source>
-        <target state="translated">只有 Windows 上支持签名。</target>
+        <target state="new">Signing is only supported on Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
-        <target state="translated">指定的时间戳 URI 无效。</target>
+        <target state="new">The timestamp URI specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">信任级别无效，必须为“LocalIntranet”、“Internet”或“FullTrust”-“{0}”</target>
+        <target state="new">Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustURLParameters">
@@ -669,167 +669,167 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidUrl">
         <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">URL 的格式不正确 -“{0}”</target>
+        <target state="new">The URL is not of the proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
         <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-UseManifestForTrust 选项必须为“true”、“false”、“t”或“f”-“{0}”</target>
+        <target state="new">The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
         <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">版本的格式必须为 X.X.X.X (例如 1.0.0.0) -“{0}”</target>
+        <target state="new">Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">已成功添加 Launcher。</target>
+        <target state="new">Launcher successfully added.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
         <source>Not including locked file {0}</source>
-        <target state="translated">不包括锁定的文件 {0}</target>
+        <target state="new">Not including locked file {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
         <source>Missing {0} option, it is required with AddLauncher command.</source>
-        <target state="translated">缺少 {0} 选项，使用 AddLauncher 命令时需要该选项。</target>
+        <target state="new">Missing {0} option, it is required with AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
         <source>Missing value following the "{0}" option</source>
-        <target state="translated">“{0}”选项后缺少值</target>
+        <target state="new">Missing value following the "{0}" option</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
         <source>Binary to launch cannot be empty.</source>
-        <target state="translated">要启动的二进制文件不能为空。</target>
+        <target state="new">Binary to launch cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
         <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">此证书不包含私钥 -“{0}”，如果这是公钥证书，请提供有效的加密服务提供程序和密钥容器名称</target>
+        <target state="new">This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
         <source>The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</source>
-        <target state="translated">IncludeProviderURL 选项设置为 true，但没有提供部署提供程序 Url。</target>
+        <target state="new">The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Launcher 模板“{0}”不存在。</target>
+        <target state="new">Launcher template "{0}" does not exist.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
         <source>Missing Password option, this is required when using the CertFile option.</source>
-        <target state="translated">缺少 Password 选项，在使用 CertFile 选项时，此选项是必需的。</target>
+        <target state="new">Missing Password option, this is required when using the CertFile option.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingUseApplicationManifestForTrustInfo">
         <source>When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</source>
-        <target state="translated">在生成或更新应用程序清单时，只有当 UseManifestForTrust 选项设置为 true 时，才能使用 {0} 选项。</target>
+        <target state="new">When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeys">
         <source>Only one type of signing method may be specified.</source>
-        <target state="translated">只能指定一种类型的签名方法。</target>
+        <target state="new">Only one type of signing method may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewLicense">
         <source>New License</source>
-        <target state="translated">新许可证</target>
+        <target state="new">New License</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySpecified">
         <source>The -Sign command requires one of -CertFile, or -CertHash.</source>
-        <target state="translated">-Sign 命令需要 -CertFile 或 -CertHash 中的一个。</target>
+        <target state="new">The -Sign command requires one of -CertFile, or -CertHash.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoOutputFileSpecified">
         <source>No output file was specified.  Please use -ToFile &lt;filename&gt;.</source>
-        <target state="translated">未指定输出文件。请使用 -ToFile &lt;文件名&gt;。</target>
+        <target state="new">No output file was specified.  Please use -ToFile &lt;filename&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
         <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">第一个参数必须为以下参数之一: -New、-Update、-Sign、-Verify、-AddLauncher</target>
+        <target state="new">The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
         <source>ClearApplicationCache should not be used with any other switch.</source>
-        <target state="translated">ClearApplicationCache 不能与任何其他开关一起使用。</target>
+        <target state="new">ClearApplicationCache should not be used with any other switch.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSomeErrorsEncountered">
         <source>However, some errors were encountered.</source>
-        <target state="translated">但是，遇到了某些错误。</target>
+        <target state="new">However, some errors were encountered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyCreated">
         <source>successfully created</source>
-        <target state="translated">已成功创建</target>
+        <target state="new">successfully created</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullySigned">
         <source>successfully signed</source>
-        <target state="translated">已成功签名</target>
+        <target state="new">successfully signed</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyUpdated">
         <source>successfully updated</source>
-        <target state="translated">已成功更新</target>
+        <target state="new">successfully updated</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">Mage 没有必要的安全权限，无法运行。  请确保没有从诸如网络共享或网站等不受信任的来源运行 mage。</target>
+        <target state="new">Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">
         <source>Manifest has a valid signature.</source>
-        <target state="translated">清单具有有效的签名。</target>
+        <target state="new">Manifest has a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="TooManyKeysSpecified">
         <source>Only one of -KeyFile, -CertFile, or -CertHash can be used.</source>
-        <target state="translated">只能使用 -KeyFile、-CertFile 或 -CertHash 中的一个。</target>
+        <target state="new">Only one of -KeyFile, -CertFile, or -CertHash can be used.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
         <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">.NET Core 不支持设置信任级别</target>
+        <target state="new">Setting trust level is not supported on .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
         <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">信任许可证未签名 -“{0}”</target>
+        <target state="new">Trust license is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
         <source>Unable to open certificate "{0}":</source>
-        <target state="translated">无法打开证书“{0}”:</target>
+        <target state="new">Unable to open certificate "{0}":</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
         <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">无法找到 Mage UI -“{0}”</target>
+        <target state="new">Unable to locate Mage UI - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">
         <source>Parameter not recognized - "{0}"</source>
-        <target state="translated">无法识别参数 -“{0}”</target>
+        <target state="new">Parameter not recognized - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="VerifyIsExclusive">
         <source>'verify' command can't be combined with any other command.</source>
-        <target state="translated">"verify" 命令不能与任何其他命令组合。</target>
+        <target state="new">'verify' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMessage">
         <source>Warning</source>
-        <target state="translated">警告</target>
+        <target state="new">Warning</target>
         <note />
       </trans-unit>
     </body>

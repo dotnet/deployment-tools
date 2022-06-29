@@ -4,82 +4,82 @@
     <body>
       <trans-unit id="AddLauncherIsExclusive">
         <source>'addlauncher' command can't be combined with any other command.</source>
-        <target state="translated">'addlauncher' コマンドは他のコマンドと併用できません。</target>
+        <target state="new">'addlauncher' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationCacheCleared">
         <source>Application cache cleared.</source>
-        <target state="translated">アプリケーション キャッシュがクリアされました。</target>
+        <target state="new">Application cache cleared.</target>
         <note />
       </trans-unit>
       <trans-unit id="ApplicationManifestCannotHaveHostInBrowserTag">
         <source>The specified application manifest includes unsupported HostInBrowser tag.</source>
-        <target state="translated">指定されたアプリケーション マニフェストに、サポートされない HostInBrowser タグが含まれています。</target>
+        <target state="new">The specified application manifest includes unsupported HostInBrowser tag.</target>
         <note />
       </trans-unit>
       <trans-unit id="DefaultAppName">
         <source>New Application</source>
-        <target state="translated">新しいアプリケーション</target>
+        <target state="new">New Application</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestNotSigned">
         <source>Deployment manifest is not signed - "{0}"</source>
-        <target state="translated">配置マニフェストは署名されていません - "{0}"</target>
+        <target state="new">Deployment manifest is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="DeployManifestSignatureInvalid">
         <source>Deployment manifest contains invalid signature - "{0}"</source>
-        <target state="translated">配置マニフェストに無効な署名が含まれています - "{0}"</target>
+        <target state="new">Deployment manifest contains invalid signature - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorApplicactionCachedCleared">
         <source>Failed to clear application cache.</source>
-        <target state="translated">アプリケーション キャッシュをクリアできませんでした。</target>
+        <target state="new">Failed to clear application cache.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidSignature">
         <source>Manifest does not have a valid signature.</source>
-        <target state="translated">マニフェストに有効な署名が含まれていません。</target>
+        <target state="new">Manifest does not have a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorInvalidTimestampFormat">
         <source>Timestamp is not encoded as a base64 string.</source>
-        <target state="translated">タイムスタンプが base64 文字列としてエンコードされていません。</target>
+        <target state="new">Timestamp is not encoded as a base64 string.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMessage">
         <source>Error</source>
-        <target state="translated">エラー</target>
+        <target state="new">Error</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorMissingSignatureNode">
         <source>Signature node is missing.</source>
-        <target state="translated">署名ノードがありません。</target>
+        <target state="new">Signature node is missing.</target>
         <note />
       </trans-unit>
       <trans-unit id="ErrorWritingOutputFile">
         <source>Error writing output file "{0}".</source>
-        <target state="translated">出力ファイル "{0}" の書き込みエラーです。</target>
+        <target state="new">Error writing output file "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToAddLauncher">
         <source>Failed to add Launcher.</source>
-        <target state="translated">Launcher の追加に失敗しました。</target>
+        <target state="new">Failed to add Launcher.</target>
         <note />
       </trans-unit>
       <trans-unit id="FailedToUpdateLauncherResources">
         <source>Failed to update Launcher resources.</source>
-        <target state="translated">Launcher リソースの更新に失敗しました。</target>
+        <target state="new">Failed to update Launcher resources.</target>
         <note />
       </trans-unit>
       <trans-unit id="FileNotWriteable">
         <source>Cannot write to file "{0}"</source>
-        <target state="translated">ファイル "{0}" に書き込めません</target>
+        <target state="new">Cannot write to file "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="FileTypeSpecificOption">
         <source>The "{0}" option can only be used with the following type of files: "{1}"</source>
-        <target state="translated">"{0}" オプションは、次のファイルの種類でのみ使用可能です: "{1}"</target>
+        <target state="new">The "{0}" option can only be used with the following type of files: "{1}"</target>
         <note />
       </trans-unit>
       <trans-unit id="HelpTerse">
@@ -534,132 +534,132 @@ Options:
       </trans-unit>
       <trans-unit id="InfoMessage">
         <source>Info</source>
-        <target state="translated">情報</target>
+        <target state="new">Info</target>
         <note />
       </trans-unit>
       <trans-unit id="InternalError">
         <source>Internal error, please try again.</source>
-        <target state="translated">内部エラーが発生しました。もう一度やり直してください。</target>
+        <target state="new">Internal error, please try again.</target>
         <note>trailing space is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidAddLauncherOption">
         <source>The "{0}" option can not be used with -AddLauncher command.</source>
-        <target state="translated">"{0}" オプションを -AddLauncher コマンドに使用することはできません。</target>
+        <target state="new">The "{0}" option can not be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidAlgorithmValue">
         <source>Algorithm has to be sha256RSA. Specified - "{0}".</source>
-        <target state="translated">アルゴリズムは sha256RSA である必要があります。指定されたアルゴリズム - "{0}"。</target>
+        <target state="new">Algorithm has to be sha256RSA. Specified - "{0}".</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidBinaryToLaunch">
         <source>Binary to launch cannot include a path, it can only be a filename - {0}.</source>
-        <target state="translated">起動するバイナリにパスを含めることはできません。ファイル名としてのみ使用できます - {0}。</target>
+        <target state="new">Binary to launch cannot include a path, it can only be a filename - {0}.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertFile">
         <source>Cert file is not of proper format - "{0}"</source>
-        <target state="translated">証明書ファイルが正しい形式ではありません - "{0}"</target>
+        <target state="new">Cert file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertNoPrivateKey">
         <source>This certificate does not contain a private key - "{0}"</source>
-        <target state="translated">この証明書には秘密キーが含まれていません - "{0}"</target>
+        <target state="new">This certificate does not contain a private key - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCertUsage">
         <source>This certificate cannot be used for signing - "{0}"</source>
-        <target state="translated">この証明書は署名に使用できません - "{0}"</target>
+        <target state="new">This certificate cannot be used for signing - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidCodebase">
         <source>The codebase is invalid - "{0}"</source>
-        <target state="translated">このコードベースは無効です - "{0}"</target>
+        <target state="new">The codebase is invalid - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidDirectory">
         <source>Directory not found - "{0}"</source>
-        <target state="translated">ディレクトリが見つかりません - "{0}"</target>
+        <target state="new">Directory not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidFileType">
         <source>Invalid file type, must be "Application", or "Deployment"</source>
-        <target state="translated">ファイルの種類が無効です。"Application" または "Deployment" でなければなりません</target>
+        <target state="new">Invalid file type, must be "Application", or "Deployment"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidHash">
         <source>No cert found matching specified hash - "{0}"</source>
-        <target state="translated">指定されたハッシュに一致する証明書が見つかりません - "{0}"</target>
+        <target state="new">No cert found matching specified hash - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidIncludeProviderURL">
         <source>The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-IncludeProviderURL オプションは、"true"、"false"、"t"、"f" のいずれかでなければなりません - "{0}"</target>
+        <target state="new">The -IncludeProviderURL option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInputFile">
         <source>Unrecognized file type - "{0}"</source>
-        <target state="translated">認識されないファイルの種類です - "{0}"</target>
+        <target state="new">Unrecognized file type - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidInstall">
         <source>The -Install option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-Install オプションは、"true"、"false"、"t"、"f" のいずれかでなければなりません - "{0}"</target>
+        <target state="new">The -Install option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidKeyFile">
         <source>Key file is not of proper format - "{0}"</source>
-        <target state="translated">キー ファイルが正しい形式ではありません - "{0}"</target>
+        <target state="new">Key file is not of proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidMinVersion">
         <source>The minimum version specified is not valid.</source>
-        <target state="translated">指定された最小バージョンは無効です。</target>
+        <target state="new">The minimum version specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonAddLauncherOption">
         <source>The "{0}" option can only be used with -AddLauncher command.</source>
-        <target state="translated">"{0}" オプションは、-AddLauncher コマンドにのみ使用可能です。</target>
+        <target state="new">The "{0}" option can only be used with -AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidNonManifestOption">
         <source>The "{0}" option can only be used with the -Update or -New commands.</source>
-        <target state="translated">"{0}" オプションと共に使用できるのは、-Update コマンドまたは -New コマンドのみです。</target>
+        <target state="new">The "{0}" option can only be used with the -Update or -New commands.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPassword">
         <source>Cert password is incorrect - "{0}"</source>
-        <target state="translated">証明書パスワードが正しくありません - "{0}"</target>
+        <target state="new">Cert password is incorrect - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidPath">
         <source>File not found - "{0}"</source>
-        <target state="translated">ファイルが見つかりません - "{0}"</target>
+        <target state="new">File not found - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidProcessor">
         <source>Unknown processor type "{0}".  Supported processor types are:</source>
-        <target state="translated">プロセッサの種類 "{0}" が不明です。  サポートされるプロセッサの種類は、次のとおりです:</target>
+        <target state="new">Unknown processor type "{0}".  Supported processor types are:</target>
         <note>Will be followed by a list of processor types, after a newline is added at run-time</note>
       </trans-unit>
       <trans-unit id="InvalidRequiredUpdate">
         <source>The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-RequiredUpdate オプションは、"true"、"false"、"t"、"f" のいずれかでなければなりません - "{0}"</target>
+        <target state="new">The -RequiredUpdate option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidSigningPlatform">
         <source>Signing is only supported on Windows.</source>
-        <target state="translated">署名は Windows でのみサポートされます。</target>
+        <target state="new">Signing is only supported on Windows.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTimestamp">
         <source>The timestamp URI specified is not valid.</source>
-        <target state="translated">指定されたタイムスタンプ URI は無効です。</target>
+        <target state="new">The timestamp URI specified is not valid.</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</source>
-        <target state="translated">無効な信頼レベルです。信頼レベルは、"LocalIntranet"、"Internet"、"FullTrust" のいずれかでなければなりません - "{0}"</target>
+        <target state="new">Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidTrustURLParameters">
@@ -669,167 +669,167 @@ Options:
       </trans-unit>
       <trans-unit id="InvalidUrl">
         <source>The URL is not of the proper format - "{0}"</source>
-        <target state="translated">URL が正しい形式ではありません - "{0}"</target>
+        <target state="new">The URL is not of the proper format - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUseManifestForTrust">
         <source>The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</source>
-        <target state="translated">-UseManifestForTrust オプションは、"true"、"false"、"t"、"f" のいずれかでなければなりません - "{0}"</target>
+        <target state="new">The -UseManifestForTrust option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidVersion">
         <source>Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</source>
-        <target state="translated">バージョンは、X.X.X.X の形式 (たとえば、1.0.0.0) でなければなりません - "{0}"</target>
+        <target state="new">Version must be of format X.X.X.X (ex 1.0.0.0) - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="LauncherSuccessfullyAdded">
         <source>Launcher successfully added.</source>
-        <target state="translated">Launcher が正常に追加されました。</target>
+        <target state="new">Launcher successfully added.</target>
         <note />
       </trans-unit>
       <trans-unit id="LockedFile">
         <source>Not including locked file {0}</source>
-        <target state="translated">ロックされたファイル {0} を含んでいません</target>
+        <target state="new">Not including locked file {0}</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingAddLauncherOption">
         <source>Missing {0} option, it is required with AddLauncher command.</source>
-        <target state="translated">{0} オプションがありません。AddLauncher コマンドに必要です。</target>
+        <target state="new">Missing {0} option, it is required with AddLauncher command.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingArgument">
         <source>Missing value following the "{0}" option</source>
-        <target state="translated">"{0}" オプションに続く値が見つかりません</target>
+        <target state="new">Missing value following the "{0}" option</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingBinaryToLaunch">
         <source>Binary to launch cannot be empty.</source>
-        <target state="translated">起動するバイナリを空にすることはできません。</target>
+        <target state="new">Binary to launch cannot be empty.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingCspOrContainer">
         <source>This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</source>
-        <target state="translated">この証明書には秘密キー - "{0}" が含まれていません。これが公開キー証明書である場合には、有効な暗号化サービス プロバイダーとキー コンテナーの名前を指定してください</target>
+        <target state="new">This certificate does not contain a private key - "{0}", if this is a public key certificate, please provide valid cryptographic service provider and key container names</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingDeploymentProviderUrl">
         <source>The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</source>
-        <target state="translated">IncludeProviderURL オプションが true に設定されていますが、配置プロバイダー URL が指定されていません。</target>
+        <target state="new">The IncludeProviderURL option is set to true, but no deployment provider Url is provided.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingLauncherTemplate">
         <source>Launcher template "{0}" does not exist.</source>
-        <target state="translated">Launcher テンプレート "{0}" が存在しません。</target>
+        <target state="new">Launcher template "{0}" does not exist.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingPassword">
         <source>Missing Password option, this is required when using the CertFile option.</source>
-        <target state="translated">Password オプションが指定されていません。CertFile オプションを使用するときには、このオプションは必須です。</target>
+        <target state="new">Missing Password option, this is required when using the CertFile option.</target>
         <note />
       </trans-unit>
       <trans-unit id="MissingUseApplicationManifestForTrustInfo">
         <source>When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</source>
-        <target state="translated">アプリケーション マニフェストを生成または更新する場合、{0} オプションは UseManifestForTrust オプションが true のときにのみ使用できます。</target>
+        <target state="new">When generating or updating an application manifest, the {0} option can only be used when the UseManifestForTrust option is set to true.</target>
         <note />
       </trans-unit>
       <trans-unit id="MultipleKeys">
         <source>Only one type of signing method may be specified.</source>
-        <target state="translated">指定できる署名方法は 1 種類だけです。</target>
+        <target state="new">Only one type of signing method may be specified.</target>
         <note />
       </trans-unit>
       <trans-unit id="NewLicense">
         <source>New License</source>
-        <target state="translated">新しいライセンス</target>
+        <target state="new">New License</target>
         <note />
       </trans-unit>
       <trans-unit id="NoKeySpecified">
         <source>The -Sign command requires one of -CertFile, or -CertHash.</source>
-        <target state="translated">-Sign コマンドには、-CertFile の 1 つ、または -CertHash が必要です。</target>
+        <target state="new">The -Sign command requires one of -CertFile, or -CertHash.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoOutputFileSpecified">
         <source>No output file was specified.  Please use -ToFile &lt;filename&gt;.</source>
-        <target state="translated">出力ファイルが指定されていません。  -ToFile &lt;ファイル名&gt; を使用してください。</target>
+        <target state="new">No output file was specified.  Please use -ToFile &lt;filename&gt;.</target>
         <note />
       </trans-unit>
       <trans-unit id="NoVerb">
         <source>The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</source>
-        <target state="translated">最初の引数は、-New、-Update、-Sign、-Verify、-AddLauncher のいずれかでなければなりません</target>
+        <target state="new">The first argument must be one of the following: -New, -Update, -Sign, -Verify, -AddLauncher</target>
         <note>"-New, -Update, -Sign, -Verify, -AddLauncher" are command names and should not be translated</note>
       </trans-unit>
       <trans-unit id="NotAllowedCleanCache">
         <source>ClearApplicationCache should not be used with any other switch.</source>
-        <target state="translated">ClearApplicationCache は、他のスイッチと共に使用できません。</target>
+        <target state="new">ClearApplicationCache should not be used with any other switch.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSomeErrorsEncountered">
         <source>However, some errors were encountered.</source>
-        <target state="translated">しかし、いくつかのエラーが見つかりました。</target>
+        <target state="new">However, some errors were encountered.</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyCreated">
         <source>successfully created</source>
-        <target state="translated">正常に作成されました</target>
+        <target state="new">successfully created</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullySigned">
         <source>successfully signed</source>
-        <target state="translated">正常に署名されました</target>
+        <target state="new">successfully signed</target>
         <note />
       </trans-unit>
       <trans-unit id="ResultSuccessfullyUpdated">
         <source>successfully updated</source>
-        <target state="translated">正常に更新されました</target>
+        <target state="new">successfully updated</target>
         <note />
       </trans-unit>
       <trans-unit id="SecurityMessage">
         <source>Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</source>
-        <target state="translated">Mage には、実行に必要なセキュリティ アクセス許可がありません。  mage がネットワーク共有や Web サイトなどの信頼されていないソースから実行されていないことを確認してください。</target>
+        <target state="new">Mage does not have the security permissions necessary to run.  Ensure that mage is not running from an untrusted source such as a network share or web site.</target>
         <note />
       </trans-unit>
       <trans-unit id="SignatureValidatedSuccessfully">
         <source>Manifest has a valid signature.</source>
-        <target state="translated">マニフェストに有効な署名が含まれています。</target>
+        <target state="new">Manifest has a valid signature.</target>
         <note />
       </trans-unit>
       <trans-unit id="TooManyKeysSpecified">
         <source>Only one of -KeyFile, -CertFile, or -CertHash can be used.</source>
-        <target state="translated">-KeyFile、-CertFile、または -CertHash のいずれか 1 つのみ使用できます。</target>
+        <target state="new">Only one of -KeyFile, -CertFile, or -CertHash can be used.</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLevelsNotSupportedOnNETCore">
         <source>Setting trust level is not supported on .NET Core</source>
-        <target state="translated">.NET Core では信頼レベルの設定はサポートされていません</target>
+        <target state="new">Setting trust level is not supported on .NET Core</target>
         <note />
       </trans-unit>
       <trans-unit id="TrustLicenseNotSigned">
         <source>Trust license is not signed - "{0}"</source>
-        <target state="translated">信頼ライセンスは署名されていません - "{0}"</target>
+        <target state="new">Trust license is not signed - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToOpenCertificate">
         <source>Unable to open certificate "{0}":</source>
-        <target state="translated">証明書 "{0}" を開けません:</target>
+        <target state="new">Unable to open certificate "{0}":</target>
         <note />
       </trans-unit>
       <trans-unit id="UnableToStartGUI">
         <source>Unable to locate Mage UI - "{0}"</source>
-        <target state="translated">Mage UI が見つかりません - "{0}"</target>
+        <target state="new">Unable to locate Mage UI - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="UnrecognizedParameter">
         <source>Parameter not recognized - "{0}"</source>
-        <target state="translated">認識されないパラメーターです - "{0}"</target>
+        <target state="new">Parameter not recognized - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="VerifyIsExclusive">
         <source>'verify' command can't be combined with any other command.</source>
-        <target state="translated">'verify' コマンドは他のコマンドと併用できません。</target>
+        <target state="new">'verify' command can't be combined with any other command.</target>
         <note />
       </trans-unit>
       <trans-unit id="WarningMessage">
         <source>Warning</source>
-        <target state="translated">警告</target>
+        <target state="new">Warning</target>
         <note />
       </trans-unit>
     </body>
