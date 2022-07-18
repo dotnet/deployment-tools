@@ -116,6 +116,7 @@ Options
   -TimeStampUri &lt;uri&gt;               -ti
   -ToFile	&lt;file_name&gt;	    -t
   -TrustLevel &lt;level&gt;	            -tr
+  -TrustURLParameters &lt;true|false&gt;  -tu
   -UseManifestForTrust &lt;true|false&gt; -um
   -Version &lt;version&gt;	            -v
 
@@ -328,6 +329,9 @@ Options:
       Example:
         -TrustLevel FullTrust
 
+  -TrustURLParameters &lt;true|false&gt;  -tu
+      Specifies if URL parameters will be trusted and passed to the application.
+            
   -UseManifestForTrust &lt;true|false&gt; -um
       Specifies if the application manifest will be used for certification and
       branding information.
@@ -642,6 +646,11 @@ Options:
       <trans-unit id="InvalidTrustLevel">
         <source>Invalid trust level, must be either "LocalIntranet", "Internet", or "FullTrust" - "{0}".</source>
         <target state="needs-review-translation">無効な信頼レベルです。信頼レベルは、"LocalIntranet"、"Internet"、"FullTrust" のいずれかでなければなりません - "{0}"</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="InvalidTrustURLParameters">
+        <source>The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</source>
+        <target state="new">The -TrustURLParameters option must be "true", "false", "t", or "f" - "{0}"</target>
         <note />
       </trans-unit>
       <trans-unit id="InvalidUrl">

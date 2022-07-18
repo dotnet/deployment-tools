@@ -127,21 +127,13 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="includeDeploymentProviderUrl"></param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
+        /// <param name="trustUrlParameters">Specifies if URL parameters should be trusted</param>
         /// <returns>DeploymentManifest object</returns>
-        public static DeployManifest GenerateDeploymentManifest(
-            string deploymentManifestPath,
-            string appName, 
-            Version version, 
-            Processors processor,
-            ApplicationManifest applicationManifest, 
-            string applicationManifestPath, 
-            string appCodeBase,
-            string appProviderUrl, 
-            string minVersion, 
-            TriStateBool install, 
-            TriStateBool includeDeploymentProviderUrl,
-            string publisherName, 
-            string supportUrl)
+        public static DeployManifest GenerateDeploymentManifest(string deploymentManifestPath,
+            string appName, Version version, Processors processor,
+            ApplicationManifest applicationManifest, string applicationManifestPath, string appCodeBase,
+            string appProviderUrl, string minVersion, TriStateBool install, TriStateBool includeDeploymentProviderUrl,
+            string publisherName, string supportUrl, TriStateBool trustUrlParameters)
         {
             /*
               Mage running on Core cannot obtain .NET FX version for targeting.
@@ -191,21 +183,9 @@ namespace Microsoft.Deployment.MageCLI
                 appProviderUrl = "";
             }
 
-            UpdateDeploymentManifest(
-                manifest, 
-                deploymentManifestPath, 
-                appName, 
-                version, 
-                processor,
-                applicationManifest, 
-                applicationManifestPath, 
-                appCodeBase,
-                appProviderUrl, 
-                minVersion, 
-                install, 
-                includeDeploymentProviderUrl, 
-                publisherName, 
-                supportUrl);
+            UpdateDeploymentManifest(manifest, deploymentManifestPath, appName, version, processor,
+                applicationManifest, applicationManifestPath, appCodeBase,
+                appProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, trustUrlParameters);
 
             return manifest;
         }
@@ -364,21 +344,15 @@ namespace Microsoft.Deployment.MageCLI
         /// <param name="includeDeploymentProviderUrl"></param>
         /// <param name="publisherName">Publisher name</param>
         /// <param name="supportUrl">Support URL</param>
-        public static void UpdateDeploymentManifest(
-            DeployManifest manifest, 
-            string deploymentManifestPath,
-            string appName, 
-            Version version, 
-            Processors processor,
-            ApplicationManifest applicationManifest, 
-            string applicationManifestPath,
-            string appCodeBase, 
-            string appProviderUrl,
-             string minVersion,
+        /// <param name="trustUrlParameters">Specifies if URL parameters should be trusted</param>
+        public static void UpdateDeploymentManifest(DeployManifest manifest, string deploymentManifestPath,
+            string appName, Version version, Processors processor,
+            ApplicationManifest applicationManifest, string applicationManifestPath,
+            string appCodeBase, string appProviderUrl, string minVersion,
             TriStateBool install,
             TriStateBool includeDeploymentProviderUrl,
-            string publisherName, 
-            string supportUrl)
+            string publisherName, string supportUrl,
+            TriStateBool trustUrlParameters)
         {
             if (install != TriStateBool.Undefined)
             {
@@ -484,6 +458,11 @@ namespace Microsoft.Deployment.MageCLI
             if (appCodeBase != null)
             {
                 SetApplicationCodeBase(manifest, appCodeBase);
+            }
+
+            if (trustUrlParameters == TriStateBool.True)
+            {
+                manifest.TrustUrlParameters = true;
             }
         }
 

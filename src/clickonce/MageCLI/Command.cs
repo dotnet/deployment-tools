@@ -141,6 +141,9 @@ namespace Microsoft.Deployment.MageCLI
         [CommandLineArgument(LongName = "CryptoProvider", ShortName = "csp")]
         public string cryptoProviderName = null;
 
+        [CommandLineArgument(LongName = "TrustURLParameters", ShortName = "tu")]
+        public string trustUrlParametersString = null;
+
         [CommandLineArgument(LongName = "UseManifestForTrust", ShortName = "um")]
         public string useApplicationManifestForTrustInfoString = null;
 
@@ -192,6 +195,11 @@ namespace Microsoft.Deployment.MageCLI
         /// UseManifestForTrust, in boolean form, parsed from the useApplicationManifestForTrustInfoString member
         /// </summary>
         private TriStateBool useApplicationManifestForTrustInfo = TriStateBool.Undefined;
+
+        /// <summary>
+        /// TrustURLParameters, in boolean form, parsed from the trustUrlParametersString member
+        /// </summary>
+        private TriStateBool trustUrlParameters = TriStateBool.Undefined;
 
         /// <summary>
         /// This object is cached between CanExecute(), where it is opened and
@@ -761,6 +769,28 @@ namespace Microsoft.Deployment.MageCLI
                 }
             }
 
+            // Validate the TrustUrlParameters option, if given
+            if (trustUrlParametersString != null)
+            {
+                switch (trustUrlParametersString.ToLower(CultureInfo.InvariantCulture))
+                {
+                    case "true":
+                    case "t":
+                        trustUrlParameters = TriStateBool.True;
+                        break;
+
+                    case "false":
+                    case "f":
+                        trustUrlParameters = TriStateBool.False;
+                        break;
+
+                    default:
+                        result = false;
+                        Application.PrintErrorMessage(ErrorMessages.InvalidTrustURLParameters, trustUrlParametersString);
+                        break;
+                }
+            }
+
             if ((Requested(Operations.GenerateApplicationManifest) || Requested(Operations.UpdateApplicationManifest)) &&
                 useApplicationManifestForTrustInfo != TriStateBool.True)
             {
@@ -828,7 +858,8 @@ namespace Microsoft.Deployment.MageCLI
                 errors += CheckForFileTypeSpecificOption("Deployment", "AppProviderUrl", applicationProviderUrl);
                 errors += CheckForFileTypeSpecificOption("Deployment", "RequiredUpdate", isRequiredUpdateString);
                 errors += CheckForFileTypeSpecificOption("Deployment", "Install", installString);
-                errors += CheckForFileTypeSpecificOption("Deployment", "IncludeProviderURL", includeDeploymentProviderUrlString);
+                errors += CheckForFileTypeSpecificOption("Deployment", "IncludeProviderUrl", includeDeploymentProviderUrlString);
+                errors += CheckForFileTypeSpecificOption("Deployment", "TrustUrlParameters", trustUrlParametersString);
             }
 
             if (Requested(Operations.GenerateDeploymentManifest) ||
@@ -870,6 +901,7 @@ namespace Microsoft.Deployment.MageCLI
                 errors += CheckForInvalidNonManifestOption("RequiredUpdate", isRequiredUpdateString);
                 errors += CheckForInvalidNonManifestOption("IncludeProviderURL", includeDeploymentProviderUrlString);
                 errors += CheckForInvalidNonManifestOption("UseManifestForTrust", useApplicationManifestForTrustInfoString);
+                errors += CheckForInvalidNonManifestOption("TrustUrlParameters", trustUrlParametersString);
                 errors += CheckForInvalidNonManifestOption("IconFile", iconFile);
             }
 
@@ -1281,7 +1313,8 @@ namespace Microsoft.Deployment.MageCLI
             else if (Requested(Operations.GenerateDeploymentManifest))
             {
                 applicationName += ".app";
-                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl);
+
+                manifest = Mage.GenerateDeploymentManifest(outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, trustUrlParameters);
             }
 
             // Update operations
@@ -1292,7 +1325,8 @@ namespace Microsoft.Deployment.MageCLI
             }
             else if (Requested(Operations.UpdateDeploymentManifest))
             {
-                Mage.UpdateDeploymentManifest(cachedDepManifest, outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl);
+                Mage.UpdateDeploymentManifest(cachedDepManifest, outputPath, applicationName, applicationVersion, processor, cachedAppManifest, applicationManifestPath, applicationCodeBase, applicationProviderUrl, minVersion, install, includeDeploymentProviderUrl, publisherName, supportUrl, trustUrlParameters);
+
                 manifest = cachedDepManifest;
             }
 

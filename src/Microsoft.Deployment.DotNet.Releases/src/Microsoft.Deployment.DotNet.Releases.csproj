@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PreReleaseVersionLabel>preview4</PreReleaseVersionLabel>
+    <PreReleaseVersionLabel>preview5</PreReleaseVersionLabel>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -27,6 +27,10 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
+    
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
