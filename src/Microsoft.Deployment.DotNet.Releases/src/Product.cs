@@ -7,10 +7,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
@@ -25,7 +24,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The version of the product, e.g "5.0" or "1.1".
         /// </summary>
-        [JsonProperty(PropertyName = "channel-version")]
+        [JsonPropertyName("channel-version")]
+        [JsonInclude]
         public string ProductVersion
         {
             get;
@@ -36,7 +36,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// The end-of-life (EOL) date for this <see cref="Product"/> when it is considered to be out of support. The value 
         /// may be <see langword="null" /> if the EOL date is undetermined, e.g. when a product is still a prerelease.
         /// </summary>
-        [JsonProperty(PropertyName = "eol-date")]
+        [JsonPropertyName("eol-date")]
+        [JsonInclude]
         public DateTime? EndOfLifeDate
         {
             get;
@@ -47,7 +48,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <see langword="True"/> if the latest release of the product contained a security update;
         /// <see langword="false"/> otherwise.
         /// </summary>
-        [JsonProperty(PropertyName = "security")]
+        [JsonPropertyName("security")]
+        [JsonInclude]
         public bool LatestReleaseIncludesSecurityUpdate
         {
             get;
@@ -57,7 +59,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The date of the latest release for this product.
         /// </summary>
-        [JsonProperty(PropertyName = "latest-release-date")]
+        [JsonPropertyName("latest-release-date")]
+        [JsonInclude]
         public DateTime LatestReleaseDate
         {
             get;
@@ -67,7 +70,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The version of the latest release.
         /// </summary>
-        [JsonProperty(PropertyName = "latest-release")]
+        [JsonPropertyName("latest-release")]
+        [JsonInclude]
+        [JsonConverter(typeof(ReleaseVersionConverter))]
         public ReleaseVersion LatestReleaseVersion
         {
             get;
@@ -77,7 +82,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The version of the runtime included in the latest release.
         /// </summary>
-        [JsonProperty(PropertyName = "latest-runtime")]
+        [JsonPropertyName("latest-runtime")]
+        [JsonInclude]
+        [JsonConverter(typeof(ReleaseVersionConverter))]
         public ReleaseVersion LatestRuntimeVersion
         {
             get;
@@ -91,7 +98,9 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// This is usually the SDK with the highest feature band. A <see cref="ProductRelease"/>
         /// may include multiple SDKs across different feature bands, all of which carry the same runtime version.
         /// </remarks>
-        [JsonProperty(PropertyName = "latest-sdk")]
+        [JsonPropertyName("latest-sdk")]
+        [JsonInclude]
+        [JsonConverter(typeof(ReleaseVersionConverter))]
         public ReleaseVersion LatestSdkVersion
         {
             get;
@@ -101,7 +110,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The name of the product.
         /// </summary>
-        [JsonProperty(PropertyName = "product")]
+        [JsonPropertyName("product")]
+        [JsonInclude]
         public string ProductName
         {
             get;
@@ -112,7 +122,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// The URL pointing to the releases.json file that contains information about all the releases 
         /// associated with this <see cref="Product"/>.
         /// </summary>
-        [JsonProperty(PropertyName = "releases.json")]
+        [JsonPropertyName("releases.json")]
+        [JsonInclude]
         public Uri ReleasesJson
         {
             get;
@@ -127,7 +138,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// The EOL dates are often published in advance, but there can be delays to updating the support phase in the published
         /// data.
         /// </remarks>
-        [JsonProperty(PropertyName = "support-phase")]
+        [JsonPropertyName("support-phase")]
+        [JsonInclude]
         public SupportPhase SupportPhase
         {
             get;
@@ -217,13 +229,14 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var json = JObject.Parse(await reader.ReadToEndAsync());
-            JToken releasesToken = json["releases"];
+            using var releasesDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
+            var root = releasesDocument.RootElement;
             var releases = new List<ProductRelease>();
+            var enumerator = root.GetProperty("releases").EnumerateArray();
 
-            foreach (JToken releaseToken in releasesToken)
+            while (enumerator.MoveNext())
             {
-                releases.Add(new ProductRelease(releaseToken, product));
+                releases.Add(new ProductRelease(enumerator.Current, product));
             }
 
             return new ReadOnlyCollection<ProductRelease>(releases);

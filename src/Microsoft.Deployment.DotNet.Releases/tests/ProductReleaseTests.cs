@@ -47,7 +47,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public async Task ItCanCreateASingleRelease()
         {
-            var releases = await Product.GetReleasesAsync(@"data\5.0\releases.json");
+            var releases = await Product.GetReleasesAsync(@"data\5.0\releases.json").ConfigureAwait(false);
 
             Assert.Equal(new ReleaseVersion("5.0.0-preview.7"), releases[0].Version);
             Assert.Null(releases[0].Product);

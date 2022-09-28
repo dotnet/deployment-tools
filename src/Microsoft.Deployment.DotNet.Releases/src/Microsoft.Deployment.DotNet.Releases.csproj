@@ -10,7 +10,7 @@
     <IsPackable Condition="'$(TargetArchitecture)' == 'x86' OR '$(DotNetBuildFromSource)' == 'true'">true</IsPackable>
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <RootNamespace>Microsoft.Deployment.DotNet.Releases</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -26,13 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
-    
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Text.Json" Version="$(SystemTextJsonVersion)" />    
   </ItemGroup>
 
   <ItemGroup>
