@@ -43,7 +43,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         internal AspNetCoreReleaseComponent(JsonElement element, ProductRelease release) : base(element, release)
         {
             AspNetCoreModuleVersions = element.TryGetProperty("version-aspnetcoremodule", out JsonElement ancmVersionValue) && ancmVersionValue.ValueKind != JsonValueKind.Null ?
-                new ReadOnlyCollection<Version>(JsonSerializer.Deserialize<Version[]>(ancmVersionValue)) : new ReadOnlyCollection<Version>(new List<Version>());
+                new ReadOnlyCollection<Version>(JsonSerializer.Deserialize<Version[]>(ancmVersionValue, SerializerOptions.Default)) : new ReadOnlyCollection<Version>(new List<Version>());
             VisualStudioVersion = element.GetStringOrDefault("vs-version");
         }
     }
