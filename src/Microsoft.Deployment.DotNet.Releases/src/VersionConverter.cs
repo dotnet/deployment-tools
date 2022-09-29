@@ -8,17 +8,17 @@ using System.Text.Json.Serialization;
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// A <see cref="JsonConverter"/> for a <see cref="ReleaseVersion"/> object.
+    /// Fault tolerant version converter that trims out leading and trailing white-space before parsing version numbers.
     /// </summary>
-    internal class ReleaseVersionConverter : JsonConverter<ReleaseVersion>
+    internal class VersionConverter : JsonConverter<Version>
     {
         /// <inheritdoc />
-        public override void Write(Utf8JsonWriter writer, ReleaseVersion value, JsonSerializerOptions options) =>
+        public override void Write(Utf8JsonWriter writer, Version value, JsonSerializerOptions options) =>
             writer.WriteStringValue(value.ToString());
 
         /// <inheritdoc />
-        public override ReleaseVersion Read(
+        public override Version Read(
             ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-            ReleaseVersion.Parse(reader.GetString());
+            Version.Parse(reader.GetString().Trim());
     }
 }

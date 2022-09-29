@@ -7,9 +7,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
@@ -21,10 +20,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The default URL of the releases index file.
         /// </summary>
-        public static Uri ReleasesIndexDefaultUrl
-        {
-            get;
-        } = new Uri("https://dotnetcli.azureedge.net/dotnet/release-metadata/releases-index.json");
+        public static readonly Uri ReleasesIndexDefaultUrl = new Uri("https://dotnetcli.azureedge.net/dotnet/release-metadata/releases-index.json");
 
         /// <summary>
         /// Creates a new <see cref="ProductCollection"/> instance.
@@ -108,7 +104,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesIndexDefaultUrl);
 
             using TextReader reader = File.OpenText(path);
-            
+
             return await GetAsync(reader);
         }
 
@@ -119,12 +115,9 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            var json = JObject.Parse(await reader.ReadToEndAsync());
-            JToken releasesIndex = json["releases-index"];
-
-            return new ProductCollection(
-                JsonConvert.DeserializeObject<List<Product>>(releasesIndex.ToString(),
-                    Utils.DefaultSerializerSettings));
+            using var releasesIndexDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
+            var root = releasesIndexDocument.RootElement.GetProperty("releases-index");
+            return new ProductCollection(root.Deserialize<List<Product>>(SerializerOptions.Default));
         }
     }
 }

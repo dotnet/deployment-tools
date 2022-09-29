@@ -6,31 +6,14 @@ using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// Utitlity and help methods.
+    /// Utility and helper methods.
     /// </summary>
     internal class Utils
     {
-        /// <summary>
-        /// Gets the default <see cref="JsonSerializerSettings"/> to use.
-        /// </summary>
-        internal static JsonSerializerSettings DefaultSerializerSettings
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the default <see cref="JsonSerializer"/> to use.
-        /// </summary>
-        internal static JsonSerializer DefaultSerializer
-        {
-            get;
-        }
-
         /// <summary>
         /// Determines if a local file is the latest version compared to an online copy.
         /// </summary>
@@ -79,8 +62,8 @@ namespace Microsoft.Deployment.DotNet.Releases
                 HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
                 httpResponse.EnsureSuccessStatusCode();
 
-                using var fileStream = File.Create(fileName);
-                await httpResponse.Content.CopyToAsync(fileStream);
+                using FileStream stream = File.Create(fileName);
+                await httpResponse.Content.CopyToAsync(stream);
             }
         }
 
@@ -115,7 +98,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, fileName));
             }
 
-            using var stream = File.OpenRead(fileName);
+            using FileStream stream = File.OpenRead(fileName);
             byte[] checksum = hashAlgorithm.ComputeHash(stream);
 
             return BitConverter.ToString(checksum).Replace("-", "").ToLowerInvariant();
@@ -160,21 +143,6 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 await DownloadFileAsync(address, path);
             }
-        }
-
-        static Utils()
-        {
-            DefaultSerializerSettings = new JsonSerializerSettings
-            {
-                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                NullValueHandling = NullValueHandling.Ignore,
-                Converters =
-                {
-                    new ReleaseVersionConverter()
-                }
-            };
-
-            DefaultSerializer = JsonSerializer.CreateDefault(DefaultSerializerSettings);
         }
     }
 }

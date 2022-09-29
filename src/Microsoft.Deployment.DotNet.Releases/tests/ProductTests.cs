@@ -8,22 +8,22 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 {
     public class ProductsTests : TestBase
     {
-        private static readonly string ProductWithEolSupportPhaseJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
+        private const string s_productWithEolSupportPhaseJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
 ""security"": true, ""latest-runtime"": ""2.2.8"", ""latest-sdk"": ""2.2.207"", ""product"": "".NET Core"", ""support-phase"": ""eol"",
 ""eol-date"": ""2019-12-23"", ""releases.json"": ""https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/2.2/releases.json""}";
 
-        private static readonly string ProductWithEolDateJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
+        private const string s_productWithEolDateJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
 ""security"": true, ""latest-runtime"": ""2.2.8"", ""latest-sdk"": ""2.2.207"", ""product"": "".NET Core"", ""support-phase"": ""current"",
 ""eol-date"": ""2019-12-23"", ""releases.json"": ""https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/2.2/releases.json""}";
 
-        private static readonly string ProductWithNullEolDateJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
+        private const string s_productWithNullEolDateJson = @"{""channel-version"": ""2.2"", ""latest-release"": ""2.2.8"", ""latest-release-date"": ""2019-11-19"",
 ""security"": true, ""latest-runtime"": ""2.2.8"", ""latest-sdk"": ""2.2.207"", ""product"": "".NET Core"", ""support-phase"": ""current"",
 ""eol-date"": null, ""releases.json"": ""https://dotnetcli.blob.core.windows.net/dotnet/release-metadata/2.2/releases.json""}";
 
         [Fact]
         public void IsOutOfSupportChecksEolDateIfSupportPhaseIsNotEol()
         {
-            var product = CreateProduct(ProductWithEolDateJson);
+            Product product = CreateProduct(s_productWithEolDateJson);
 
             Assert.True(product.IsOutOfSupport());
         }
@@ -31,7 +31,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void IsOutOfSupportChecksSupportPhaseFirst()
         {
-            var product = CreateProduct(ProductWithEolSupportPhaseJson);
+            Product product = CreateProduct(s_productWithEolSupportPhaseJson);
 
             Assert.True(product.IsOutOfSupport());
         }
@@ -39,7 +39,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Fact]
         public void IsOutOfSupportReturnsFalseIfEolDateIsNull()
         {
-            var product = CreateProduct(ProductWithNullEolDateJson);
+            Product product = CreateProduct(s_productWithNullEolDateJson);
 
             Assert.False(product.IsOutOfSupport());
         }
