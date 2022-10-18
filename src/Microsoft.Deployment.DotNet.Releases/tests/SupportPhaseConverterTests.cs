@@ -20,7 +20,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Theory]
         [InlineData("eoL", SupportPhase.EOL)]
         [InlineData("LTS", SupportPhase.LTS)]
-        [InlineData("current", SupportPhase.Current)]
+        [InlineData("standard", SupportPhase.Standard)]
         [InlineData("rC", SupportPhase.RC)]
         public void ItIsCaseInsenitive(string supportPhaseValue, SupportPhase expectedSupportPhase)
         {
@@ -33,6 +33,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [Theory]
         [InlineData("X63")]
         [InlineData("")]
+        [InlineData(null)]
+        [InlineData("current")]
         public void ItReturnsUnknownIfParsingFails(string supportPhaseValue)
         {
             var json = $@"{{""SupportPhase"":""{supportPhaseValue}""}}";

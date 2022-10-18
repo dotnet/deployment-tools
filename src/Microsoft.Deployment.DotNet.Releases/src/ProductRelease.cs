@@ -68,7 +68,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The <see cref="Product"/> to which this <see cref="ProductRelease"/> belongs.
         /// </summary>
-
         public Product Product
         {
             get;

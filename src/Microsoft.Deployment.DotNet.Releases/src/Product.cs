@@ -131,7 +131,19 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The support phase of the Product. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
+        /// A value indicating the release type of the product, for example, standard or LTS. The release type determines the support
+        /// duration of the product.
+        /// </summary>
+        [JsonPropertyName("release-type")]
+        [JsonInclude]
+        public SupportPhase ReleaseType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The current support phase of this <see cref="Product"/>. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
         /// be checked to confirm whether a release is still supported.
         /// </summary>
         /// <remarks>
