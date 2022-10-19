@@ -5,46 +5,39 @@ namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
     /// An enumeration describing the different support phases of a <see cref="Product"/>.
+    /// See the <see href="https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core">support lifecycle</see>
+    /// documentation for further details.
     /// </summary>
     public enum SupportPhase
     {
+        /// <summary>
+        /// The product is in active support and will continue to receive servicing and security updates.
+        /// </summary>
+        Active,
+
         /// <summary>
         /// The product is considered end-of-life and will not receive any updates.
         /// </summary>
         EOL,
 
         /// <summary>
-        /// The product is in long term support and will continue to receive updates.
-        /// See the <see href="https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core">support lifecycle</see>
-        /// document for details on how this value impacts the support duration.
-        /// </summary>
-        LTS,
-
-        /// <summary>
-        /// The product is no longer in active support and will be declared end-of-life (see <see cref="Product.EndOfLifeDate"/>).
+        /// The product is no longer in active support and will be declared <see cref="Product.EndOfLifeDate">end-of-life</see>.
         /// Only security fixes are provided until the product reaches end-of-life status.
         /// </summary>
         Maintenance,
 
         /// <summary>
-        /// The product is a preview release.
+        /// The product is a preview release and is unsupported.
         /// </summary>
         Preview,
 
         /// <summary>
-        /// The support phase designates a release candidate.
+        /// The support phase designates a release candidate with a go-live license that is supported in production.
         /// </summary>
         RC,
 
         /// <summary>
-        /// The product is in support and will continue to receive updates. See 
-        /// the <see href="https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core">support lifecycle</see>
-        /// document for details on how this value impacts the support duration.
-        /// </summary>
-        Standard,
-
-        /// <summary>
-        /// The support phase is unrecognized.
+        /// The support phase is unknown and could not be parsed.
         /// </summary>
         Unknown = 99
     }

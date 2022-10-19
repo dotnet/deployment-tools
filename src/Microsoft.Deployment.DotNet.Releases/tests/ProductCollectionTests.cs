@@ -21,7 +21,6 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.Equal(4, supportPhases.Count());
             Assert.Contains(SupportPhase.RC, supportPhases);
             Assert.Contains(SupportPhase.EOL, supportPhases);
-            Assert.Contains(SupportPhase.LTS, supportPhases);
             Assert.Contains(SupportPhase.Maintenance, supportPhases);
         }
 

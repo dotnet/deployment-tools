@@ -19,8 +19,8 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 
         [Theory]
         [InlineData("eoL", SupportPhase.EOL)]
-        [InlineData("LTS", SupportPhase.LTS)]
-        [InlineData("standard", SupportPhase.Standard)]
+        [InlineData("Active", SupportPhase.Active)]
+        [InlineData("MAINTENANCE", SupportPhase.Maintenance)]
         [InlineData("rC", SupportPhase.RC)]
         public void ItIsCaseInsenitive(string supportPhaseValue, SupportPhase expectedSupportPhase)
         {

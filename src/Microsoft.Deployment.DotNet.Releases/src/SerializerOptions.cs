@@ -18,6 +18,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             Converters =
             {
                 new ReleaseVersionConverter(),
+                new ReleaseTypeConverter(),
                 new SupportPhaseConverter(),
                 new VersionConverter()
             }

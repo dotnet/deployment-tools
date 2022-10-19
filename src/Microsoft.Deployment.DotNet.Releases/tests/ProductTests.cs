@@ -44,14 +44,20 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.False(product.IsOutOfSupport());
         }
 
-        [Fact]
-        public void Properties()
+        [Theory]
+        [InlineData("5.0", ".NET", ReleaseType.Standard, SupportPhase.EOL, "2022-05-10", true)]
+        [InlineData("3.1", ".NET Core", ReleaseType.LTS, SupportPhase.Maintenance, "2022-10-11", true)]
+        [InlineData("2.0", ".NET Core", ReleaseType.Standard, SupportPhase.EOL, "2018-07-10", true)]
+        public void Properties(string productVersion, string expectedProductName, ReleaseType expectedReleaseType,
+            SupportPhase expectedSupportPhase, string expectedLatestReleaseDate, bool expectedSecurityUpdate)
         {
-            var product = Products.Where(p => p.ProductVersion == "3.1").FirstOrDefault();
+            var product = Products.Where(p => p.ProductVersion == productVersion).FirstOrDefault();
 
-            Assert.Equal(".NET Core", product.ProductName);
-            Assert.Equal("2022-10-11", product.LatestReleaseDate.ToString("yyyy-MM-dd"));
-            Assert.True(product.LatestReleaseIncludesSecurityUpdate);
+            Assert.Equal(expectedProductName, product.ProductName);
+            Assert.Equal(expectedReleaseType, product.ReleaseType);
+            Assert.Equal(expectedSupportPhase, product.SupportPhase);
+            Assert.Equal(expectedLatestReleaseDate, product.LatestReleaseDate.ToString("yyyy-MM-dd"));
+            Assert.Equal(expectedSecurityUpdate, product.LatestReleaseIncludesSecurityUpdate);
         }
     }
 }

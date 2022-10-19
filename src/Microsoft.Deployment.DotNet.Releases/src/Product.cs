@@ -136,7 +136,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         [JsonPropertyName("release-type")]
         [JsonInclude]
-        public SupportPhase ReleaseType
+        public ReleaseType ReleaseType
         {
             get;
             private set;
