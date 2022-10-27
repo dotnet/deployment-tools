@@ -154,17 +154,17 @@ fetch_tizen_pkgs()
 	done
 }
 
-Inform "Initialize arm base"
+Inform "Initialize i686 base"
 fetch_tizen_pkgs_init standard Tizen-Base
 Inform "fetch common packages"
-fetch_tizen_pkgs armv7hl gcc gcc-devel-static glibc glibc-devel libicu libicu-devel libatomic linux-glibc-devel keyutils keyutils-devel libkeyutils
+fetch_tizen_pkgs i686 gcc gcc-devel-static glibc glibc-devel libicu libicu-devel libatomic linux-glibc-devel keyutils keyutils-devel libkeyutils
 Inform "fetch coreclr packages"
-fetch_tizen_pkgs armv7hl lldb lldb-devel libgcc libstdc++ libstdc++-devel libunwind libunwind-devel lttng-ust-devel lttng-ust userspace-rcu-devel userspace-rcu
+fetch_tizen_pkgs i686 lldb lldb-devel libgcc libstdc++ libstdc++-devel libunwind libunwind-devel lttng-ust-devel lttng-ust userspace-rcu-devel userspace-rcu
 Inform "fetch corefx packages"
-fetch_tizen_pkgs armv7hl libcom_err libcom_err-devel zlib zlib-devel libopenssl11 libopenssl1.1-devel krb5 krb5-devel
+fetch_tizen_pkgs i686 libcom_err libcom_err-devel zlib zlib-devel libopenssl11 libopenssl1.1-devel krb5 krb5-devel
 
 Inform "Initialize standard unified"
 fetch_tizen_pkgs_init standard Tizen-Unified
 Inform "fetch corefx packages"
-fetch_tizen_pkgs armv7hl gssdp gssdp-devel tizen-release
+fetch_tizen_pkgs i686 gssdp gssdp-devel tizen-release
 
