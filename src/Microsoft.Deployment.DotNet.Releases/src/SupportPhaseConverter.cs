@@ -14,10 +14,10 @@ namespace Microsoft.Deployment.DotNet.Releases
     {
         /// <inheritdoc />
         public override SupportPhase Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
-            Enum.TryParse(reader.GetString(), ignoreCase: true, out SupportPhase result) ? result : SupportPhase.Unknown;
+            Enum.TryParse(reader.GetString().Replace("-", ""), ignoreCase: true, out SupportPhase result) ? result : SupportPhase.Unknown;
 
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, SupportPhase value, JsonSerializerOptions options) =>
-            writer.WriteStringValue($"{value}");
+            throw new NotImplementedException();
     }
 }

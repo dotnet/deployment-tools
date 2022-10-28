@@ -21,6 +21,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         EOL,
 
         /// <summary>
+        /// A preview or release candidate that is supported in production.
+        /// </summary>
+        GoLive,
+
+        /// <summary>
         /// The product is no longer in active support and will be declared <see cref="Product.EndOfLifeDate">end-of-life</see>.
         /// Only security fixes are provided until the product reaches end-of-life status.
         /// </summary>
@@ -30,11 +35,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// The product is a preview release and is unsupported.
         /// </summary>
         Preview,
-
-        /// <summary>
-        /// The support phase designates a release candidate with a go-live license that is supported in production.
-        /// </summary>
-        RC,
 
         /// <summary>
         /// The support phase is unknown and could not be parsed.

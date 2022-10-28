@@ -18,6 +18,6 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, ReleaseType value, JsonSerializerOptions options) =>
-            writer.WriteStringValue($"{value}");
+            throw new NotImplementedException();
     }
 }

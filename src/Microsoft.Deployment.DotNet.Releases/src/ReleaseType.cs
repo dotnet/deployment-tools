@@ -4,21 +4,21 @@
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
-    /// An enumeration describing different types of releases based on their support duration.
+    /// An enumeration describing different releases types based on their support duration.
     /// See the <see href="https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core">support lifecycle</see>
     /// documentation for further details.
     /// </summary>
     public enum ReleaseType
     {
         /// <summary>
-        /// The release follows the long term support timeframe (3 years).
+        /// Indicates a release is supported for the Long Term Support (LTS) timeframe (3 years).
         /// </summary>
         LTS,
 
         /// <summary>
-        /// This release follows the standard support timeframe (18 months).
+        /// Indicates a release is supported for the Standard Term Support (STS) timeframe (18 months).
         /// </summary>
-        Standard,
+        STS,
 
         /// <summary>
         /// The release type is unknown and could not be parsed.

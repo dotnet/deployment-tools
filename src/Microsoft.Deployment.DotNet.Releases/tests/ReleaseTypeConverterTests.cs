@@ -19,7 +19,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 
         [Theory]
         [InlineData("LTs", ReleaseType.LTS)]
-        [InlineData("standard", ReleaseType.Standard)]
+        [InlineData("sts", ReleaseType.STS)]
         public void ItIsCaseInsenitive(string releaseTypeValue, ReleaseType expectedReleaseType)
         {
             var json = $@"{{""ReleaseType"":""{releaseTypeValue}""}}";

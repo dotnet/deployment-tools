@@ -21,7 +21,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         [InlineData("eoL", SupportPhase.EOL)]
         [InlineData("Active", SupportPhase.Active)]
         [InlineData("MAINTENANCE", SupportPhase.Maintenance)]
-        [InlineData("rC", SupportPhase.RC)]
+        [InlineData("go-livE", SupportPhase.GoLive)]
         public void ItIsCaseInsenitive(string supportPhaseValue, SupportPhase expectedSupportPhase)
         {
             var json = $@"{{""SupportPhase"":""{supportPhaseValue}""}}";
