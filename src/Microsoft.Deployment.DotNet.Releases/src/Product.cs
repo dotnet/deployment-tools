@@ -131,7 +131,17 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The support phase of the Product. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
+        /// A value indicating the support duration of the product.
+        /// </summary>
+        [JsonPropertyName("release-type")]
+        [JsonInclude]
+        public ReleaseType ReleaseType
+        {
+            get;
+        } = ReleaseType.Unknown;
+
+        /// <summary>
+        /// The current support phase of this <see cref="Product"/>. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
         /// be checked to confirm whether a release is still supported.
         /// </summary>
         /// <remarks>
@@ -230,7 +240,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             using var releasesDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
-            var root = releasesDocument.RootElement;
+            JsonElement root = releasesDocument.RootElement;
             var releases = new List<ProductRelease>();
             var enumerator = root.GetProperty("releases").EnumerateArray();
 

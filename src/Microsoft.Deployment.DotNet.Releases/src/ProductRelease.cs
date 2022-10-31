@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Microsoft.Deployment.DotNet.Releases
 {
@@ -68,7 +69,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The <see cref="Product"/> to which this <see cref="ProductRelease"/> belongs.
         /// </summary>
-
         public Product Product
         {
             get;
