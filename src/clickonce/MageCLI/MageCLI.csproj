@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(ArtifactsBinDir)Launcher/$(Configuration)/net45/Launcher.exe" />
