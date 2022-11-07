@@ -11,7 +11,7 @@
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <RootNamespace>Microsoft.Deployment.DotNet.Releases</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <EnableXlfLocalization>true</EnableXlfLocalization>

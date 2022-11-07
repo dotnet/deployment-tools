@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -202,8 +201,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(address));
             }
 
-            using var client = new HttpClient();
-            using var stream = new MemoryStream(await client.GetByteArrayAsync(address));
+            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(address));
             using var reader = new StreamReader(stream);
 
             return await GetReleasesAsync(reader, this);
