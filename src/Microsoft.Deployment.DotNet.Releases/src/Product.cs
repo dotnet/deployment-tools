@@ -137,6 +137,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         public ReleaseType ReleaseType
         {
             get;
+            private set;
         } = ReleaseType.Unknown;
 
         /// <summary>

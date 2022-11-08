@@ -45,11 +45,13 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
         }
 
         [Theory]
-        [InlineData("5.0", ".NET", SupportPhase.EOL, "2022-05-10", true)]
-        [InlineData("3.1", ".NET Core", SupportPhase.Maintenance, "2022-10-11", true)]
-        [InlineData("2.0", ".NET Core", SupportPhase.EOL, "2018-07-10", true)]
+        [InlineData("7.0", ".NET", SupportPhase.GoLive, "2022-10-11", true, ReleaseType.STS)]
+        [InlineData("5.0", ".NET", SupportPhase.EOL, "2022-05-10", true, ReleaseType.STS)]
+        [InlineData("3.1", ".NET Core", SupportPhase.Maintenance, "2022-10-11", true, ReleaseType.LTS)]
+        [InlineData("2.0", ".NET Core", SupportPhase.EOL, "2018-07-10", true, ReleaseType.STS)]
         public void Properties(string productVersion, string expectedProductName,
-            SupportPhase expectedSupportPhase, string expectedLatestReleaseDate, bool expectedSecurityUpdate)
+            SupportPhase expectedSupportPhase, string expectedLatestReleaseDate, bool expectedSecurityUpdate,
+            ReleaseType expectedReleaseType)
         {
             Product product = Products.Where(p => p.ProductVersion == productVersion).FirstOrDefault();
 
@@ -57,6 +59,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             Assert.Equal(expectedSupportPhase, product.SupportPhase);
             Assert.Equal(expectedLatestReleaseDate, product.LatestReleaseDate.ToString("yyyy-MM-dd"));
             Assert.Equal(expectedSecurityUpdate, product.LatestReleaseIncludesSecurityUpdate);
+            Assert.Equal(expectedReleaseType, product.ReleaseType);
         }
     }
 }
