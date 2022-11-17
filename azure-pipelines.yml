@@ -60,6 +60,7 @@ stages:
       name: Windows_x64
       publishRidAgnosticPackages: true
       targetArchitecture: x64
+      codeql: true
 
   # Windows x86
   - template: /eng/jobs/windows-build.yml
