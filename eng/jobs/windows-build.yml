@@ -5,6 +5,7 @@ parameters:
   skipTests: $(SkipTests)
   targetArchitecture: null
   timeoutInMinutes: 120
+  codeql: false
 
 jobs:
   - job: ${{ parameters.name }}
@@ -38,6 +39,7 @@ jobs:
         /p:CertificateId=400
         /p:DotNetSignType=$(SignType)
       TargetArchitecture: ${{ parameters.targetArchitecture }}
+      Codeql.Enabled: ${{ parameters.codeql }}
 
     steps:
 
