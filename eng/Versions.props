@@ -6,13 +6,12 @@
     <MajorVersion>7</MajorVersion>
     <MinorVersion>0</MinorVersion>
     <PatchVersion>0</PatchVersion>
-    <PreReleaseVersionLabel>preview</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration>3</PreReleaseVersionIteration>
+    <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
     <!-- Set assembly version to align with major and minor version,
          as for the patches and revisions should be manually updated per assembly if it is serviced. -->
     <AssemblyVersion>$(MajorVersion).$(MinorVersion).0.0</AssemblyVersion>
     <!-- Enable to remove prerelease label. -->
-    <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">false</StabilizePackageVersion>
+    <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">true</StabilizePackageVersion>
     <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
     <!-- Opt-in/out repo features -->
     <UsingToolMicrosoftNetCompilers>true</UsingToolMicrosoftNetCompilers>
@@ -51,16 +50,16 @@
   </ItemGroup>
   <PropertyGroup>
     <!-- Arcade dependencies -->
-    <MicrosoftDotNetApiCompatVersion>7.0.0-beta.22124.1</MicrosoftDotNetApiCompatVersion>
-    <MicrosoftDotNetBuildTasksFeedVersion>7.0.0-beta.22124.1</MicrosoftDotNetBuildTasksFeedVersion>
-    <MicrosoftDotNetCodeAnalysisVersion>7.0.0-beta.22124.1</MicrosoftDotNetCodeAnalysisVersion>
-    <MicrosoftDotNetGenAPIVersion>7.0.0-beta.22124.1</MicrosoftDotNetGenAPIVersion>
-    <MicrosoftDotNetGenFacadesVersion>7.0.0-beta.22124.1</MicrosoftDotNetGenFacadesVersion>
-    <MicrosoftDotNetXUnitExtensionsVersion>7.0.0-beta.22124.1</MicrosoftDotNetXUnitExtensionsVersion>
-    <MicrosoftDotNetXUnitConsoleRunnerVersion>2.5.1-beta.22124.1</MicrosoftDotNetXUnitConsoleRunnerVersion>
-    <MicrosoftDotNetBuildTasksPackagingVersion>7.0.0-beta.22124.1</MicrosoftDotNetBuildTasksPackagingVersion>
-    <MicrosoftDotNetRemoteExecutorVersion>7.0.0-beta.22124.1</MicrosoftDotNetRemoteExecutorVersion>
-    <MicrosoftDotNetVersionToolsTasksVersion>7.0.0-beta.22124.1</MicrosoftDotNetVersionToolsTasksVersion>
+    <MicrosoftDotNetApiCompatVersion>7.0.0-beta.22561.2</MicrosoftDotNetApiCompatVersion>
+    <MicrosoftDotNetBuildTasksFeedVersion>7.0.0-beta.22561.2</MicrosoftDotNetBuildTasksFeedVersion>
+    <MicrosoftDotNetCodeAnalysisVersion>7.0.0-beta.22561.2</MicrosoftDotNetCodeAnalysisVersion>
+    <MicrosoftDotNetGenAPIVersion>7.0.0-beta.22561.2</MicrosoftDotNetGenAPIVersion>
+    <MicrosoftDotNetGenFacadesVersion>7.0.0-beta.22561.2</MicrosoftDotNetGenFacadesVersion>
+    <MicrosoftDotNetXUnitExtensionsVersion>7.0.0-beta.22561.2</MicrosoftDotNetXUnitExtensionsVersion>
+    <MicrosoftDotNetXUnitConsoleRunnerVersion>2.5.1-beta.22561.2</MicrosoftDotNetXUnitConsoleRunnerVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>7.0.0-beta.22561.2</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetRemoteExecutorVersion>7.0.0-beta.22561.2</MicrosoftDotNetRemoteExecutorVersion>
+    <MicrosoftDotNetVersionToolsTasksVersion>7.0.0-beta.22561.2</MicrosoftDotNetVersionToolsTasksVersion>
     <!-- Installer dependencies -->
     <MicrosoftNETCoreAppVersion>5.0.0-preview.6.20264.1</MicrosoftNETCoreAppVersion>
     <MicrosoftNETCoreDotNetHostVersion>6.0.0-rc.2.21451.6</MicrosoftNETCoreDotNetHostVersion>
