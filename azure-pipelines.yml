@@ -60,6 +60,7 @@ stages:
       name: Windows_x64
       publishRidAgnosticPackages: true
       targetArchitecture: x64
+      codeql: true
 
   # Windows x86
   - template: /eng/jobs/windows-build.yml
@@ -97,7 +98,7 @@ stages:
         dependsOn: PrepareSignedArtifacts
         pool:
           name: NetCore1ESPool-Internal
-          demands: ImageOverride -equals Build.Server.Amd64.VS2019
+          demands: ImageOverride -equals windows.vs2019.amd64
 
 # Stages-based publishing entry point
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:

@@ -19,10 +19,10 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
             IEnumerable<SupportPhase> supportPhases = products.GetSupportPhases();
 
             Assert.Equal(4, supportPhases.Count());
-            Assert.Contains(SupportPhase.Current, supportPhases);
+            Assert.Contains(SupportPhase.Active, supportPhases);
             Assert.Contains(SupportPhase.EOL, supportPhases);
-            Assert.Contains(SupportPhase.LTS, supportPhases);
-            Assert.Contains(SupportPhase.Preview, supportPhases);
+            Assert.Contains(SupportPhase.Maintenance, supportPhases);
+            Assert.Contains(SupportPhase.GoLive, supportPhases);
         }
 
         [Fact]

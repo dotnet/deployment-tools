@@ -102,8 +102,9 @@
     <RefOnlyMicrosoftBuildFrameworkVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildFrameworkVersion>
     <RefOnlyMicrosoftBuildTasksCoreVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildTasksCoreVersion>
     <RefOnlyMicrosoftBuildUtilitiesCoreVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildUtilitiesCoreVersion>
-    <RefOnlyNugetProjectModelVersion>4.9.4</RefOnlyNugetProjectModelVersion>
-    <RefOnlyNugetPackagingVersion>4.9.4</RefOnlyNugetPackagingVersion>
+    <RefOnlyNugetProtocolVersion>4.9.6</RefOnlyNugetProtocolVersion>
+    <RefOnlyNugetProjectModelVersion>4.9.6</RefOnlyNugetProjectModelVersion>
+    <RefOnlyNugetPackagingVersion>4.9.6</RefOnlyNugetPackagingVersion>
     <!-- System.Data.SqlClient -->
     <SystemDataSqlClientVersion>4.8.0</SystemDataSqlClientVersion>
     <!-- Testing -->

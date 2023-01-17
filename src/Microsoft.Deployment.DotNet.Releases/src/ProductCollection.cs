@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -79,8 +78,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(releasesIndexUrl));
             }
 
-            using var client = new HttpClient();
-            using var stream = new MemoryStream(await client.GetByteArrayAsync(releasesIndexUrl));
+            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(releasesIndexUrl));
             using var reader = new StreamReader(stream);
 
             return await GetAsync(reader);

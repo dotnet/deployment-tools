@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace Microsoft.Deployment.DotNet.Releases
     /// </summary>
     internal class Utils
     {
+        internal static readonly HttpClient s_httpClient;
+
         /// <summary>
         /// Determines if a local file is the latest version compared to an online copy.
         /// </summary>
@@ -22,10 +25,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the local file is the latest; <see langword="false"/> otherwise.</returns>
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
-            using var httpClient = new HttpClient();
-
             var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-            HttpResponseMessage httpResponse = await httpClient.SendAsync(httpRequest);
+            HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest);
 
             httpResponse.EnsureSuccessStatusCode();
 
@@ -58,8 +59,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
             else
             {
-                using var httpClient = new HttpClient();
-                HttpResponseMessage httpResponse = await httpClient.GetAsync(address);
+                HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address);
                 httpResponse.EnsureSuccessStatusCode();
 
                 using FileStream stream = File.Create(fileName);
@@ -143,6 +143,15 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 await DownloadFileAsync(address, path);
             }
+        }
+
+        static Utils()
+        {
+            s_httpClient = new HttpClient();
+            s_httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
+            {
+                NoCache = true
+            };
         }
     }
 }

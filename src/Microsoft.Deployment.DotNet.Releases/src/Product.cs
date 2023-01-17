@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -131,7 +130,18 @@ namespace Microsoft.Deployment.DotNet.Releases
         }
 
         /// <summary>
-        /// The support phase of the Product. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
+        /// A value indicating the support duration of the product.
+        /// </summary>
+        [JsonPropertyName("release-type")]
+        [JsonInclude]
+        public ReleaseType ReleaseType
+        {
+            get;
+            private set;
+        } = ReleaseType.Unknown;
+
+        /// <summary>
+        /// The current support phase of this <see cref="Product"/>. For an LTS release, the <see cref="EndOfLifeDate"/> property should 
         /// be checked to confirm whether a release is still supported.
         /// </summary>
         /// <remarks>
@@ -192,8 +202,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(address));
             }
 
-            using var client = new HttpClient();
-            using var stream = new MemoryStream(await client.GetByteArrayAsync(address));
+            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(address));
             using var reader = new StreamReader(stream);
 
             return await GetReleasesAsync(reader, this);
@@ -230,7 +239,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
 
             using var releasesDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
-            var root = releasesDocument.RootElement;
+            JsonElement root = releasesDocument.RootElement;
             var releases = new List<ProductRelease>();
             var enumerator = root.GetProperty("releases").EnumerateArray();
 
