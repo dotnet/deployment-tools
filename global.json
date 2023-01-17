@@ -5,7 +5,12 @@
     "rollForward": "major"
   },
   "tools": {
-    "dotnet": "8.0.100-alpha.1.23061.8"
+    "dotnet": "8.0.100-alpha.1.23061.8",
+    "runtimes": {
+      "dotnet": [
+        "7.0.0"
+      ]
+    }
   },
   "native-tools": {
     "cmake": "3.14.5",
