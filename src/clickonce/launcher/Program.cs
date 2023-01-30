@@ -5,7 +5,6 @@ using Microsoft.Win32;
 using System;
 using System.Deployment.Application;
 using System.IO;
-using System.Linq;
 
 namespace Microsoft.Deployment.Launcher
 {
@@ -154,10 +153,10 @@ namespace Microsoft.Deployment.Launcher
 
                 // ClickOnce ActivationData
                 string[] activationData = AppDomain.CurrentDomain?.SetupInformation?.ActivationArguments?.ActivationData;
-                if (activationData != null && activationData.Count() > 0)
+                if (activationData != null && activationData.Length > 0)
                 {
-                    Environment.SetEnvironmentVariable("ClickOnce_ActivationData_Count", activationData.Count().ToString());
-                    for (int i = 0; i < activationData.Count(); i++)
+                    Environment.SetEnvironmentVariable("ClickOnce_ActivationData_Count", activationData.Length.ToString());
+                    for (int i = 0; i < activationData.Length; i++)
                     {
                         Environment.SetEnvironmentVariable($"ClickOnce_ActivationData_{i}", activationData[i]);
                     }
