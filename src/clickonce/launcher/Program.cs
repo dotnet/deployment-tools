@@ -140,8 +140,8 @@ namespace Microsoft.Deployment.Launcher
         {
             if (ApplicationDeployment.IsNetworkDeployed)
             {
+                // ApplicationDeployment properties
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
-
                 Environment.SetEnvironmentVariable("ClickOnce_ActivationUri", ad.ActivationUri?.ToString());
                 Environment.SetEnvironmentVariable("ClickOnce_CurrentVersion", ad.CurrentVersion?.ToString());
                 Environment.SetEnvironmentVariable("ClickOnce_DataDirectory", ad.DataDirectory?.ToString());
@@ -150,6 +150,17 @@ namespace Microsoft.Deployment.Launcher
                 Environment.SetEnvironmentVariable("ClickOnce_UpdatedApplicationFullName", ad.UpdatedApplicationFullName?.ToString());
                 Environment.SetEnvironmentVariable("ClickOnce_UpdatedVersion", ad.UpdatedVersion?.ToString());
                 Environment.SetEnvironmentVariable("ClickOnce_UpdateLocation", ad.UpdateLocation?.ToString());
+
+                // ClickOnce ActivationData
+                string[] activationData = AppDomain.CurrentDomain?.SetupInformation?.ActivationArguments?.ActivationData;
+                if (activationData != null && activationData.Length > 0)
+                {
+                    Environment.SetEnvironmentVariable("ClickOnce_ActivationData_Count", activationData.Length.ToString());
+                    for (int i = 0; i < activationData.Length; i++)
+                    {
+                        Environment.SetEnvironmentVariable($"ClickOnce_ActivationData_{i}", activationData[i]);
+                    }
+                }
             }
 
             Environment.SetEnvironmentVariable("ClickOnce_IsNetworkDeployed", ApplicationDeployment.IsNetworkDeployed.ToString());
