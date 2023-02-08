@@ -22,9 +22,6 @@
   <Choose>
     <When Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
       <ItemGroup>
-        <Compile Include="net46/ProcessSharedFrameworkDeps.net46.cs" />
-      </ItemGroup>
-      <ItemGroup>
         <Reference Include="Microsoft.Build.Framework" />
         <Reference Include="Microsoft.Build.Tasks.v4.0" />
         <Reference Include="Microsoft.Build.Utilities.v4.0" />
