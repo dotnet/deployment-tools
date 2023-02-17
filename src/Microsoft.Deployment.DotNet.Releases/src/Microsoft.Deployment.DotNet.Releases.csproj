@@ -11,7 +11,8 @@
     <IsPackable Condition="'$(TargetArchitecture)' == 'x86' OR '$(DotNetBuildFromSource)' == 'true'">true</IsPackable>
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
-    <TargetFrameworks>netstandard2.0;$(NetCurrent)</TargetFrameworks>
+    <TargetFrameworks>$(NetCurrent)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(DotNetBuildFromSource)' != 'true'">netstandard2.0;$(TargetFrameworks)</TargetFrameworks>
     <LangVersion>9.0</LangVersion>
     <RootNamespace>Microsoft.Deployment.DotNet.Releases</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
