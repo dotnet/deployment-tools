@@ -89,7 +89,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
             // If the destination file doesn't exist we can skip using an actual temporary file.
             string tempPath = !File.Exists(destinationPath) ? destinationPath : Path.GetTempFileName();
-            await Utils.DownloadFileAsync(Address, tempPath);
+            await Utils.DownloadFileAsync(Address, tempPath).ConfigureAwait(false);
 
             // Most of the files are large since they represent full installations of .NET/.NET Core. They can
             // easily be 100MB+ so we won't verify the hash in memory.

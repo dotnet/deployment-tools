@@ -182,11 +182,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A collection of releases associated with this <see cref="Product"/>.</returns>
         public async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(string path, bool downloadLatest)
         {
-            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesJson);
+            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesJson).ConfigureAwait(false);
 
             using TextReader reader = File.OpenText(path);
 
-            return await GetReleasesAsync(reader, this);
+            return await GetReleasesAsync(reader, this).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -202,10 +202,10 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(address));
             }
 
-            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(address));
+            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(address).ConfigureAwait(false));
             using var reader = new StreamReader(stream);
 
-            return await GetReleasesAsync(reader, this);
+            return await GetReleasesAsync(reader, this).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         {
             using TextReader reader = File.OpenText(path);
 
-            return await GetReleasesAsync(reader, null);
+            return await GetReleasesAsync(reader, null).ConfigureAwait(false);
         }
 
         private static async Task<ReadOnlyCollection<ProductRelease>> GetReleasesAsync(TextReader reader, Product product)
@@ -238,7 +238,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            using var releasesDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
+            using var releasesDocument = JsonDocument.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
             JsonElement root = releasesDocument.RootElement;
             var releases = new List<ProductRelease>();
             var enumerator = root.GetProperty("releases").EnumerateArray();

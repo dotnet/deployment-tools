@@ -43,7 +43,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns>A collection of products described in the releases index file.</returns>
         public static async Task<ProductCollection> GetAsync()
         {
-            return await GetAsync(ReleasesIndexDefaultUrl);
+            return await GetAsync(ReleasesIndexDefaultUrl).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentException(ReleasesResources.ValueCannotBeEmpty, nameof(releasesIndexUri));
             }
 
-            return await GetAsync(new Uri(releasesIndexUri));
+            return await GetAsync(new Uri(releasesIndexUri)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(releasesIndexUrl));
             }
 
-            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(releasesIndexUrl));
+            using var stream = new MemoryStream(await Utils.s_httpClient.GetByteArrayAsync(releasesIndexUrl).ConfigureAwait(false));
             using var reader = new StreamReader(stream);
 
-            return await GetAsync(reader);
+            return await GetAsync(reader).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </exception>
         public static async Task<ProductCollection> GetFromFileAsync(string path, bool downloadLatest)
         {
-            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesIndexDefaultUrl);
+            await Utils.GetLatestFileAsync(path, downloadLatest, ReleasesIndexDefaultUrl).ConfigureAwait(false);
 
             using TextReader reader = File.OpenText(path);
 
-            return await GetAsync(reader);
+            return await GetAsync(reader).ConfigureAwait(false);
         }
 
         private static async Task<ProductCollection> GetAsync(TextReader reader)
@@ -113,7 +113,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            using var releasesIndexDocument = JsonDocument.Parse(await reader.ReadToEndAsync());
+            using var releasesIndexDocument = JsonDocument.Parse(await reader.ReadToEndAsync().ConfigureAwait(false));
             var root = releasesIndexDocument.RootElement.GetProperty("releases-index");
             return new ProductCollection(root.Deserialize<List<Product>>(SerializerOptions.Default));
         }
