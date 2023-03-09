@@ -20,17 +20,10 @@ variables:
   # Skip Running CI tests
   - name: SkipTests
     value: false
-  # Set Official Build Id
-  - name: OfficialBuildId
-    value: $(Build.BuildNumber)
-  - name: PostBuildSign
-    value: false
-
-  # Set the target blob feed for package publish during official and validation builds.
-  - name: _DotNetArtifactsCategory
-    value: .NETCore
-  - name: _DotNetValidationArtifactsCategory
-    value: .NETCoreValidation
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+    # Set Official Build Id
+    - name: OfficialBuildId
+      value: $(Build.BuildNumber)
 
   # Produce test-signed build for PR and Public builds
   - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
