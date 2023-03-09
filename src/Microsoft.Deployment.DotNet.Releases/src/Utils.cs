@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
+#pragma warning disable CA1810
+
 namespace Microsoft.Deployment.DotNet.Releases
 {
     /// <summary>
@@ -26,7 +28,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-            HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest);
+            HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest).ConfigureAwait(false);
 
             httpResponse.EnsureSuccessStatusCode();
 
@@ -55,15 +57,15 @@ namespace Microsoft.Deployment.DotNet.Releases
             {
                 using Stream source = File.Open(address.LocalPath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 using Stream destination = File.Create(fileName);
-                await source.CopyToAsync(destination);
+                await source.CopyToAsync(destination).ConfigureAwait(false);
             }
             else
             {
-                HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address);
+                HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address).ConfigureAwait(false);
                 httpResponse.EnsureSuccessStatusCode();
 
                 using FileStream stream = File.Create(fileName);
-                await httpResponse.Content.CopyToAsync(stream);
+                await httpResponse.Content.CopyToAsync(stream).ConfigureAwait(false);
             }
         }
 
@@ -137,11 +139,11 @@ namespace Microsoft.Deployment.DotNet.Releases
                     throw new FileNotFoundException(string.Format(ReleasesResources.FileNotFound, path));
                 }
 
-                await DownloadFileAsync(address, path);
+                await DownloadFileAsync(address, path).ConfigureAwait(false);
             }
-            else if (downloadLatest && !await IsLatestFileAsync(path, address))
+            else if (downloadLatest && !await IsLatestFileAsync(path, address).ConfigureAwait(false))
             {
-                await DownloadFileAsync(address, path);
+                await DownloadFileAsync(address, path).ConfigureAwait(false);
             }
         }
 
