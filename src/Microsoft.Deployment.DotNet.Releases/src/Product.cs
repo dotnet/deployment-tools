@@ -91,8 +91,6 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <summary>
         /// The name of the product.
         /// </summary>
-        //[JsonPropertyName("product")]
-        //[JsonInclude]
         public string ProductName
         {
             get;
