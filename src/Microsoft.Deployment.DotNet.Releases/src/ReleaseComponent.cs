@@ -73,7 +73,7 @@ namespace Microsoft.Deployment.DotNet.Releases
                 {
                     ReleaseFile file = new(enumerator.Current);
 
-                    //// Trim out marketing files.
+                    // Trim out marketing files.
                     if (!string.IsNullOrEmpty(file.Name) && !file.Name.Contains("-gs") && !file.Name.Contains("-nj"))
                     {
                         files.Add(file);
