@@ -6,7 +6,6 @@
     <PatchVersion>0</PatchVersion>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
     <PreReleaseVersionIteration></PreReleaseVersionIteration>
-    <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
     <IsTrimmable>true</IsTrimmable>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
