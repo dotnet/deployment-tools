@@ -3,7 +3,9 @@
   <PropertyGroup>
     <MajorVersion>1</MajorVersion>
     <MinorVersion>0</MinorVersion>
-    <PreReleaseVersionIteration>6</PreReleaseVersionIteration>
+    <PatchVersion>0</PatchVersion>
+    <PreReleaseVersionLabel></PreReleaseVersionLabel>
+    <PreReleaseVersionIteration></PreReleaseVersionIteration>
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
     <IsTrimmable>true</IsTrimmable>
     <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
