@@ -99,8 +99,13 @@ namespace Microsoft.Deployment.Utilities
         /// <param name="errors">List of errors</param>
         public static void AddReferences(ApplicationManifest manifest,
             bool addDeploy,
-            string fromDirectory, List<string> filesToIgnore,
-            LockedFileReporter lockedFileReporter, object sender, UpdateProgressEventHandler updateProgress, OverwriteEventHandler overwrite, ArrayList errors)
+            string fromDirectory,
+            List<string> filesToIgnore,
+            LockedFileReporter lockedFileReporter,
+            object sender,
+            UpdateProgressEventHandler updateProgress,
+            OverwriteEventHandler overwrite,
+            ArrayList errors)
         {
             if ((manifest == null) || (fromDirectory == null))
             {
@@ -608,9 +613,8 @@ namespace Microsoft.Deployment.Utilities
         /// </summary>
         /// <param name="manifest">The manifest whose references are to be resolved</param>
         /// <param name="basePath">Base path from which to find referenced files</param>
-        /// <param name="targetFrameworkVersion">Target framework version.</param>
         /// <returns>True if all referenced files are found, false if any are nonexistent</returns>
-        public static bool ResolveReferences(Manifest manifest, string basePath, string targetFrameworkVersion)
+        public static bool ResolveReferences(Manifest manifest, string basePath)
         {
             bool result = true;
 
@@ -644,7 +648,7 @@ namespace Microsoft.Deployment.Utilities
             try
             {
                 // Update file sizes and hashes
-                manifest.UpdateFileInfo(targetFrameworkVersion);
+                manifest.UpdateFileInfo(Constants.TargetFrameworkVersion);
             }
             catch (ArgumentException)
             {
@@ -677,15 +681,14 @@ namespace Microsoft.Deployment.Utilities
         /// <param name="basePath">base path from which to find referenced files and assemblies</param>
         /// <param name="sender">not implemented</param>
         /// <param name="updateProgress">not implemented</param>
-        /// <param name="targetFrameworkVersion">used to determine the hashing alogrithm</param>
-        public static void UpdateReferenceInfo(Manifest manifest, string basePath, object sender, UpdateProgressEventHandler updateProgress, string targetFrameworkVersion)
+        public static void UpdateReferenceInfo(Manifest manifest, string basePath, object sender, UpdateProgressEventHandler updateProgress)
         {
-            ResolveReferences(manifest, basePath, targetFrameworkVersion);
+            ResolveReferences(manifest, basePath);
 
             // It would be nice to be able to pass a delegate here, to 
             // update the UI as the references are resolved and when
             // references to nonexistent files are encountered.
-            manifest.UpdateFileInfo(targetFrameworkVersion);
+            manifest.UpdateFileInfo(Constants.TargetFrameworkVersion);
         }
 
         /// <summary>
@@ -698,15 +701,22 @@ namespace Microsoft.Deployment.Utilities
         /// <param name="filesToIgnore">List of files to ignore.</param>
         /// <param name="sender">Not used</param>
         /// <param name="updateProgress">Not used</param>
-        public static void AddAndUpdateReferences(ApplicationManifest manifest, bool addDeploy, string fromDirectory,
-            List<string> filesToIgnore, object sender, UpdateProgressEventHandler updateProgress, OverwriteEventHandler overwrite, string targetFrameworkVersion)
+        /// <param name="overwrite">Not used</param>
+        public static void AddAndUpdateReferences(
+            ApplicationManifest manifest,
+            bool addDeploy,
+            string fromDirectory,
+            List<string> filesToIgnore,
+            object sender,
+            UpdateProgressEventHandler updateProgress,
+            OverwriteEventHandler overwrite)
         {
             ArrayList errors = new ArrayList();
             Utilities.AppMan.AddReferences(manifest, addDeploy, fromDirectory, filesToIgnore, null, sender, updateProgress, overwrite, errors);
 
             Utilities.AppMan.SetSpecialFiles(manifest);
 
-            Utilities.AppMan.UpdateReferenceInfo(manifest, fromDirectory, sender, updateProgress, targetFrameworkVersion);
+            Utilities.AppMan.UpdateReferenceInfo(manifest, fromDirectory, sender, updateProgress);
 
             updateProgress?.Invoke(sender, new UpdateProgressEventArgs(Action.Complete, "", errors));
         }

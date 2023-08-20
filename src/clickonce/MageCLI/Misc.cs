@@ -14,10 +14,10 @@ namespace Microsoft.Deployment.Utilities
     /// <summary>
     /// Constants
     /// </summary>
-    /// 
     public struct Constants
     {
         public const int MAXTARGETPATH = 100;
+        public const string TargetFrameworkVersion = "v4.5";
     }
 
     /// <summary>
