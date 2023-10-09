@@ -1,0 +1,42 @@
+<Project>
+  <Import Project="..\..\..\Directory.Build.props" />
+
+  <!--
+    This is a native packaging-only project, we need to set a .NET target, as the propery is required,
+    suppress dependencies to avoid having .NET target dependency, and skip project build output (none).
+  -->
+  <PropertyGroup>
+    <TargetFramework>$(NetCurrent)</TargetFramework>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <Title>NetCoreCheck</Title>
+    <Description>Provides NetCoreCheck tool, used for detection of .NET Core runtime.</Description>
+    <IsPackable>true</IsPackable>
+    <PackageTags>dotnet;deployment-tools;netcorecheck</PackageTags>
+    <ContentTargetFolders>$(PackageTargetRid)</ContentTargetFolders>
+    <Platform>$(TargetArchitecture)</Platform>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(LicenseFile)"
+             PackagePath=""
+             Condition="Exists('$(LicenseFile)')" />
+    <Content Include="$(ThirdPartyNoticesFile)"
+             PackagePath=""
+             Condition="Exists('$(ThirdPartyNoticesFile)')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="$(BaseOutputRootPath)native/NetCoreCheck.exe" />
+    <Content Include="$(BaseOutputRootPath)native/NetCoreCheckCA.dll" />
+  </ItemGroup>
+
+  <!-- Add a dependency to the native project to retrieve the binaries. -->
+  <ItemGroup>
+    <ProjectReference Include="..\native\build-native.proj"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

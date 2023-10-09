@@ -42,11 +42,7 @@ namespace Microsoft.Deployment.DotNet.Releases.Tests
 
         }
 
-#if NET452
-        public Task DisposeAsync() => Task.FromResult(0);
-#else
         public Task DisposeAsync() => Task.CompletedTask;
-#endif
 
         public async Task InitializeAsync()
         {

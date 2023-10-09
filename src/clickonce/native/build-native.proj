@@ -1,41 +1,34 @@
-<Project>
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+<Project Sdk="Microsoft.Build.NoTargets">
 
-  <!--
-    Add basic project properties for NuGet restore, needed to import the SourceLink MSBuild tool
-    package's targets into the build.
-  -->
   <PropertyGroup>
-    <TargetFramework>$(NETCoreAppFramework)</TargetFramework>
+    <TargetFramework>$(NetCurrent)</TargetFramework>
   </PropertyGroup>
 
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
-
-  <!-- Target that builds dotnet, hostfxr and hostpolicy with the same version as what NetCoreApp will be built for
-       since the build produced artifacts should always version the same (even if they may not get used).
-  -->
-  <Target Name="Build"
+  <Target Name="BuildNative"
+          AfterTargets="Build"
           DependsOnTargets="
             GetProductVersions;
             GenerateNativeVersionFile;
-            BuildNativeProjects;
+            BuildNativeWindows;
             CopyNativePDBsToSymStore" />
 
-  <Target Name="BuildNativeProjects"
+  <Target Name="GetLatestCommitHash"
+          Condition="'$(LatestCommit)' == ''">
+    <!-- Get the latest commit hash -->
+    <Exec Command="git rev-parse HEAD 2>&amp;1" StandardOutputImportance="Low" IgnoreExitCode="true" IgnoreStandardErrorWarningFormat="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="LatestCommit" />
+      <Output TaskParameter="ExitCode" PropertyName="LatestCommitExitCode" />
+    </Exec>
+
+    <!-- We shouldn't fail the build if we can't retreive the commit hash, so in this case just set it to N/A -->
+    <PropertyGroup Condition="'$(LatestCommitExitCode)'!='0'">
+      <LatestCommit>N/A</LatestCommit>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="BuildNativeWindows"
           Condition="'$(TargetOS)' == 'Windows_NT'"
           DependsOnTargets="GetLatestCommitHash">
-
-    <MSBuild
-      Projects="$(MSBuildProjectFullPath)"
-      Properties="
-        GenerateNativeVersionInfo=true;
-        AssemblyName=%(NativeFiles.FileDescription);
-        NativeVersionFile=$(IntermediateOutputRootPath)nativeResourceFiles\%(NativeFiles.Identity)\version_info.h"
-      Targets="GenerateNativeVersionFile"
-      Condition="
-        '$(IncrementalNativeBuild)' != 'true' or
-        !Exists('$(IntermediateOutputRootPath)nativeResourceFiles\%(NativeFiles.Identity)\version_info.h')"/>
-
     <PropertyGroup>
       <BuildArgs>$(Configuration) $(TargetArchitecture) nativever $(NativeVersion) netcorepkgver $(BundledNETCoreAppPackageVersion) commit $(LatestCommit) rid $(OutputRid)</BuildArgs>
       <BuildArgs Condition="'$(PortableBuild)' == 'true'">$(BuildArgs) portable</BuildArgs>

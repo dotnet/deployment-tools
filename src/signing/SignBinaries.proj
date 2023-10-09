@@ -1,20 +1,16 @@
-<Project Sdk="Microsoft.Build.Traversal">
+<Project Sdk="Microsoft.Build.NoTargets">
 
-  <PropertyGroup>
-    <!-- Disable target framework filtering for top level projects -->
-    <NoTargetFrameworkFiltering>true</NoTargetFrameworkFiltering>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="@(ProjectToBuild -> WithMetadataValue('SignPhase', 'Binaries'))" />
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetsMobile)' != 'true' or '$(DotNetBuildFromSource)' == 'true'">
     <ProjectReference Include="$(DotNetReleasesProjectRoot)src\Microsoft.Deployment.DotNet.Releases.csproj" />
-    <ProjectReference Include="$(DotNetReleasesProjectRoot)tests\Microsoft.Deployment.DotNet.Releases.Tests.csproj" Condition="'$(DotNetBuildFromSource)' != 'true'"/>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(DotNetBuildFromSource)' != 'true' or '$(TargetsMobile)' == 'true'">
+  <ItemGroup Condition="'$(DotNetBuildFromSource)' != 'true' and '$(TargetsMobile)' == 'true'">
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.csproj" />
     <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)native\build-native.proj"
-                             Condition="'$(DisableClickOnceNativeBuild)' != 'true'" />
-    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)NetCoreCheck\*.proj"
                              Condition="'$(DisableClickOnceNativeBuild)' != 'true'" />
 
     <!-- Provides a way to override ClickOnce configuration. -->
@@ -24,5 +20,6 @@
 
     <ProjectReference Include="@(ClickOnceProjectToBuild)" />
   </ItemGroup>
+
 
 </Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.Build.NoTargets">
+
+  <ItemGroup Condition="'$(DotNetBuildFromSource)' != 'true' or '$(TargetsMobile)' == 'true'">
+    <ProjectReference Include="$(ClickOnceProjectRoot)NetCoreCheck\*.proj"
+                      Condition="'$(DisableClickOnceNativeBuild)' != 'true'">
+      <!-- Provides a way to override ClickOnce configuration. -->
+      <AdditionalProperties Condition="'$(ClickOnceConfiguration)' != ''">Configuration=$(ClickOnceConfiguration)</AdditionalProperties>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

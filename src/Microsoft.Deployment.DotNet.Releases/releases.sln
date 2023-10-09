@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{738213FF-7EC5-40F8-ACBE-F12C2578FC8B}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
-		..\..\eng\Subsets.props = ..\..\eng\Subsets.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Deployment.DotNet.Releases", "src\Microsoft.Deployment.DotNet.Releases.csproj", "{61248599-2D6B-4EDE-9AB3-C423E02BE649}"

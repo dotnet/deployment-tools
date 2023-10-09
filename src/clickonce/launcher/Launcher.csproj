@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <SignAssembly>false</SignAssembly>
     <IsPackable Condition="'$(TargetArchitecture)' == 'x86'">true</IsPackable>
     <IsShipping>true</IsShipping>
     <IsShippingPackage>false</IsShippingPackage>
@@ -12,19 +17,12 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyName>Launcher</AssemblyName>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net45</TargetFramework>
-    <NoWin32Manifest>true</NoWin32Manifest>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="System.Deployment" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\Shared\NativeMethods.cs" />
+    <Compile Include="..\shared\NativeMethods.cs" />
   </ItemGroup>
+
 </Project>

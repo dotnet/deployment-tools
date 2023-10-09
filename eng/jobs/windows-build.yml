@@ -4,7 +4,7 @@ parameters:
   publishRidAgnosticPackages: false
   skipTests: $(SkipTests)
   targetArchitecture: null
-  timeoutInMinutes: 120
+  timeoutInMinutes: 60
   codeql: false
 
 jobs:
@@ -72,23 +72,21 @@ jobs:
 
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - script: >-
-          build.cmd -subset clickonce+installer+dotnet_releases -ci -test
+          build.cmd -ci -test
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
           /p:Sign=true /p:SignBinaries=true
-          /p:LocalizedBuild=true
         displayName: Build and Sign Binaries
 
     - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
       - script: >-
-          build.cmd -subset clickonce+installer+dotnet_releases -ci -test
+          build.cmd -test
           $(CommonMSBuildArgs)
           $(MsbuildSigningArguments)
-          /p:LocalizedBuild=true
         displayName: Build
 
     - script: >-
-        build.cmd -subset clickonce+installer+dotnet_releases -ci -pack
+        build.cmd -ci -pack
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
       displayName: Package

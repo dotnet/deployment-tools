@@ -1,0 +1,10 @@
+<Project>
+
+  <Import Project="..\..\Directory.Build.props" />
+
+  <PropertyGroup>
+    <TargetFramework>$(NetCurrent)</TargetFramework>
+    <SkipSigning Condition="'$(DotNetSignType)' == ''">true</SkipSigning>
+  </PropertyGroup>
+
+</Project>

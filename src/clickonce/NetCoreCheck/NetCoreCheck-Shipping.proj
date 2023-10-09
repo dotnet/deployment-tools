@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.Build.NoTargets">
 
   <!--
     This package is shipping to nuget.org. It will have a stable version, without pre-release

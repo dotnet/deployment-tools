@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.Build.NoTargets">
 
   <!--
     This package is shipping to VS Feed only. It will always have a unique version, that includes
