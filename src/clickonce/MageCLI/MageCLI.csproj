@@ -6,7 +6,7 @@
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
     <RCSuppressManifest>true</RCSuppressManifest>
     <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PlatformSpecificBuild>true</PlatformSpecificBuild>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
@@ -23,7 +23,7 @@
     <DefineConstants>$(DefineConstants);RUNTIME_TYPE_NETCORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Shared\NativeMethods.cs" />
+    <Compile Include="..\shared\NativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Application.resx">
