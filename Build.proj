@@ -5,12 +5,33 @@
     <NoTargetFrameworkFiltering>true</NoTargetFrameworkFiltering>
   </PropertyGroup>
 
-  <!--
-    Subsets are already imported by Directory.Build.props.
-    Reference the projects for traversal build. Ordering matters here.
-  -->
+  <ItemGroup Condition="'$(DotNetBuild)' != 'true'">
+    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)**\*.csproj" Pack="true" />
+    <ClickOnceProjectToBuild Include="$(ClickOnceProjectRoot)native\build-native.proj" Pack="false" />
+    <ProjectReference Include="@(ClickOnceProjectToBuild)"
+                      BuildInParallel="true"
+                      Test="false">
+      <AdditionalProperties Condition="'$(ClickOnceConfiguration)' != ''">Configuration=$(ClickOnceConfiguration)</AdditionalProperties>
+    </ProjectReference>
+
+    <ProjectReference Include="$(ClickOnceProjectRoot)NetCoreCheck\*.pkgproj"
+                      Pack="true"
+                      Test="false"
+                      BuildInParallel="false"
+                      Condition="'$(TargetOS)' == 'windows'">
+      <AdditionalProperties Condition="'$(ClickOnceConfiguration)' != ''">Configuration=$(ClickOnceConfiguration)</AdditionalProperties>
+    </ProjectReference>
+  </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="@(ProjectToBuild)" />
+    <ProjectReference Include="src/Microsoft.Deployment.DotNet.Releases/src/Microsoft.Deployment.DotNet.Releases.csproj"
+                      Pack="true"
+                      Test="false"
+                      BuildInParallel="true" />
+    <ProjectReference Include="src/Microsoft.Deployment.DotNet.Releases/tests/Microsoft.Deployment.DotNet.Releases.Tests.csproj"
+                      Pack="false"
+                      Test="true"
+                      BuildInParallel="true" />
   </ItemGroup>
 
 </Project>

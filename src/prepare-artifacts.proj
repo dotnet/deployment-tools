@@ -9,6 +9,7 @@
     <IsShipping>false</IsShipping>
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
     <DownloadDirectory>$(ArtifactsDir)PackageDownload/</DownloadDirectory>
+    <SkipSigning Condition="'$(DotNetSignType)' == '' or '$(TargetOS)' != 'windows'">true</SkipSigning>
   </PropertyGroup>
 
   <ItemGroup>
@@ -80,13 +81,40 @@
     </ItemGroup>
   </Target>
 
+  <!--
+    Run Arcade's signing project directly. The 'eng/Signing.props' extensibility props file checks
+    if '$(<StageName>)' == 'true' and points Arcade to the correct files.
+  -->
   <Target Name="SignPackages"
           Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'">
     <Message Importance="High" Text="Signing final packages" />
+
+    <PropertyGroup>
+      <SignStartTime>$([System.DateTime]::UtcNow)</SignStartTime>
+      <ArcadeSdkMSBuildProjectDir>$([System.IO.Path]::GetDirectoryName('$(ArcadeSdkBuildTasksAssembly)'))\..\</ArcadeSdkMSBuildProjectDir>
+      <ArcadeSdkSignProject>$(ArcadeSdkMSBuildProjectDir)Sign.proj</ArcadeSdkSignProject>
+    </PropertyGroup>
+
+    <!--
+      Run the Arcade signing project. Carry over some specific properties for Signing.props: the
+      signing project project doesn't import the heavyweight Directory.Build.props/targets.
+    -->
     <MSBuild
-      Projects="$(InstallerProjectRoot)signing\SignFinalPackages.proj"
-      Targets="Build"
-      Properties="DownloadDirectory=$(DownloadDirectory)" />
+      Projects="$(ArcadeSdkSignProject)"
+      Targets="Sign"
+      Properties="
+        ArtifactsBinDir=$(ArtifactsBinDir);
+        ArtifactsPackagesDir=$(ArtifactsPackagesDir);
+        TargetOS=$(TargetOS);
+        TargetArchitecture=$(TargetArchitecture)
+        DownloadDirectory=$(DownloadDirectory)" />
+
+    <PropertyGroup>
+      <SignDuration>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::Parse('$(SignStartTime)'))))</SignDuration>
+    </PropertyGroup>
+
+    <Message Importance="High" Text="$(MSBuildProjectName) -> completed in $(SignDuration)" />
+
   </Target>
 
   <Target Name="PreparePublishToAzureBlobFeed"

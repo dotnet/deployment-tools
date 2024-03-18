@@ -8,7 +8,7 @@ jobs:
   dependsOn: ${{ parameters.dependsOn }}
   pool:
     name: NetCore1ESPool-Internal
-    demands: ImageOverride -equals windows.vs2019.amd64
+    demands: ImageOverride -equals windows.vs2022.amd64
   # Double the default timeout.
   timeoutInMinutes: 120
   workspace:
@@ -36,7 +36,7 @@ jobs:
 
   - script: >-
       build.cmd -ci
-      -subset installer.publish
+      -projects src/prepare-artifacts.proj
       -c Release
       /p:PublishRidAgnosticPackagesFromJobName=${{ parameters.PublishRidAgnosticPackagesFromJobName }}
       /p:SignType=$(SignType)
