@@ -28,8 +28,7 @@
         ArtifactsBinDir=$(ArtifactsBinDir);
         ArtifactsPackagesDir=$(ArtifactsPackagesDir);
         TargetOS=$(TargetOS);
-        TargetArchitecture=$(TargetArchitecture);
-        NetCoreAppCurrent=$(NetCoreAppCurrent)" />
+        TargetArchitecture=$(TargetArchitecture)" />
 
     <PropertyGroup>
       <SignDuration>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::Parse('$(SignStartTime)'))))</SignDuration>

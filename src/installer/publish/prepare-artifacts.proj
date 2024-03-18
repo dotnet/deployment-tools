@@ -1,37 +1,97 @@
-<Project DefaultTargets="Build">
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-
-  <UsingTask TaskName="GenerateChecksums" AssemblyFile="$(InstallerTasksAssemblyPath)" />
+<Project Sdk="Microsoft.Build.NoTargets">
 
   <PropertyGroup>
+    <TargetFramework>$(NetCurrent)</TargetFramework>
+    <!-- Set IsStableBuild to mimic https://github.com/dotnet/arcade/blob/694d59f090b743f894779d04a7ffe11cbaf352e7/src/Microsoft.DotNet.Arcade.Sdk/tools/Publish.proj#L30-L31 -->
+    <IsStableBuild>false</IsStableBuild>
+    <IsStableBuild Condition="'$(DotNetFinalVersionKind)' == 'release'">true</IsStableBuild>
+    <!-- Don't stabilize the package version in order to retrieve the VersionSuffix. -->
+    <IsShipping>false</IsShipping>
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
+    <DownloadDirectory>$(ArtifactsDir)PackageDownload/</DownloadDirectory>
   </PropertyGroup>
 
-  <Target Name="CreateChecksums">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Build.Tasks.Feed" Version="$(MicrosoftDotNetBuildTasksFeedVersion)" />
+  </ItemGroup>
+
+    <!--
+    Look through the downloaded artifacts to figure out how to ship them. Creates item groups for
+    other types of publishing to use.
+
+    DownloadDirectory is expected to have some directory inside, which then contains a dir for each
+    build job name. For example, this nupkg would be found:
+
+      $(DownloadDirectory)IntermediateUnsignedArtifacts\Windows_x64\Shipping\a.nupkg
+  -->
+  <Target Name="FindDownloadedArtifacts"
+          BeforeTargets="GenerateChecksums">
     <ItemGroup>
-      <ArtifactsForGeneratingChecksums
-        Include="@(UploadToBlobStorageFile)"
-        DestinationPath="%(FullPath)$(ChecksumExtension)" />
+      <DownloadedArtifactFile Include="$(DownloadDirectory)**" />
 
-      <GeneratedChecksumFile Include="@(ArtifactsForGeneratingChecksums -> '%(DestinationPath)')" />
+      <DownloadedSymbolNupkgFile Include="$(DownloadDirectory)**\*.symbols.nupkg" />
+      <DownloadedNupkgFile
+        Include="$(DownloadDirectory)**\*.nupkg"
+        Exclude="@(DownloadedSymbolNupkgFile)" />
+
+      <!-- Add files that are not affected by filtering. -->
+      <UploadToBlobStorageFile
+        Include="@(DownloadedArtifactFile)"
+        Exclude="@(DownloadedSymbolNupkgFile);@(DownloadedNupkgFile)" />
+
+      <!--
+        Filter out the RID-specific (Runtime) nupkgs and RID-agnostic nupkgs. RID-specific packages
+        are published from every job. RID-agnostic nupkgs are built with the same ID/version by
+        every job, so one specific job's outputs must be picked to sign and publish.
+
+        Publish all packages from every job - update patterns in RidSpecificNupkgFile item-group, if this changes.
+      -->
+      <RidSpecificNupkgFile
+        Include="
+          $(DownloadDirectory)**\*.nupkg"
+        Exclude="@(DownloadedSymbolNupkgFile)" />
+
+      <RidAgnosticNupkgToPublishFile
+        Include="$(DownloadDirectory)*\$(PublishRidAgnosticPackagesFromJobName)\**\*.nupkg"
+        Exclude="@(RidSpecificNupkgFile);@(DownloadedSymbolNupkgFile)" />
+
+      <NupkgToPublishFile Include="@(RidSpecificNupkgFile);@(RidAgnosticNupkgToPublishFile)" />
+
+      <UploadToBlobStorageFile Include="@(NupkgToPublishFile)" />
+
+      <!--
+        Assuming all symbol packages ship and can be found by turning .nupkg => .symbols.nupkg, find
+        them. Don't check for missing symbol packages here: some nupkgs don't have them for valid
+        reasons, such as the VS insertion packages that transport MSIs. Symbol package validation
+        will check for symbol completeness with file-by-file granularity rather than looking for
+        missing symbols.nupkg files: https://github.com/dotnet/arcade/issues/2499.
+      -->
+      <PotentialSymbolNupkgToPublishFile
+        Include="@(NupkgToPublishFile->Replace('\NonShipping\', '\Shipping\')->Replace('.nupkg', '.symbols.nupkg'))" />
+
+      <SymbolNupkgToPublishFile
+        Include="@(PotentialSymbolNupkgToPublishFile)"
+        Condition="Exists('%(Identity)')" />
+
+      <GenerateChecksumItems Include="@(UploadToBlobStorageFile)"
+                             DestinationPath="%(FullPath).sha512" />
+
+      <UploadToBlobStorageFile Include="@(SymbolNupkgToPublishFile)" />
     </ItemGroup>
-
-    <GenerateChecksums Items="@(ArtifactsForGeneratingChecksums)" />
   </Target>
 
   <Target Name="SignPackages"
           Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'">
     <Message Importance="High" Text="Signing final packages" />
     <MSBuild
-      Projects="$(SigningToolsDir)\SignFinalPackages.proj"
+      Projects="$(InstallerProjectRoot)installer\signing\SignFinalPackages.proj"
       Targets="Build"
       Properties="DownloadDirectory=$(DownloadDirectory)" />
   </Target>
 
-  <Target Name="UploadPreparedArtifactsToPipeline"
-          DependsOnTargets="
-            FindDownloadedArtifacts;
-            CreateChecksums">
+  <Target Name="PreparePublishToAzureBlobFeed"
+          AfterTargets="Build"
+          DependsOnTargets="GetProductVersions;FindDownloadedArtifacts;SignPackages;GenerateChecksums">
     <PropertyGroup>
       <PreparedFileUploadDir>$(ArtifactsObjDir)PreparedFileUpload\</PreparedFileUploadDir>
     </PropertyGroup>
@@ -48,10 +108,6 @@
     <Message
       Text="##vso[artifact.upload containerfolder=PreparedArtifacts;artifactname=PreparedArtifacts]%(CopiedUploadToBlobStorageFile.Identity)"
       Importance="High" />
-  </Target>
-
-  <Target Name="PreparePublishToAzureBlobFeed"
-          DependsOnTargets="GetProductVersions;FindDownloadedArtifacts">
 
     <PropertyGroup>
       <AssetManifestFilename>Manifest.xml</AssetManifestFilename>
@@ -84,6 +140,8 @@
         <PublishFlatContainer>true</PublishFlatContainer>
       </ItemsToPush>
 
+      <!-- Must be a different item as otherwise FileName and Extension would refer to the wrong identity. -->
+      <GeneratedChecksumFile Include="@(GenerateChecksumItems->Metadata('DestinationPath'))" />
       <ItemsToPush Include="@(GeneratedChecksumFile)">
         <RelativeBlobPath>$(InstallersRelativePath)%(Filename)%(Extension)</RelativeBlobPath>
         <Category>Checksum</Category>
@@ -135,23 +193,6 @@
 
     <!-- Copy the generated manifest to the build's artifacts -->
     <Copy SourceFiles="$(AssetManifestFile)" DestinationFolder="$(TempWorkingDir)" />
-
-  </Target>
-
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
-
-  <!--
-    Take assets from the build jobs, prepare them for publishing (signing, arrangement) then upload
-    them to the pipeline for Arcade and custom steps to publish.
-  -->
-  <Target Name="Build"
-          DependsOnTargets="
-            FindDownloadedArtifacts;
-            SignPackages;
-            CreateChecksums;
-            UploadPreparedArtifactsToPipeline;
-            PreparePublishToAzureBlobFeed">
-    <Message Importance="High" Text="Complete!" />
   </Target>
 
 </Project>
