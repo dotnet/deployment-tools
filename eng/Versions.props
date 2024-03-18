@@ -18,20 +18,6 @@
   <PropertyGroup>
     <!-- Arcade dependencies -->
     <MicrosoftDotNetBuildTasksFeedVersion>9.0.0-beta.24165.6</MicrosoftDotNetBuildTasksFeedVersion>
-    <MicrosoftDotNetCodeAnalysisVersion>9.0.0-beta.24165.6</MicrosoftDotNetCodeAnalysisVersion>
-    <!--
-      These are used as reference assemblies only, so they must not take a ProdCon/source-build
-      version. Insert "RefOnly" to avoid assignment via PVP.
-    -->
-    <RefOnlyMicrosoftBuildVersion>15.7.179</RefOnlyMicrosoftBuildVersion>
-    <RefOnlyMicrosoftBuildFrameworkVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildFrameworkVersion>
-    <RefOnlyMicrosoftBuildTasksCoreVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildTasksCoreVersion>
-    <RefOnlyMicrosoftBuildUtilitiesCoreVersion>$(RefOnlyMicrosoftBuildVersion)</RefOnlyMicrosoftBuildUtilitiesCoreVersion>
-    <RefOnlyNugetProtocolVersion>6.2.4</RefOnlyNugetProtocolVersion>
-    <RefOnlyNugetProjectModelVersion>6.2.4</RefOnlyNugetProjectModelVersion>
-    <RefOnlyNugetPackagingVersion>6.2.4</RefOnlyNugetPackagingVersion>
-    <!-- Installer dependencies -->
-    <MicrosoftExtensionsDependencyModelVersion>3.1.0</MicrosoftExtensionsDependencyModelVersion>
     <!-- Libraries dependencies -->
     <SystemTextJsonVersion>7.0.1</SystemTextJsonVersion>
     <!-- Standard dependencies -->
@@ -40,8 +26,6 @@
     <!-- Testing -->
     <XUnitVersion>2.4.1</XUnitVersion>
     <XUnitRunnerVisualStudioVersion>2.4.2</XUnitRunnerVisualStudioVersion>
-    <TraceEventVersion>2.0.5</TraceEventVersion>
     <NewtonsoftJsonVersion>13.0.1</NewtonsoftJsonVersion>
-    <MoqVersion>4.12.0</MoqVersion>
   </PropertyGroup>
 </Project>

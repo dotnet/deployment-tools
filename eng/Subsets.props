@@ -1,41 +1,5 @@
 <Project>
 
-  <!--
-    This file defines the list of projects to build and divides them into subsets. In ordinary
-    situations, you should perform a full build by running 'build.cmd' or './build.sh'. This ensures
-    the projects are sequenced correctly so the outputs and test results are what you would expect.
-
-    Examples:
-
-      ./build.sh CoreHost
-
-        This builds only the .NET Core Host.
-
-      ./build.sh corehost installer.managed
-
-        This builds the CoreHost and also the Managed installer portion (e.g. Microsoft.NET.HostModel)
-        projects. A space ' ' or '+' are the delimiters between multiple subsets to build.
-
-      ./build.sh -test installer.tests
-
-        This builds and executes the installer test projects. (The '-test' argument is an Arcade SDK argument
-        that indicates tests should be run. Otherwise, they'll only be built.)
-
-    Quirks:
-
-      This command looks useful, but doesn't work as expected:
-
-        ./build.sh -test /p:Subset=CoreHost-Test    # (Doesn't work!)
-
-      Intuitively, this should build the host, build the tests, then run the tests on the freshly
-      built host. What actually happens is the tests run on a previously built host. This is because
-      the depproj, pkgproj, and installer subsets process the host artifacts, and those didn't
-      rebuild because those subsets were disabled.
-
-      You can get around this limitation by running the corehost subset, manually copying host
-      artifacts to the test layout, then running the test subset.
-  -->
-
   <PropertyGroup>
     <DefaultSubsets>clickonce+installer+dotnet_releases</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">clickonce+installer</DefaultSubsets>
@@ -46,12 +10,6 @@
   <PropertyGroup>
     <_subset Condition="'$(Subset)' != ''">+$(Subset.ToLowerInvariant())+</_subset>
     <_subset Condition="'$(Subset)' == ''">+$(DefaultSubsets)+</_subset>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <RuntimeFlavor Condition="'$(TargetsMobile)' == 'true'">Mono</RuntimeFlavor>
-    <RuntimeFlavor Condition="'$(RuntimeFlavor)' == '' and ($(_subset.Contains('+mono+')) or $(_subset.Contains('+mono.runtime+'))) and (!$(_subset.Contains('+clr+')) and !$(_subset.Contains('+clr.runtime+')))">Mono</RuntimeFlavor>
-    <RuntimeFlavor Condition="'$(RuntimeFlavor)' == ''">CoreCLR</RuntimeFlavor>
   </PropertyGroup>
 
   <PropertyGroup>

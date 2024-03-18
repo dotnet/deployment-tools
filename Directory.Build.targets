@@ -8,7 +8,6 @@
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
   </PropertyGroup>
 
-  <Import Project="$(RepositoryEngineeringDir)python.targets" />
-  <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" Condition="'$(SkipImportArcadeSdkFromRoot)' != 'true'" />
+  <Import Project="Sdk.targets" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
 </Project>

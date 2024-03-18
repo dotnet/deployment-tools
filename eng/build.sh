@@ -51,12 +51,7 @@ usage()
   echo ""
 
   echo "Libraries settings:"
-  echo "  --allconfigurations        Build packages for all build configurations."
-  echo "  --coverage                 Collect code coverage when testing."
-  echo "  --framework (-f)           Build framework: net5.0 or net472."
-  echo "                             [Default: net5.0]"
   echo "  --testnobuild              Skip building tests when invoking -test."
-  echo "  --testscope                Test scope, allowed values: innerloop, outerloop, all."
   echo ""
 
   echo "Native build settings:"
@@ -194,16 +189,6 @@ while [[ $# > 0 ]]; do
       shift 2
       ;;
 
-     -framework|-f)
-      if [ -z ${2+x} ]; then
-        echo "No framework supplied. See help (--help) for supported frameworks." 1>&2
-        exit 1
-      fi
-      val="$(echo "$2" | awk '{print tolower($0)}')"
-      arguments="$arguments /p:BuildTargetFramework=$val"
-      shift 2
-      ;;
-
      -os)
       if [ -z ${2+x} ]; then
         echo "No target operating system supplied. See help (--help) for supported target operating systems." 1>&2
@@ -241,27 +226,8 @@ while [[ $# > 0 ]]; do
       shift 2
       ;;
 
-     -allconfigurations)
-      arguments="$arguments /p:BuildAllConfigurations=true"
-      shift 1
-      ;;
-
-     -testscope)
-      if [ -z ${2+x} ]; then
-        echo "No test scope supplied. See help (--help) for supported test scope values." 1>&2
-        exit 1
-      fi
-      arguments="$arguments /p:TestScope=$2"
-      shift 2
-      ;;
-
      -testnobuild)
       arguments="$arguments /p:TestNoBuild=true"
-      shift 1
-      ;;
-
-     -coverage)
-      arguments="$arguments /p:Coverage=true"
       shift 1
       ;;
 

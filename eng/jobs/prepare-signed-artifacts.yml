@@ -37,7 +37,7 @@ jobs:
   - script: >-
       build.cmd -ci
       -subset installer.publish
-      /p:Configuration=Release
+      -c Release
       /p:PublishRidAgnosticPackagesFromJobName=${{ parameters.PublishRidAgnosticPackagesFromJobName }}
       /p:SignType=$(SignType)
       /p:DotNetSignType=$(SignType)
