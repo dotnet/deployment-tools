@@ -84,7 +84,7 @@
           Condition="'$(SkipSigning)' != 'true' and '$(SignType)' != 'public'">
     <Message Importance="High" Text="Signing final packages" />
     <MSBuild
-      Projects="$(InstallerProjectRoot)installer\signing\SignFinalPackages.proj"
+      Projects="$(InstallerProjectRoot)signing\SignFinalPackages.proj"
       Targets="Build"
       Properties="DownloadDirectory=$(DownloadDirectory)" />
   </Target>
