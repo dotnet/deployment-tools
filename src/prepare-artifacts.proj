@@ -106,7 +106,7 @@
         ArtifactsBinDir=$(ArtifactsBinDir);
         ArtifactsPackagesDir=$(ArtifactsPackagesDir);
         TargetOS=$(TargetOS);
-        TargetArchitecture=$(TargetArchitecture)
+        TargetArchitecture=$(TargetArchitecture);
         DownloadDirectory=$(DownloadDirectory)" />
 
     <PropertyGroup>
