@@ -83,23 +83,30 @@ jobs:
           name: Generate_SBOM_${{ parameters.name }}
 
     # Push VS packages to VS package feed
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true'), eq(variables['_BuildConfig'], 'Release')) }}:
       - task: NuGetToolInstaller@1
         displayName: 'Install NuGet.exe'
 
+      # Push rid specific packages on all architectures
       - task: NuGetCommand@2
         displayName: Push Visual Studio NuPkgs
         inputs:
           command: push
-          packagesToPush:
-           - $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NETCoreCheck.*.nupkg
-           - ${{ if eq(parameters.targetArchitecture, 'x64') }}:
-             - $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NetCore.Launcher.*.nupkg
+          packagesToPush: $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NETCoreCheck.*.nupkg
           nuGetFeedType: external
           publishFeedCredentials: 'DevDiv - VS package feed'
-        condition: and(
-          succeeded(),
-          eq(variables['_BuildConfig'], 'Release'))
+        condition: succeeded()
+    
+      # Push rid agnostic VS packages only on x64
+      - ${{ if eq(parameters.targetArchitecture, 'x64') }}:
+        - task: NuGetCommand@2
+          displayName: Push Visual Studio NuPkgs
+          inputs:
+            command: push
+            packagesToPush: $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NetCore.Launcher.*.nupkg
+            nuGetFeedType: external
+            publishFeedCredentials: 'DevDiv - VS package feed'
+          condition: succeeded()
 
     # Upload build outputs as build artifacts only if internal and not PR, to save storage space.
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
