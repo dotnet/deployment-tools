@@ -10,7 +10,7 @@
     <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
 
     <!-- Always produce this package in the .NET unified product build so that it may flow to downstream consumers. -->
-    <IsPackable Condition="'$(TargetArchitecture)' == 'x86' or '$(DotNetBuild)' == 'true'">true</IsPackable>
+    <IsPackable>true</IsPackable>
     <IsShipping>true</IsShipping>
     <PackageId>Microsoft.Deployment.DotNet.Releases</PackageId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
