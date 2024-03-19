@@ -1,12 +1,4 @@
-<Project TreatAsLocalProperty="RepoRoot">
-
-  <PropertyGroup>
-    <!--
-      For non-SDK projects that import this file and then import Microsoft.Common.props,
-      tell Microsoft.Common.props not to import Directory.Build.props again
-    -->
-    <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
-  </PropertyGroup>
+<Project>
 
   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.Arcade.Sdk" />
 
@@ -21,25 +13,48 @@
     <ClickOnceConfiguration Condition="'$(ClickOnceConfiguration)' == ''">$(Configuration)</ClickOnceConfiguration>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('OSX'))">OSX</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('FREEBSD'))">FreeBSD</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('NETBSD'))">NetBSD</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('ILLUMOS'))">illumos</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('SOLARIS'))">Solaris</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSUnixLike())">Linux</TargetOS>
-    <TargetOS Condition="'$(TargetOS)' == '' and $([MSBuild]::IsOSPlatform('WINDOWS'))">Windows_NT</TargetOS>
+  <PropertyGroup Label="CalculateTargetOS">
+    <BuildOS>linux</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('OSX'))">osx</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('FREEBSD'))">freebsd</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('NETBSD'))">netbsd</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('ILLUMOS'))">illumos</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('SOLARIS'))">solaris</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('HAIKU'))">haiku</BuildOS>
+    <BuildOS Condition="$([MSBuild]::IsOSPlatform('WINDOWS'))">windows</BuildOS>
+    <TargetOS Condition="'$(TargetOS)' == ''">$(BuildOS)</TargetOS>
+    <HostOS Condition="'$(HostOS)' == ''">$(TargetOS)</HostOS>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetsMobile Condition="'$(TargetOS)' == 'iOS' or '$(TargetOS)' == 'Android' or '$(TargetOS)' == 'tvOS' or '$(TargetOS)' == 'Browser'">true</TargetsMobile>
+  <PropertyGroup Label="CalculateArch">
+    <!-- Build architecture is what we are building on. -->
+    <BuildArchitecture>$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString().ToLowerInvariant)</BuildArchitecture>
+    <!-- The target architecture is the what the customer is targeting their outputs to run on. -->
+    <TargetArchitecture Condition="'$(TargetArchitecture)' == ''">$(BuildArchitecture)</TargetArchitecture>
+    <!-- The host architecture is the what the customer will build on. Much of the time, Host==Target. -->
+    <HostArchitecture Condition="'$(HostArchitecture)' == ''">$(TargetArchitecture)</HostArchitecture>
   </PropertyGroup>
 
-  <!--
-    Get '<subset>Project' items. Using the items lets projects handle
-    $(Subset) automatically when creating project-to-project dependencies.
-  -->
-  <Import Project="$(RepositoryEngineeringDir)Subsets.props" />
+  <PropertyGroup Label="CalculateRID">
+    <BuildRid Condition="'$(BuildRid)' == '' and '$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</BuildRid>
+    <BuildRid Condition="'$(BuildRid)' == '' and '$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</BuildRid>
+
+    <TargetRid Condition="'$(TargetRid)' == ''">$(BuildRid.Substring(0, $(BuildRid.LastIndexOf('-'))))-$(TargetArchitecture)</TargetRid>
+    <HostRid Condition="'$(HostRid)' == ''">$(TargetRid)</HostRid>
+
+    <!-- Source-only builds are non portable, except for cross-builds.
+         Source-only cross-builds default to the portable configuration so the resulting SDK works on a wider range of distros. -->
+    <PortableBuild Condition="'$(PortableBuild)' == '' and '$(DotNetBuildSourceOnly)' == 'true' and '$(BuildArchitecture)' == '$(TargetArchitecture)'">false</PortableBuild>
+    <PortableBuild Condition="'$(PortableBuild)' == ''">true</PortableBuild>
+
+    <PortableRid Condition="'$(PortableRid)' == '' and '$(TargetOS)' == 'freebsd'">freebsd-$(TargetArchitecture)</PortableRid>
+    <PortableRid Condition="'$(PortableRid)' == '' and '$(TargetOS)' == 'osx'">osx-$(TargetArchitecture)</PortableRid>
+    <PortableRid Condition="'$(PortableRid)' == '' and '$(TargetOS)' == 'linux'">linux-$(TargetArchitecture)</PortableRid>
+    <PortableRid Condition="$(TargetRid.StartsWith('linux-musl')) or $(TargetRid.StartsWith('alpine'))">linux-musl-$(TargetArchitecture)</PortableRid>
+    <PortableRid Condition="'$(PortableRid)' == '' and '$(TargetOS)' == 'windows'">win-$(TargetArchitecture)</PortableRid>
+
+    <TargetRid Condition="'$(PortableBuild)' == 'true' and '$(PortableRid)' != ''">$(PortableRid)</TargetRid>
+  </PropertyGroup>
 
   <!-- Packaging properties -->
   <PropertyGroup>
@@ -53,31 +68,26 @@
     <LicenseUrl>https://github.com/dotnet/deployment-tools/blob/main/LICENSE.TXT</LicenseUrl>
     <LicenseFile>$(RepoRoot)LICENSE.TXT</LicenseFile>
     <ThirdPartyNoticesFile>$(RepoRoot)THIRD-PARTY-NOTICES.TXT</ThirdPartyNoticesFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     <!-- Indicates this is not an officially supported release. Release branches should set this to false. -->
     <!-- Keep it in sync with PRERELEASE in eng/native/configureplatform.cmake -->
     <IsPrerelease>true</IsPrerelease>
-
-    <!-- Experimental packages should not be stable -->
-    <SuppressFinalPackageVersion Condition="'$(SuppressFinalPackageVersion)' == '' and $(MSBuildProjectName.Contains('Experimental'))">true</SuppressFinalPackageVersion>
-    <IsShippingAssembly Condition="$(MSBuildProjectName.Contains('Experimental'))">false</IsShippingAssembly>
-
-    <!-- We don't want Private packages to be shipped to NuGet.org -->
-    <IsShippingPackage Condition="$(MSBuildProjectName.Contains('Private')) and '$(MSBuildProjectExtension)' == '.pkgproj'">false</IsShippingPackage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(LicenseFile)"
+             Pack="true"
+             PackagePath="/" />
+    <Content Include="$(ThirdPartyNoticesFile)"
+             Pack="true"
+             PackagePath="/" />
+  </ItemGroup>
 
   <!-- Language configuration -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Default to portable build if not explicitly set -->
-    <PortableBuild Condition="'$(PortableBuild)' == ''">true</PortableBuild>
-    <!-- Used for launchSettings.json and runtime config files. -->
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <!-- Determine what architecture we are building on. -->
-    <BuildArchitecture>$([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString().ToLowerInvariant())</BuildArchitecture>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup>
