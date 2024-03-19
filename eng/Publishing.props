@@ -1,0 +1,28 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Don't push rid agnostic nuget packages from other builds than win-x64 when not building inside the VMR. -->
+    <EnableDefaultPublishItems Condition="'$(DotNetBuildRepo)' != 'true' and
+                                          '$(TargetArchitecture)' != 'x64' and
+                                          '$(TargetArchitecture)' != ''">false</EnableDefaultPublishItems>
+    <!-- This avoids creating VS.*.symbols.nupkg packages that are identical to the original package. -->
+    <AutoGenerateSymbolPackages>false</AutoGenerateSymbolPackages>
+  </PropertyGroup>
+
+  <Target Name="SetPackageToInclude"
+          BeforeTargets="BeforePublish"
+          Condition="'$(EnableDefaultPublishItems)' != 'true'">
+    <ItemGroup>
+      <!-- Only include RID specific packages -->
+      <PackageToInclude Include="Microsoft.NET.Tools.NETCoreCheck" />
+      <PackageToInclude Include="VS.Redist.Common.NETCoreCheck" />
+
+      <ExistingSymbolPackages Include="$(ArtifactsShippingPackagesDir)**/%(PackageToInclude.Identity)*.symbols.nupkg" IsShipping="true" />
+      <ExistingSymbolPackages Include="$(ArtifactsNonShippingPackagesDir)**/%(PackageToInclude.Identity)*.symbols.nupkg" IsShipping="false" />
+
+      <PackagesToPublish Include="$(ArtifactsShippingPackagesDir)**/%(PackageToInclude.Identity)*.nupkg" IsShipping="true" />
+      <PackagesToPublish Include="$(ArtifactsNonShippingPackagesDir)**/%(PackageToInclude.Identity)*.nupkg" IsShipping="false" />
+    </ItemGroup>
+  </Target>
+
+</Project>

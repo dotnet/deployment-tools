@@ -1,37 +1,17 @@
 <Project>
 
-  <ItemGroup>
-    <!--
-      Replace the default items to sign with the specific set we want. This allows the build to call
-      Arcade's Sign.proj multiple times for different sets of files as the build progresses.
-    -->
-    <ItemsToSign Remove="@(ItemsToSign)" />
+  <PropertyGroup>
+    <UseDotNetCertificate>true</UseDotNetCertificate>
+  </PropertyGroup>
 
+  <ItemGroup>
     <!-- Launcher is not signed, by design. -->
     <FileSignInfo Include="Launcher.exe" CertificateName="None" />
-
-    <!-- Do not sign non-Microsoft binaries. -->
-    <FileSignInfo Include="MessagePack.dll" CertificateName="None" />
-    <FileSignInfo Include="MessagePack.Annotations.dll" CertificateName="None" />
-    <FileSignInfo Include="Nerdbank.Streams.dll" CertificateName="None" />
   </ItemGroup>
 
   <ItemGroup>
     <ItemsToSign Include="$(ArtifactsBinDir)win-$(TargetArchitecture).$(Configuration)\**\netcorecheck.exe" />
     <ItemsToSign Include="$(ArtifactsBinDir)win-$(TargetArchitecture).$(Configuration)\**\netcorecheckca.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DownloadedSymbolPackages Include="$(DownloadDirectory)**\*.symbols.nupkg" />
-    <ItemsToSign Include="$(DownloadDirectory)**\*.nupkg" Exclude="@(DownloadedSymbolPackages)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ItemsToSign Update="@(ItemsToSign)" Authenticode="$(CertificateId)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FileExtensionSignInfo Include=".msi" CertificateName="Microsoft500" />
   </ItemGroup>
 
 </Project>
