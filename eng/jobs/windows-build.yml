@@ -82,14 +82,19 @@ jobs:
         parameters:
           name: Generate_SBOM_${{ parameters.name }}
 
+    # Push VS packages to VS package feed
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
       - task: NuGetToolInstaller@1
         displayName: 'Install NuGet.exe'
+
       - task: NuGetCommand@2
         displayName: Push Visual Studio NuPkgs
         inputs:
           command: push
-          packagesToPush: '$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.*.nupkg'
+          packagesToPush:
+           - $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NETCoreCheck.*.nupkg
+           - ${{ if eq(parameters.targetArchitecture, 'x64') }}:
+             - $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NetCore.Launcher.*.nupkg
           nuGetFeedType: external
           publishFeedCredentials: 'DevDiv - VS package feed'
         condition: and(
