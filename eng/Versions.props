@@ -14,7 +14,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- Arcade dependencies -->
-    <MicrosoftDotNetBuildTasksFeedVersion>9.0.0-beta.24165.6</MicrosoftDotNetBuildTasksFeedVersion>
+    <MicrosoftDotNetBuildTasksFeedVersion>9.0.0-beta.24168.3</MicrosoftDotNetBuildTasksFeedVersion>
     <!-- Runtime dependencies -->
     <SystemTextJsonVersion>7.0.1</SystemTextJsonVersion>
     <SystemSecurityCryptographyCngVersion>4.7.0</SystemSecurityCryptographyCngVersion>
