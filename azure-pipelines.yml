@@ -66,7 +66,7 @@ stages:
     parameters:
         platform:
           name: 'Managed'
-          container: 'mcr.microsoft.com/dotnet-buildtools/prereqs:centos-stream8'
+          container: 'mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0'
 
   # Publish to Build Asset Registry in order to generate the ReleaseConfigs artifact.
   - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
