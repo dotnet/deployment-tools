@@ -18,7 +18,8 @@
   <ItemGroup Condition="'$(EnableDefaultArtifacts)' != 'true'">
     <Artifact Include="$(ArtifactsPackagesDir)**\Microsoft.NET.Tools.NETCoreCheck.*.nupkg;
                        $(ArtifactsPackagesDir)**\VS.Redist.Common.NETCoreCheck.*.nupkg"
-              IsShipping="$([System.String]::Copy('%(RecursiveDir)').StartsWith('Shipping'))" />
+              IsShipping="$([System.String]::Copy('%(RecursiveDir)').StartsWith('Shipping'))"
+              PublishFlatContainer="false" />
   </ItemGroup>
 
 </Project>
