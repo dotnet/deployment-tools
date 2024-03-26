@@ -11,6 +11,7 @@ pr:
 - internal/release/*
 name: $(Date:yyyyMMdd)$(Rev:.r)
 variables:
+- template: /eng/common/templates-official/variables/pool-providers.yml@self
 - name: TeamName
   value: dotnet-core-acquisition
 - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
@@ -30,7 +31,7 @@ extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     pool:
-      name: NetCore1ESPool-Internal
+      name: $(DncEngInternalBuildPool)
       image: 1es-windows-2022-pt
       os: windows
     customBuildTags:
@@ -76,8 +77,8 @@ extends:
             - win_arm64
             - Source_Build_Managed
             pool:
-              name: NetCore1ESPool-Internal
-              demands: ImageOverride -equals windows.vs2022.amd64
+              name: $(DncEngInternalBuildPool)
+              demands: ImageOverride -equals 1es-windows-2022-pt
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - template: /eng/common/templates-official/post-build/post-build.yml@self
         parameters:
