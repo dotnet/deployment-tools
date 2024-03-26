@@ -43,75 +43,18 @@ jobs:
 
     steps:
 
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-      - task: NuGetAuthenticate@0
-
-      - task: MicroBuildSigningPlugin@2
-        displayName: Install MicroBuild plugin for Signing
-        inputs:
-          signType: $(SignType)
-          zipSources: false
-          feedSource: https://dnceng.pkgs.visualstudio.com/_packaging/MicroBuildToolset/nuget/v3/index.json
-        continueOnError: false
-        condition: and(succeeded(), in(variables['SignType'], 'real', 'test'))
-
-    # NuGet's http cache lasts 30 minutes. If we're on a static machine, this may interfere with
-    # auto-update PRs by preventing the CI build from fetching the new version. Delete the cache.
-    - powershell: Remove-Item -Recurse -ErrorAction Ignore "$env:LocalAppData\NuGet\v3-cache"
-      displayName: Clear NuGet http cache (if exists)
-
-    - ${{ if ne(variables['System.TeamProject'], 'public') }}:
-      - task: PowerShell@2
-        displayName: Setup Private Feeds Credentials
-        condition: eq(variables['Agent.OS'], 'Windows_NT')
-        inputs:
-          filePath: $(Build.SourcesDirectory)/eng/common/SetupNugetSources.ps1
-          arguments: -ConfigFile $(Build.SourcesDirectory)/NuGet.config -Password $Env:Token
-        env:
-          Token: $(dn-bot-dnceng-artifact-feeds-rw)
-
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-      - script: >-
-          build.cmd -subset clickonce+installer+dotnet_releases -ci -test
-          $(CommonMSBuildArgs)
-          $(MsbuildSigningArguments)
-          /p:Sign=true /p:SignBinaries=true
-          /p:LocalizedBuild=true
-        displayName: Build and Sign Binaries
-
-    - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-      - script: >-
-          build.cmd -subset clickonce+installer+dotnet_releases -ci -test
-          $(CommonMSBuildArgs)
-          $(MsbuildSigningArguments)
-          /p:LocalizedBuild=true
-        displayName: Build
+    - script: >-
+        build.cmd -subset clickonce+installer+dotnet_releases -ci -test
+        $(CommonMSBuildArgs)
+        $(MsbuildSigningArguments)
+        /p:LocalizedBuild=true
+      displayName: Build
 
     - script: >-
         build.cmd -subset clickonce+installer+dotnet_releases -ci -pack
         $(CommonMSBuildArgs)
         $(MsbuildSigningArguments)
       displayName: Package
-
-    # Generate SBOM for the internal leg only
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-      - template: ..\common\templates\steps\generate-sbom.yml
-        parameters:
-          name: Generate_SBOM_${{ parameters.name }}
-
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
-      - task: NuGetToolInstaller@1
-        displayName: 'Install NuGet.exe'
-      - task: NuGetCommand@2
-        displayName: Push Visual Studio NuPkgs
-        inputs:
-          command: push
-          packagesToPush: '$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.*.nupkg'
-          nuGetFeedType: external
-          publishFeedCredentials: 'DevDiv - VS package feed'
-        condition: and(
-          succeeded(),
-          eq(variables['_BuildConfig'], 'Release'))
 
     - template: steps/upload-job-artifacts.yml
       parameters:
