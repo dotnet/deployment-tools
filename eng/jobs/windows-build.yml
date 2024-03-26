@@ -11,6 +11,14 @@ jobs:
 - job: ${{ parameters.name }}
   displayName: ${{ parameters.name }}
   timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+  pool:
+    # Use a hosted pool when possible.
+    ${{ if eq(variables['System.TeamProject'], 'public') }}:
+      name: NetCore-Public
+      demands: ImageOverride -equals windows.vs2019.amd64.open
+    ${{ if ne(variables['System.TeamProject'], 'public') }}:
+      name: $(DncEngInternalBuildPool)
+      demands: ImageOverride -equals windows.vs2019.amd64
   strategy:
     matrix:
       debug:
@@ -50,7 +58,7 @@ jobs:
       artifactName: Logs-${{ parameters.name }}-$(_BuildConfig)
   steps:
   - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - task: NuGetAuthenticate@0
+    - task: NuGetAuthenticate@1
     - task: MicroBuildSigningPlugin@2
       displayName: Install MicroBuild plugin for Signing
       inputs:
