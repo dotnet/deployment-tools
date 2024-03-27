@@ -27,7 +27,7 @@ stages:
   jobs:
   # -------- Build Windows legs --------
   # Windows x64
-  - template: /eng/jobs/windows-build.yml
+  - template: /eng/jobs/windows-build-PR.yml
     parameters:
       name: Windows_x64
       publishRidAgnosticPackages: true
@@ -35,13 +35,13 @@ stages:
       codeql: true
 
   # Windows x86
-  - template: /eng/jobs/windows-build.yml
+  - template: /eng/jobs/windows-build-PR.yml
     parameters:
       name: Windows_x86
       targetArchitecture: x86
 
   # Windows arm64
-  - template: /eng/jobs/windows-build.yml
+  - template: /eng/jobs/windows-build-PR.yml
     parameters:
       name: Windows_arm64
       targetArchitecture: arm64
