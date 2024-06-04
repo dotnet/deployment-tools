@@ -21,7 +21,7 @@ void FileLogger::Initialize(LPCWSTR filePath)
     else
     {
         // Use default log-file path under %TEMP%.
-        DWORD len = ::GetTempPath(MAX_PATH, logFilePath);
+        DWORD len = ::GetTempPath2(MAX_PATH, logFilePath);
         if (len != 0)
         {
             if (logFilePath[len - 1] != L'\\')
