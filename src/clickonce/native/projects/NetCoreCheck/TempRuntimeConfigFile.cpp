@@ -21,7 +21,7 @@ DWORD GetTempRuntimeConfigPath(LPWSTR runtimeConfigPath, bool useTempDirectory)
 
     if (useTempDirectory)
     {
-        DWORD len = ::GetTempPath2(MAX_PATH, runtimeConfigPath);
+        DWORD len = MyGetTempPath(MAX_PATH, runtimeConfigPath);
         if (len == 0)
         {
             g_log->Log(TEXT("Couldn't get temp path."));
