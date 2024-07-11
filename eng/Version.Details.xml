@@ -24,13 +24,5 @@
       <Sha>e6b3f32f9855dccbe2447471c8f729b66f17d242</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="9.0.0-beta.24281.1">
-      <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>e6b3f32f9855dccbe2447471c8f729b66f17d242</Sha>
-    </Dependency>
-    <Dependency Name="Microsoft.DotNet.XliffTasks" Version="9.0.0-beta.24281.1">
-      <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>e6b3f32f9855dccbe2447471c8f729b66f17d242</Sha>
-    </Dependency>
   </ToolsetDependencies>
 </Dependencies>
