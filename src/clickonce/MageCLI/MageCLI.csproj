@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(NetMinimum)</TargetFramework>
+    <TargetFramework>$(NetCurrent)</TargetFramework>
     <AssemblyName>dotnet-mage</AssemblyName>
     <OutputType>Exe</OutputType>
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
@@ -9,6 +9,7 @@
     <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <NoWarn>$(NoWarn);SYSLIB0057</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
