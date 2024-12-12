@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(NetCurrent)</TargetFramework>
+    <TargetFramework>$(NetMinimum)</TargetFramework>
+    <RollForward>Major</RollForward>
     <AssemblyName>dotnet-mage</AssemblyName>
     <OutputType>Exe</OutputType>
     <SignAssemblyAttribute>true</SignAssemblyAttribute>
