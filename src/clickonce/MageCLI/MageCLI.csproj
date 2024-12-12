@@ -9,6 +9,7 @@
     <AssemblyAttributeClsCompliant>false</AssemblyAttributeClsCompliant>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <!-- Suppress obsolete warning for X509Certificate2 constructor -->
     <NoWarn>$(NoWarn);SYSLIB0057</NoWarn>
   </PropertyGroup>
 
