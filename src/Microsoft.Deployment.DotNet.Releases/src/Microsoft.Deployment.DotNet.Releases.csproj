@@ -7,8 +7,9 @@
     <MinorVersion>0</MinorVersion>
     <PatchVersion>1</PatchVersion>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration></PreReleaseVersionIteration>
-    <SuppressFinalPackageVersion>true</SuppressFinalPackageVersion>
+    <PreReleaseVersionIteration>1</PreReleaseVersionIteration>
+    <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">true</StabilizePackageVersion>
+    <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
 
     <!-- Always produce this package in the .NET unified product build so that it may flow to downstream consumers. -->
     <IsPackable>true</IsPackable>
