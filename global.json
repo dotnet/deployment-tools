@@ -1,18 +1,18 @@
 {
   "sdk": {
-    "version": "8.0.101",
+    "version": "8.0.110",
     "allowPrerelease": true,
     "rollForward": "major"
   },
   "tools": {
-    "dotnet": "8.0.101"
+    "dotnet": "8.0.110"
   },
   "native-tools": {
     "cmake": "3.14.5",
     "python3": "3.7.1"
   },
   "msbuild-sdks": {
-    "Microsoft.DotNet.Arcade.Sdk": "8.0.0-beta.24172.5",
+    "Microsoft.DotNet.Arcade.Sdk": "8.0.0-beta.25060.1",
     "Microsoft.Build.NoTargets": "1.0.53",
     "Microsoft.Build.Traversal": "2.0.34"
   }
