@@ -14,7 +14,7 @@ variables:
 - template: /eng/common/templates-official/variables/pool-providers.yml@self
 - name: TeamName
   value: dotnet-core-acquisition
-- name: 1esWindowImage
+- name: 1esWindowsImage
   value: 1es-windows-2022
 - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
   - name: SignType
@@ -34,12 +34,12 @@ extends:
   parameters:
     pool:
       name: $(DncEngInternalBuildPool)
-      image: $(1esWindowImage)
+      image: $(1esWindowsImage)
       os: windows
     sdl:
       sourceAnalysisPool:
         name: $(DncEngInternalBuildPool)
-        image: $(1esWindowImage)
+        image: $(1esWindowsImage)
         os: windows
       policheck:
         enabled: true
