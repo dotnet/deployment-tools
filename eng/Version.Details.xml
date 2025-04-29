@@ -1,5 +1,5 @@
 <Dependencies>
-  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="c71a5e287b51dabb97b7e0be5c4ba9b11f840402" BarId="265935" />
+  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="5fd0935290d20e7172918595a509a367df7d5bb6" BarId="266023" />
   <ProductDependencies>
     <!-- Intermediate is necessary for source build. -->
     <Dependency Name="Microsoft.SourceBuild.Intermediate.source-build-reference-packages" Version="10.0.621801">
@@ -9,9 +9,9 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25227.101">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25228.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>c71a5e287b51dabb97b7e0be5c4ba9b11f840402</Sha>
+      <Sha>5fd0935290d20e7172918595a509a367df7d5bb6</Sha>
     </Dependency>
     <!-- Intermediate is necessary for source build. -->
     <Dependency Name="Microsoft.SourceBuild.Intermediate.arcade" Version="10.0.0-beta.25217.1">
