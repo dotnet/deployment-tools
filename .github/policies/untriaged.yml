@@ -10,10 +10,12 @@ configuration:
       - payloadType: Issues
       - isOpen
       - not:
-          - isPartOfAnyMilestone
-          - isAssignedToSomeone
-          - hasLabel:
-              label: untriaged
+          isPartOfAnyMilestone
+      - not:
+          isAssignedToSomeone
+      - not:
+          hasLabel:
+            label: untriaged
       - or:
         - isAction:
             action: Opened
