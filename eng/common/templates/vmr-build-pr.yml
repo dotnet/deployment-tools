@@ -39,7 +39,7 @@ resources:
     ref: refs/heads/VmrVerificationTemplateChanges
 
 stages:
-- template: /src/eng/pipelines/templates/stages/vmr-build.yml@vmr
+- template: /eng/pipelines/templates/stages/vmr-build.yml@vmr
   parameters:
     isBuiltFromVmr: false
     isSourceOnlyBuild: false
