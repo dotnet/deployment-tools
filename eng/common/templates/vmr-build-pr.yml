@@ -14,7 +14,7 @@ parameters:
 - name: vmrBranch
   displayName: dotnet/dotnet branch to push to
   type: string
-  default: ' '
+  default: VmrVerificationTemplateChanges
 
 - name: disableBuild
   displayName: Skip the VMR Build stage
@@ -36,11 +36,12 @@ resources:
     type: github
     name: dotnet/dotnet
     endpoint: dotnet
-    ref: refs/heads/VmrVerificationTemplateChanges
+    ref: refs/heads/${{ parameters.vmrBranch }}
 
 stages:
 - template: /eng/pipelines/templates/stages/vmr-build.yml@vmr
   parameters:
     isBuiltFromVmr: false
+    vmrBranch: ${{ parameters.vmrBranch }}
     isSourceOnlyBuild: false
     scope: lite
