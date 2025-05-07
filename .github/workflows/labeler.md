@@ -28,3 +28,6 @@ Across these workflows, the following changes were made to configure the issue l
     - `labeler-train.yml`
 5. Update the cache retention cron schedule to an arbitrary time of day:
     - `labeler-cache-retention.yml`
+6. Disable pull request model cache retention and prediction:
+    - `labeler-cache-retention.yml` - Remove "pulls" from the job matrix (leaving a comment)
+    - `labeler-predict-pulls.yml` - Workflow marked as Disabled via GitHub UI
