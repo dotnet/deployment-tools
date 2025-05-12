@@ -93,7 +93,7 @@ steps:
   condition: eq(variables['Agent.OS'], 'Windows_NT')
 
 - powershell: |
-    ${{ parameters.vmrPath }}/eng/vmr-sync.ps1                      `
+    ./eng/common/vmr-sync.ps1                      `
       -vmr ${{ parameters.vmrPath }}        `
       -tmp $(Agent.TempDirectory)           `
       -azdevPat '$(dn-bot-all-orgs-code-r)' `
@@ -154,7 +154,7 @@ steps:
       git checkout $commit
       git branch "sync/$commit"
 
-      $(Agent.BuildDirectory)/vmr/eng/vmr-sync.sh                         \
+      ./eng/common/vmr-sync.sh                         \
         --vmr ${{ parameters.vmrPath }}         \
         --tmp $(Agent.TempDirectory)            \
         --azdev-pat '$(dn-bot-all-orgs-code-r)' \
@@ -196,7 +196,7 @@ steps:
       git checkout $commit
       git branch "sync/$commit"
 
-      $(Agent.BuildDirectory)\vmr\eng\vmr-sync.ps1 `
+      .\eng\common\vmr-sync.ps1 `
         -vmr ${{ parameters.vmrPath }}             `
         -tmp $(Agent.TempDirectory)                `
         -azdevPat '$(dn-bot-all-orgs-code-r)'      `
