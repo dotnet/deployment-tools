@@ -23,6 +23,11 @@ parameters:
   default: []
 
 steps:
+- checkout: vmr
+  displayName: Clone dotnet/dotnet
+  path: vmr
+  clean: true
+
 - checkout: self
   displayName: Clone dotnet/<repo>
   path: repo
@@ -153,7 +158,6 @@ steps:
         --vmr ${{ parameters.vmrPath }}         \
         --tmp $(Agent.TempDirectory)            \
         --azdev-pat '$(dn-bot-all-orgs-code-r)' \
-        --branch ${{ parameters.vmrBranch }}    \
         --ci                                    \
         --debug
 
@@ -196,7 +200,6 @@ steps:
         -vmr ${{ parameters.vmrPath }}             `
         -tmp $(Agent.TempDirectory)                `
         -azdevPat '$(dn-bot-all-orgs-code-r)'      `
-        -branch ${{ parameters.vmrBranch }}        `
         -ci                                        `
         -debugOutput
 
