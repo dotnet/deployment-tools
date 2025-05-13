@@ -10,17 +10,6 @@ pr:
     - README.md
     - CODEOWNERS
 
-parameters:
-- name: vmrBranch
-  displayName: dotnet/dotnet branch to push to
-  type: string
-  default: VmrVerificationTemplateChanges
-
-- name: disableBuild
-  displayName: Skip the VMR Build stage
-  type: boolean
-  default: false
-
 variables:
 - template: /eng/common/templates/variables/pool-providers.yml@self
 
@@ -36,12 +25,11 @@ resources:
     type: github
     name: dotnet/dotnet
     endpoint: dotnet
-    ref: refs/heads/${{ parameters.vmrBranch }}
+    ref: refs/heads/VmrVerificationTemplateChanges  # Temporary - to be able to use new VMR template changes
 
 stages:
 - template: /eng/pipelines/templates/stages/vmr-build.yml@vmr
   parameters:
     isBuiltFromVmr: false
-    vmrBranch: ${{ parameters.vmrBranch }}
     isSourceOnlyBuild: false
     scope: lite
