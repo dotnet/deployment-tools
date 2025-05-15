@@ -56,7 +56,7 @@ steps:
 - script: |
     git fetch --all
     git checkout $(vmr_sha)
-  displayName: Checkout VMR at $(vmr_sha)
+  displayName: Checkout VMR at correct sha for repo flow
   workingDirectory: ${{ parameters.vmrPath }}
 
 - script: |
@@ -77,7 +77,7 @@ steps:
       echo "##vso[task.logissue type=error]Failed to synchronize the VMR"
       exit 1
     fi
-  displayName: Sync sdk into VMR (Unix)
+  displayName: Sync repo into VMR (Unix)
   condition: ne(variables['Agent.OS'], 'Windows_NT')
   workingDirectory: $(Agent.BuildDirectory)/repo
 
@@ -99,7 +99,7 @@ steps:
       echo "##vso[task.logissue type=error]Failed to synchronize the VMR"
       exit 1
     }
-  displayName: Sync sdk into VMR (Windows)
+  displayName: Sync repo into VMR (Windows)
   condition: eq(variables['Agent.OS'], 'Windows_NT')
   workingDirectory: $(Agent.BuildDirectory)/repo
 

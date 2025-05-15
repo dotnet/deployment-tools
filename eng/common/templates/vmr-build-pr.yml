@@ -25,7 +25,6 @@ resources:
     type: github
     name: dotnet/dotnet
     endpoint: dotnet
-    ref: refs/heads/VmrVerificationTemplateChanges  # Temporary - to be able to use new VMR template changes
 
 stages:
 - template: /eng/pipelines/templates/stages/vmr-build.yml@vmr
