@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <!-- Include DotNetRuntimeValidation .exe's explicitly -->
-    <Artifact Include="$(ArtifactsZipsDir)**\*.zip" Kind="Blob">
+    <Artifact Include="$(ArtifactsDir)zips\$(Configuration)\**\*.zip" Kind="Blob">
       <IsShipping>false</IsShipping>
       <RelativeBlobPath>assets/$(TargetArchitecture)/%(Filename)%(Extension)</RelativeBlobPath>
     </Artifact>
