@@ -33,7 +33,10 @@
 
   <ItemGroup>
     <!-- Include DotNetRuntimeValidation .exe's explicitly -->
-    <Artifact Include="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe" />
+    <Artifact Include="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe" Kind="Blob">
+      <IsShipping>false</IsShipping>
+      <UploadPathSegment>Runtime/$(TargetArchitecture)</UploadPathSegment>
+    </Artifact>
   </ItemGroup>
 
 </Project>
