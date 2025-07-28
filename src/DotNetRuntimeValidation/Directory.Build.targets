@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <!-- We just want to .zip these up -->
-  <Target Name="Pack">
+  <Target Name="_ZipValidationExe" AfterTargets="Build">
     <Copy 
       SourceFiles="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe"
       DestinationFolder="$(TempZipFolder)" />

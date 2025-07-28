@@ -39,7 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="src/DotNetRuntimeValidation/DotNetRuntimeValidation.csproj"
-                      Pack="true"
+                      Pack="false"
                       Test="false"
                       BuildInParallel="false"
                       Condition="'$(TargetOS)' == 'windows'">
