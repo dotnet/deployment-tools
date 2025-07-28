@@ -8,8 +8,12 @@
 
   <!-- We just want to .zip these up -->
   <Target Name="_ZipValidationExe" AfterTargets="Build">
+    <ItemGroup>
+      <RuntimeValidationSourceFiles Include="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe" />
+    </ItemGroup>
+
     <Copy 
-      SourceFiles="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe"
+      SourceFiles="@(RuntimeValidationSourceFiles)"
       DestinationFolder="$(TempZipFolder)" />
 
     <ZipDirectory
