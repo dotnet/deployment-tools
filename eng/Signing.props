@@ -31,4 +31,9 @@
               PublishFlatContainer="false" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Include DotNetRuntimeValidation .exe's explicitly -->
+    <Artifact Include="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe" />
+  </ItemGroup>
+
 </Project>
