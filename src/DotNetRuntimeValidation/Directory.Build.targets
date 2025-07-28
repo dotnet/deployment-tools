@@ -16,6 +16,9 @@
       SourceFiles="@(RuntimeValidationSourceFiles)"
       DestinationFolder="$(TempZipFolder)" />
 
+    <MakeDir
+      Directories="$(ArtifactsZipsDir)" />
+
     <ZipDirectory
       SourceDirectory="$(TempZipFolder)"
       DestinationFile="$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip" />
