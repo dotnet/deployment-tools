@@ -68,6 +68,11 @@
     <PublishWindowsPdb>false</PublishWindowsPdb>
   </PropertyGroup>
 
+  <!-- Artifacts layout. Keep these values consistent with items defined in eng/Signing.props. -->
+  <PropertyGroup>
+    <ArtifactsZipsDir>$(ArtifactsDir)zips\$(Configuration)\</ArtifactsZipsDir>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="$(LicenseFile)"
              Pack="true"

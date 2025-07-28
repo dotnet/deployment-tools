@@ -1,0 +1,20 @@
+<Project>
+
+  <Import Project="..\..\Directory.Build.targets" />
+
+  <PropertyGroup>
+    <TempZipFolder>$(ArtifactsBinDir)DotNetRuntimeValidation\$(TargetArchitecture)\temp\zipcontents</TempZipFolder>
+  </PropertyGroup>
+
+  <!-- We just want to .zip these up -->
+  <Target Name="Pack">
+    <Copy 
+      SourceFiles="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe"
+      DestinationFolder="$(TempZipFolder)" />
+
+    <ZipDirectory
+      SourceDirectory="$(TempZipFolder)"
+      DestinationFile="$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip" />
+  </Target>
+
+</Project>
