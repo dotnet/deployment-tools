@@ -404,6 +404,9 @@ Options:
   <data name="InvalidInstall" xml:space="preserve">
     <value>The -Install option must be "true", "false", "t", or "f" - "{0}"</value>
   </data>
+  <data name="InvalidMapFileExtensions" xml:space="preserve">
+    <value>The -MapFileExtensions option must be "true", "false", "t", or "f" - "{0}"</value>
+  </data>
   <data name="InvalidKeyFile" xml:space="preserve">
     <value>Key file is not of proper format - "{0}"</value>
   </data>
