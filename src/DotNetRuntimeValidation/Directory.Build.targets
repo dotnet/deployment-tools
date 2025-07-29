@@ -4,10 +4,12 @@
 
   <PropertyGroup>
     <TempZipFolder>$(ArtifactsBinDir)DotNetRuntimeValidation\$(TargetArchitecture)\temp\zipcontents</TempZipFolder>
+    <DotNetRuntimeValidationZipFilePath>$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
+>$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
   </PropertyGroup>
 
   <!-- We just want to .zip these up -->
-  <Target Name="_ZipValidationExe" AfterTargets="Build">
+  <Target Name="_ZipValidationExe" AfterTargets="Build" Condition="!Exists('DotNetRuntimeValidationZipFilePath')">
     <ItemGroup>
       <RuntimeValidationSourceFiles Include="$(ArtifactsBinDir)DotNetRuntimeValidation\**\DotNetRuntimeValidation.exe" />
     </ItemGroup>

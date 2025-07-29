@@ -70,7 +70,7 @@
 
   <!-- Artifacts layout. Keep these values consistent with items defined in eng/Signing.props. -->
   <PropertyGroup>
-    <ArtifactsZipsDir>$(ArtifactsDir)zips\$(Configuration)\</ArtifactsZipsDir>
+    <ArtifactsAssetsDir>$([MSBuild]::NormalizeDirectory('$(ArtifactsDir)', 'assets', '$(Configuration)'))</ArtifactsAssetsDir>
   </PropertyGroup>
 
   <ItemGroup>

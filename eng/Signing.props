@@ -16,6 +16,8 @@
     <EnableDefaultArtifacts Condition="'$(DotNetBuild)' != 'true' and
                                        '$(TargetArchitecture)' != 'x64' and
                                        '$(TargetArchitecture)' != ''">false</EnableDefaultArtifacts>
+
+    <ArtifactsAssetsDir>$([MSBuild]::NormalizeDirectory('$(ArtifactsDir)', 'assets', '$(Configuration)'))</ArtifactsAssetsDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Include DotNetRuntimeValidation .exe's explicitly -->
-    <Artifact Include="$(ArtifactsDir)zips\$(Configuration)\**\*.zip" Kind="Blob">
+    <!-- Include DotNetRuntimeValidation .zip's explicitly -->
+    <Artifact Include="$(ArtifactsAssetsDir)\**\DotNetRuntimeValidation*.zip" Kind="Blob">
       <IsShipping>false</IsShipping>
       <RelativeBlobPath>assets/$(TargetArchitecture)/%(Filename)%(Extension)</RelativeBlobPath>
     </Artifact>
