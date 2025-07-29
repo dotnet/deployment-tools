@@ -4,8 +4,8 @@
 
   <PropertyGroup>
     <TempZipFolder>$(ArtifactsBinDir)DotNetRuntimeValidation\$(TargetArchitecture)\temp\zipcontents</TempZipFolder>
-    <DotNetRuntimeValidationZipFilePath>$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
->$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
+    <DotNetRuntimeValidationZipFilePath>$(ArtifactsAssetsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
+>$(ArtifactsAssetsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip</DotNetRuntimeValidationZipFilePath>
   </PropertyGroup>
 
   <!-- We just want to .zip these up -->
@@ -19,11 +19,11 @@
       DestinationFolder="$(TempZipFolder)" />
 
     <MakeDir
-      Directories="$(ArtifactsZipsDir)" />
+      Directories="$(ArtifactsAssetsDir)" />
 
     <ZipDirectory
       SourceDirectory="$(TempZipFolder)"
-      DestinationFile="$(ArtifactsZipsDir)DotNetRuntimeValidation-$(VersionPrefix)-$(VersionSuffix)-win-$(TargetArchitecture).zip" />
+      DestinationFile="$(DotNetRuntimeValidationZipFilePath)" />
   </Target>
 
 </Project>
