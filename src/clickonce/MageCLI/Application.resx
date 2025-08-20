@@ -156,6 +156,7 @@ Options
   -IncludeProviderURL &lt;true|false&gt;  -ip
   -Install &lt;true|false&gt;             -i 
   -KeyContainer &lt;name&gt;              -kc
+  -MapFileExtensions &lt;true|false&gt;   -mfe
   -MinVersion &lt;version #|none&gt;      -mv
   -Name &lt;name&gt;		            -n
   -Password &lt;password&gt;	            -pwd
@@ -270,6 +271,13 @@ Options:
       Specifies if the deployment manifest will include the deployment 
       provider URL.
       
+  -MapFileExtensions &lt;true|false&gt; -ip
+      Specifies whether or not the ".deploy" file extension mapping is used.
+      If this flag is true then every application file is published with a
+      ".deploy" file extension. This option is useful for web server security
+      to limit the number of file extensions that need to be unblocked to
+      enable ClickOnce application deployment. The default is false.
+
   -Install &lt;true|false&gt;   -i
       Specifies if the application will be an installed or an online only 
       application.
