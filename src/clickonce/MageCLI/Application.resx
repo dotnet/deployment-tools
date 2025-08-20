@@ -271,7 +271,7 @@ Options:
       Specifies if the deployment manifest will include the deployment 
       provider URL.
       
-  -MapFileExtensions &lt;true|false&gt; -ip
+  -MapFileExtensions &lt;true|false&gt; -mfe
       Specifies whether or not the ".deploy" file extension mapping is used.
       If this flag is true then every application file is published with a
       ".deploy" file extension. This option is useful for web server security
