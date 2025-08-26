@@ -271,13 +271,6 @@ Options:
       Specifies if the deployment manifest will include the deployment 
       provider URL.
       
-  -MapFileExtensions &lt;true|false&gt; -mfe
-      Specifies whether or not the ".deploy" file extension mapping is used.
-      If this flag is true then every application file is published with a
-      ".deploy" file extension. This option is useful for web server security
-      to limit the number of file extensions that need to be unblocked to
-      enable ClickOnce application deployment. The default is false.
-
   -Install &lt;true|false&gt;   -i
       Specifies if the application will be an installed or an online only 
       application.
@@ -287,6 +280,13 @@ Options:
       This option requires the -CryptoProvider option.
       Example:
         -KeyContainer name -CryptoProvider "Microsoft Enhanced Cryptographic Provider v1.0"
+
+  -MapFileExtensions &lt;true|false&gt; -mfe
+      Specifies whether or not the ".deploy" file extension mapping is used.
+      If this flag is true then every application file is published with a
+      ".deploy" file extension. This option is useful for web server security
+      to limit the number of file extensions that need to be unblocked to
+      enable ClickOnce application deployment. The default is false.
 
   -MinVersion &lt;version #|none&gt;   -mv
       Specifies whether the manifest being generated specifies a minimum version.
