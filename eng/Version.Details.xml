@@ -1,11 +1,11 @@
 <Dependencies>
-  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="b0eeb50560544fa782bd8bbddbe2e964c2ab6388" BarId="283422" />
+  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="e533cfad385ba4f0ec96e35ad3d485dc13581906" BarId="283666" />
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25466.101">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25467.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>b0eeb50560544fa782bd8bbddbe2e964c2ab6388</Sha>
+      <Sha>e533cfad385ba4f0ec96e35ad3d485dc13581906</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
