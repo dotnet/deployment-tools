@@ -12,5 +12,7 @@
     <!-- Enable to remove prerelease label. -->
     <StabilizePackageVersion Condition="'$(StabilizePackageVersion)' == ''">false</StabilizePackageVersion>
     <DotNetFinalVersionKind Condition="'$(StabilizePackageVersion)' == 'true'">release</DotNetFinalVersionKind>
+    <!-- MSBuild dependency version -->
+    <MicrosoftBuildTasksCoreVersion>17.10.46</MicrosoftBuildTasksCoreVersion>
   </PropertyGroup>
 </Project>
