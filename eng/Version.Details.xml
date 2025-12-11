@@ -1,15 +1,15 @@
 <Dependencies>
-  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="094213b024d6b8fe6dd2c125408e6f89e21859a8" BarId="294071" />
+  <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="32aba8526ca0c037d185329fe779e8a288e986fc" BarId="294121" />
   <ProductDependencies>
-    <Dependency Name="Microsoft.Build.Tasks.Core" Version="17.10.46">
+    <Dependency Name="Microsoft.Build.Tasks.Core" Version="18.0.6">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>f2d1a92c2429848e41e78af560381a597f933090</Sha>
+      <Sha>32aba8526ca0c037d185329fe779e8a288e986fc</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25609.106">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25609.109">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>094213b024d6b8fe6dd2c125408e6f89e21859a8</Sha>
+      <Sha>32aba8526ca0c037d185329fe779e8a288e986fc</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
