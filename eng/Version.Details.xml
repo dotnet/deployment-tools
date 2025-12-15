@@ -1,9 +1,9 @@
 <Dependencies>
   <Source Uri="https://github.com/dotnet/dotnet" Mapping="deployment-tools" Sha="f2d1a92c2429848e41e78af560381a597f933090" BarId="292766" />
   <ProductDependencies>
-    <Dependency Name="Microsoft.Build.Tasks.Core" Version="17.10.46">
-      <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>f2d1a92c2429848e41e78af560381a597f933090</Sha>
+    <Dependency Name="Microsoft.Build.Tasks.Core" Version="17.10.51">
+      <Uri>https://github.com/dotnet/msbuild</Uri>
+      <Sha>5bc289f3797a27a75d566025fa213df16e1b2346</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
