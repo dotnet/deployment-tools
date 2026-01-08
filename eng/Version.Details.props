@@ -6,8 +6,8 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftBuildTasksCorePackageVersion>18.0.9</MicrosoftBuildTasksCorePackageVersion>
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.26055.111</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftBuildTasksCorePackageVersion>18.0.10</MicrosoftBuildTasksCorePackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.26056.115</MicrosoftDotNetArcadeSdkPackageVersion>
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>
