@@ -60,19 +60,22 @@ call "%_VSCOMNTOOLS%\VsDevCmd.bat"
 
 :RunVCVars
 if "%VisualStudioVersion%"=="17.0" (
-    goto :VS2022
+    goto :FoundVS
+)
+if "%VisualStudioVersion%"=="18.0" (
+    goto :FoundVS
 )
 
 :MissingVersion
-:: Can't find VS 2017, 2019, 2022
-echo Error: Visual Studio 2017, 2019 or 2022 required
+:: Can't find VS 2022 or 2026
+echo Error: Visual Studio 2022 or 2026 required
 echo        Please see https://github.com/dotnet/runtime/tree/main/docs/installer/building/windows-instructions.md for build instructions.
 exit /b 1
 
-:VS2022
-:: Setup vars for VS2022
-set __PlatformToolset=v143
-set __VSVersion=17 2022
+:FoundVS
+:: Setup vars for VS/CMake
+set __PlatformToolset=v145
+set __CMakeGeneratorVSVersion=17 2022
 :: Set the environment for the native build
 call "%VS170COMNTOOLS%..\..\VC\Auxiliary\Build\vcvarsall.bat" %__VCBuildArch%
 
@@ -119,9 +122,9 @@ exit /b 1
 :GenVSSolution
 :: Regenerate the VS solution
 
-echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" "%__AppHostLibDir%" %__PortableBuild%"
+echo Calling "%__nativeWindowsDir%\gen-buildsys-win.bat %~dp0 "%__CMakeGeneratorVSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" "%__AppHostLibDir%" %__PortableBuild%"
 pushd "%__IntermediatesDir%"
-call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__VSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" "%__AppHostLibDir%" %__PortableBuild%
+call "%__nativeWindowsDir%\gen-buildsys-win.bat" %~dp0 "%__CMakeGeneratorVSVersion%" %__BuildArch% %__CommitSha% %__NativeVersion% %__NetCorePkgVersion% "%__DotnetInstallDir%" "%__AppHostLibDir%" %__PortableBuild%
 popd
 
 :CheckForProj
