@@ -60,9 +60,11 @@ call "%_VSCOMNTOOLS%\VsDevCmd.bat"
 
 :RunVCVars
 if "%VisualStudioVersion%"=="17.0" (
+    set __CMakeGeneratorVSVersion=18 2026
     goto :FoundVS
 )
 if "%VisualStudioVersion%"=="18.0" (
+    set __CMakeGeneratorVSVersion=17 2022
     goto :FoundVS
 )
 
@@ -73,9 +75,8 @@ echo        Please see https://github.com/dotnet/runtime/tree/main/docs/installe
 exit /b 1
 
 :FoundVS
-:: Setup vars for VS/CMake
+:: Setup vars for VS
 set __PlatformToolset=v145
-set __CMakeGeneratorVSVersion=17 2022
 :: Set the environment for the native build
 call "%VS170COMNTOOLS%..\..\VC\Auxiliary\Build\vcvarsall.bat" %__VCBuildArch%
 
