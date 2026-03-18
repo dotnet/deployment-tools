@@ -60,11 +60,11 @@ call "%_VSCOMNTOOLS%\VsDevCmd.bat"
 
 :RunVCVars
 if "%VisualStudioVersion%"=="17.0" (
-    set __CMakeGeneratorVSVersion=18 2026
+    set __CMakeGeneratorVSVersion=17 2022
     goto :FoundVS
 )
 if "%VisualStudioVersion%"=="18.0" (
-    set __CMakeGeneratorVSVersion=17 2022
+    set __CMakeGeneratorVSVersion=18 2026
     goto :FoundVS
 )
 
