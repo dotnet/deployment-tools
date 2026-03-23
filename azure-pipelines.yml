@@ -102,7 +102,3 @@ extends:
           enableNugetValidation: false
           enableSourceLinkValidation: false
           publishAssetsImmediately: true
-          SDLValidationParameters:
-            enable: false
-            params: >-
-              -SourceToolsList @("policheck","credscan") -ArtifactToolsList @("binskim") -BinskimAdditionalRunConfigParams @("IgnorePdbLoadError < True","Recurse < True","SymbolsPath < SRV*https://msdl.microsoft.com/download/symbols") -TsaInstanceURL "$(TsaInstanceURL)" -TsaProjectName "$(TsaProjectName)" -TsaNotificationEmail "$(TsaNotificationEmail)" -TsaCodebaseAdmin "$(TsaCodebaseAdmin)" -TsaBugAreaPath "$(TsaBugAreaPath)" -TsaIterationPath "$(TsaIterationPath)" -TsaRepositoryName "$(TsaRepositoryName)" -TsaCodebaseName "$(TsaCodebaseName)" -TsaPublish $True
