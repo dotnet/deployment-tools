@@ -157,7 +157,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// </summary>
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode() =>
-            Hash.GetHashCode() ^ Name.GetHashCode() ^ Rid.GetHashCode() ^ Address.GetHashCode();
+            Hash.GetHashCode();
 
         internal static ReleaseFile Create(string hash, string name, string rid, string address) =>
             new ReleaseFile(new Uri(address), hash, name, rid);
