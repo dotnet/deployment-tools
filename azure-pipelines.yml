@@ -14,11 +14,13 @@ variables:
 - template: /eng/common/templates-official/variables/pool-providers.yml@self
 - name: TeamName
   value: dotnet-core-acquisition
+- name: WindowsImage
+  value: windows.vs2026.amd64
 - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-  - name: SignType
+  - name: _SignType
     value: test
 - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-  - name: SignType
+  - name: _SignType
     value: $[ coalesce(variables.OfficialSignType, 'real') ]
   - group: core-setup-sdl-validation
 resources:
@@ -30,10 +32,23 @@ resources:
 extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    settings:
+      networkIsolationPolicy: Permissive, CFSClean, CFSClean2
     pool:
       name: $(DncEngInternalBuildPool)
-      image: 1es-windows-2022
+      image: $(WindowsImage)
       os: windows
+    sdl:
+      sourceAnalysisPool:
+        name: $(DncEngInternalBuildPool)
+        image: $(WindowsImage)
+        os: windows
+      policheck:
+        enabled: true
+      tsa:
+        enabled: true
+      binskim:
+        enabled: true
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
@@ -78,7 +93,7 @@ extends:
             - Source_Build_Managed
             pool:
               name: $(DncEngInternalBuildPool)
-              demands: ImageOverride -equals 1es-windows-2022
+              demands: ImageOverride -equals $(WindowsImage)
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - template: /eng/common/templates-official/post-build/post-build.yml@self
         parameters:
@@ -87,7 +102,3 @@ extends:
           enableNugetValidation: false
           enableSourceLinkValidation: false
           publishAssetsImmediately: true
-          SDLValidationParameters:
-            enable: false
-            params: >-
-              -SourceToolsList @("policheck","credscan") -ArtifactToolsList @("binskim") -BinskimAdditionalRunConfigParams @("IgnorePdbLoadError < True","Recurse < True","SymbolsPath < SRV*https://msdl.microsoft.com/download/symbols") -TsaInstanceURL "$(TsaInstanceURL)" -TsaProjectName "$(TsaProjectName)" -TsaNotificationEmail "$(TsaNotificationEmail)" -TsaCodebaseAdmin "$(TsaCodebaseAdmin)" -TsaBugAreaPath "$(TsaBugAreaPath)" -TsaIterationPath "$(TsaIterationPath)" -TsaRepositoryName "$(TsaRepositoryName)" -TsaCodebaseName "$(TsaCodebaseName)" -TsaPublish $True
