@@ -27,8 +27,8 @@ namespace Microsoft.Deployment.DotNet.Releases
         /// <returns><see langword="true"/> if the local file is the latest; <see langword="false"/> otherwise.</returns>
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
-            var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-            HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest).ConfigureAwait(false);
+            using var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
+            using HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest).ConfigureAwait(false);
 
             httpResponse.EnsureSuccessStatusCode();
 
@@ -61,7 +61,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
             else
             {
-                HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address).ConfigureAwait(false);
+                using HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address).ConfigureAwait(false);
                 httpResponse.EnsureSuccessStatusCode();
 
                 using FileStream stream = File.Create(fileName);
