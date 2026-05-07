@@ -149,7 +149,12 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         static Utils()
         {
-            s_httpClient = new HttpClient();
+            var handler = new SocketsHttpHandler
+            {
+                PooledConnectionLifetime = TimeSpan.FromMinutes(2)
+            };
+
+            s_httpClient = new HttpClient(handler, disposeHandler: true);
             s_httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
             {
                 NoCache = true
