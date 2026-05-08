@@ -149,7 +149,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         static Utils()
         {
-            s_httpClient = new HttpClient();
+            s_httpClient = new HttpClient(new HttpClientHandler(), disposeHandler: true);
             s_httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
             {
                 NoCache = true
