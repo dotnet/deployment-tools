@@ -55,7 +55,7 @@ jobs:
     - template: /eng/common/templates/steps/generate-sbom.yml@self
       parameters:
         name: Generate_SBOM_${{ parameters.name }}
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true'), eq(variables['_BuildConfig'], 'Release')) }}:
+  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
     - task: NuGetAuthenticate@1
       displayName: 'Authenticate to DevDiv VS feed (WIF)'
       inputs:
