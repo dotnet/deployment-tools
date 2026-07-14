@@ -84,7 +84,7 @@ extends:
       - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
         - template: /eng/common/templates-official/job/publish-build-assets.yml@self
           parameters:
-            publishUsingPipelines: true
+            publishingVersion: 4
             publishAssetsImmediately: true
             dependsOn:
             - win_x64
@@ -97,6 +97,7 @@ extends:
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - template: /eng/common/templates-official/post-build/post-build.yml@self
         parameters:
+          publishingInfraVersion: 4
           enableSymbolValidation: false
           enableSigningValidation: false
           enableNugetValidation: false

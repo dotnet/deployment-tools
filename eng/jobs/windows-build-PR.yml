@@ -30,7 +30,7 @@ jobs:
       -c $(_BuildConfig) /p:TargetArchitecture=${{ parameters.targetArchitecture }} /p:DotNetSignType=$(_SignType)
     ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       InternalMSBuildArgs: >-
-        /p:OfficialBuildId=$(Build.BuildNumber) /p:DotNetPublishUsingPipelines=true /p:Test=false
+        /p:OfficialBuildId=$(Build.BuildNumber) /p:Test=false
     ${{ else }}:
       InternalMSBuildArgs: ''
     Codeql.Enabled: ${{ parameters.codeql }}

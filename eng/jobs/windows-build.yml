@@ -6,139 +6,167 @@ parameters:
   timeoutInMinutes: 120
   codeql: false
 jobs:
-- job: ${{ parameters.name }}
-  displayName: ${{ parameters.displayName }}
-  timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
-  strategy:
-    matrix:
-      release:
-        _BuildConfig: Release
-      ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-        debug:
-          _BuildConfig: Debug
-  workspace:
-    clean: all
-  variables:
-    CommonMSBuildArgs: >-
-      -c $(_BuildConfig) /p:TargetArchitecture=${{ parameters.targetArchitecture }} /p:DotNetSignType=$(_SignType)
-    ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-      InternalMSBuildArgs: >-
-        /p:OfficialBuildId=$(Build.BuildNumber) /p:DotNetPublishUsingPipelines=true /p:Test=false
-    ${{ else }}:
-      InternalMSBuildArgs: ''
-    Codeql.Enabled: ${{ parameters.codeql }}
-    Codeql.Language: csharp,cpp
-  templateContext:
-    outputs:
-    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['_BuildConfig'], 'Release'), eq(variables['StagingArtifactsFolderExist'], True)) }}:
+- template: /eng/common/templates-official/job/job.yml@self
+  parameters:
+    name: ${{ parameters.name }}
+    displayName: ${{ parameters.displayName }}
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    publishingVersion: 4
+    enablePublishing: ${{ and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}
+    enableMicrobuild: true
+    microbuildUseESRP: true
+    workspace:
+      clean: all
+    strategy:
+      matrix:
+        release:
+          _BuildConfig: Release
+        ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+          debug:
+            _BuildConfig: Debug
+    variables:
+    - CommonMSBuildArgs: >-
+        -c $(_BuildConfig) /p:TargetArchitecture=${{ parameters.targetArchitecture }} /p:DotNetSignType=$(_SignType)
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - InternalMSBuildArgs: >-
+          /p:OfficialBuildId=$(Build.BuildNumber) /p:Test=false
+    - ${{ else }}:
+      - InternalMSBuildArgs: ''
+    - Codeql.Enabled: ${{ parameters.codeql }}
+    - Codeql.Language: csharp,cpp
+    templateContext:
+      outputs:
+      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['_BuildConfig'], 'Release'), eq(variables['StagingArtifactsFolderExist'], True)) }}:
+        - output: pipelineArtifact
+          displayName: 'Publish Artifacts'
+          condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['StagingArtifactsFolderExist'], True))
+          targetPath: '$(Build.StagingDirectory)/Artifacts'
+          artifactName: IntermediateUnsignedArtifacts
+          artifactType: container
+      - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), eq(variables['_BuildConfig'], 'Release')) }}:
+        - output: pipelineArtifact
+          displayName: 'Publish PdbArtifacts'
+          condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
+          targetPath: '$(Build.StagingDirectory)/PdbArtifacts'
+          artifactName: PdbArtifacts-${{ parameters.name }}
+          artifactType: container
       - output: pipelineArtifact
-        displayName: 'Publish Artifacts'
-        condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['StagingArtifactsFolderExist'], True))
-        targetPath: '$(Build.StagingDirectory)/Artifacts'
-        artifactName: IntermediateUnsignedArtifacts
-        artifactType: container
-    - output: pipelineArtifact
-      displayName: 'Publish BuildLogs'
-      condition: succeededOrFailed()
-      targetPath: '$(Build.StagingDirectory)/BuildLogs'
-      artifactName: Logs-${{ parameters.name }}-$(_BuildConfig)
-  steps:
-  - powershell: Remove-Item -Recurse -ErrorAction Ignore "$env:LocalAppData\NuGet\v3-cache"
-    displayName: Clear NuGet http cache (if exists)
-  - ${{ if ne(variables['System.TeamProject'], 'public') }}:
-    - task: PowerShell@2
-      displayName: Setup Private Feeds Credentials
-      condition: eq(variables['Agent.OS'], 'Windows_NT')
-      inputs:
-        filePath: $(Build.SourcesDirectory)/eng/common/SetupNugetSources.ps1
-        arguments: -ConfigFile $(Build.SourcesDirectory)/NuGet.config -Password $Env:Token
-      env:
-        Token: $(dn-bot-dnceng-artifact-feeds-rw)
-    - task: NuGetAuthenticate@1
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - template: /eng/common/core-templates/steps/install-microbuild.yml
-      parameters:
-        enableMicrobuild: true
-        microbuildUseESRP: true
-        continueOnError: false
-  - script: >-
-      eng\common\cibuild.cmd $(CommonMSBuildArgs) $(InternalMSBuildArgs)
-    displayName: Build
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - template: /eng/common/templates-official/steps/generate-sbom.yml@self
-      parameters:
-        name: Generate_SBOM_${{ parameters.name }}
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
-    - task: NuGetAuthenticate@1
-      displayName: 'Authenticate to DevDiv VS feed (WIF)'
-      inputs:
-        azureDevOpsServiceConnection: 'dnceng-devdiv-vs-feed-push'
-        feedUrl: 'https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json'
-    - powershell: |
-        $packages = Get-ChildItem "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NETCoreCheck.*.nupkg"
-        foreach ($pkg in $packages) {
-          Write-Host "Pushing $($pkg.Name)..."
-          dotnet nuget push $pkg.FullName --source "https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json" --api-key AzureDevOps --skip-duplicate
-        }
-      displayName: 'Push NETCoreCheck NuPkgs to DevDiv VS feed'
-      condition: succeeded()
-    - ${{ if eq(parameters.targetArchitecture, 'x64') }}:
+        displayName: 'Publish BuildLogs'
+        condition: succeededOrFailed()
+        targetPath: '$(Build.StagingDirectory)/BuildLogs'
+        artifactName: Logs-${{ parameters.name }}-$(_BuildConfig)
+    steps:
+    - powershell: Remove-Item -Recurse -ErrorAction Ignore "$env:LocalAppData\NuGet\v3-cache"
+      displayName: Clear NuGet http cache (if exists)
+    - ${{ if ne(variables['System.TeamProject'], 'public') }}:
+      - task: PowerShell@2
+        displayName: Setup Private Feeds Credentials
+        condition: eq(variables['Agent.OS'], 'Windows_NT')
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/common/SetupNugetSources.ps1
+          arguments: -ConfigFile $(Build.SourcesDirectory)/NuGet.config******
+        env:
+          Token: $(dn-bot-dnceng-artifact-feeds-rw)
+      - task: NuGetAuthenticate@1
+    - script: >-
+        eng\common\cibuild.cmd $(CommonMSBuildArgs) $(InternalMSBuildArgs)
+      displayName: Build
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - template: /eng/common/templates-official/steps/generate-sbom.yml@self
+        parameters:
+          name: Generate_SBOM_${{ parameters.name }}
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'), ne(variables['DisableVSPublish'], 'true')) }}:
+      - task: NuGetAuthenticate@1
+        displayName: 'Authenticate to DevDiv VS feed (WIF)'
+        inputs:
+          azureDevOpsServiceConnection: 'dnceng-devdiv-vs-feed-push'
+          feedUrl: 'https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json'
       - powershell: |
-          $packages = Get-ChildItem "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NetCore.Launcher.*.nupkg"
+          $packages = Get-ChildItem "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NETCoreCheck.*.nupkg"
           foreach ($pkg in $packages) {
             Write-Host "Pushing $($pkg.Name)..."
             dotnet nuget push $pkg.FullName --source "https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json" --api-key AzureDevOps --skip-duplicate
           }
-        displayName: 'Push NetCore.Launcher NuPkgs to DevDiv VS feed'
+        displayName: 'Push NETCoreCheck NuPkgs to DevDiv VS feed'
         condition: succeeded()
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - powershell: |
-        $folderExists = Test-Path -Path "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)"
-        Write-Output "##vso[task.setvariable variable=ArtifactsPackagesFolderExists]$folderExists"
-      displayName: Detect Packages subdirectory
+      - ${{ if eq(parameters.targetArchitecture, 'x64') }}:
+        - powershell: |
+            $packages = Get-ChildItem "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/*/VS.Redist.Common.NetCore.Launcher.*.nupkg"
+            foreach ($pkg in $packages) {
+              Write-Host "Pushing $($pkg.Name)..."
+              dotnet nuget push $pkg.FullName --source "https://devdiv.pkgs.visualstudio.com/_packaging/VS/nuget/v3/index.json" --api-key AzureDevOps --skip-duplicate
+            }
+          displayName: 'Push NetCore.Launcher NuPkgs to DevDiv VS feed'
+          condition: succeeded()
+    - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
+      - powershell: |
+          $folderExists = Test-Path -Path "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)"
+          Write-Output "##vso[task.setvariable variable=ArtifactsPackagesFolderExists]$folderExists"
+        displayName: Detect Packages subdirectory
+      - task: CopyFiles@2
+        displayName: Prepare job-specific Artifacts subdirectory
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)'
+          Contents: |
+            Shipping/**/*
+            NonShipping/**/*
+          TargetFolder: '$(Build.StagingDirectory)/Artifacts/${{ parameters.name }}'
+          CleanTargetFolder: true
+        condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['ArtifactsPackagesFolderExists'], True))
+      - powershell: |
+          $folderExists = Test-Path -Path "$(Build.StagingDirectory)/Artifacts"
+          Write-Output "##vso[task.setvariable variable=StagingArtifactsFolderExist]$folderExists"
+        displayName: Detect Staged Artifacts subdirectory
+      - powershell: |
+          $packagesRoot = "$(Build.ArtifactStagingDirectory)/artifacts/packages"
+          Remove-Item -Recurse -Force -ErrorAction Ignore $packagesRoot
+
+          foreach ($packageKind in @("Shipping", "NonShipping")) {
+            $source = "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/$packageKind"
+            if (Test-Path $source) {
+              $destination = Join-Path $packagesRoot $packageKind.ToLowerInvariant()
+              New-Item -ItemType Directory -Force $destination | Out-Null
+              Copy-Item -Path (Join-Path $source "*") -Destination $destination -Recurse -Force
+            }
+          }
+        displayName: Stage V4 packages for Arcade wrapper publishing
+        condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['ArtifactsPackagesFolderExists'], True))
+      - task: CopyFiles@2
+        displayName: Stage V4 asset manifests for Arcade wrapper publishing
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)/artifacts/log/$(_BuildConfig)/AssetManifest'
+          Contents: '*.xml'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/artifacts/manifests'
+          CleanTargetFolder: true
+        condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
+      - task: CopyFiles@2
+        displayName: Prepare job-specific PdbArtifacts subdirectory
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)/artifacts/SymStore/$(_BuildConfig)'
+          Contents: |
+            **/*
+          TargetFolder: '$(Build.StagingDirectory)/PdbArtifacts/${{ parameters.name }}'
+          CleanTargetFolder: true
+        condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
+    - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
+      - task: PublishTestResults@2
+        displayName: Publish Test Results
+        inputs:
+          testResultsFormat: 'xUnit'
+          testResultsFiles: '*.xml'
+          searchFolder: '$(Build.SourcesDirectory)/artifacts/TestResults/$(_BuildConfig)'
+          mergeTestResults: true
+          testRunTitle: ${{ parameters.name }}-$(_BuildConfig)
+        continueOnError: true
+        condition: always()
     - task: CopyFiles@2
-      displayName: Prepare job-specific Artifacts subdirectory
+      displayName: Prepare BuildLogs staging directory
       inputs:
-        SourceFolder: '$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)'
+        SourceFolder: '$(Build.SourcesDirectory)'
         Contents: |
-          Shipping/**/*
-          NonShipping/**/*
-        TargetFolder: '$(Build.StagingDirectory)/Artifacts/${{ parameters.name }}'
+          **/*.log
+          **/*.binlog
+        TargetFolder: '$(Build.StagingDirectory)/BuildLogs'
         CleanTargetFolder: true
-      condition: and(succeeded(), eq(variables._BuildConfig, 'Release'), eq(variables['ArtifactsPackagesFolderExists'], True))
-    - powershell: |
-        $folderExists = Test-Path -Path "$(Build.StagingDirectory)/Artifacts"
-        Write-Output "##vso[task.setvariable variable=StagingArtifactsFolderExist]$folderExists"
-      displayName: Detect Staged Artifacts subdirectory
-  - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-    - task: CopyFiles@2
-      displayName: Prepare job-specific PdbArtifacts subdirectory
-      inputs:
-        SourceFolder: '$(Build.SourcesDirectory)/artifacts/SymStore/$(_BuildConfig)'
-        Contents: |
-          **/*
-        TargetFolder: '$(Build.StagingDirectory)/PdbArtifacts/${{ parameters.name }}'
-        CleanTargetFolder: true
-      condition: and(succeeded(), eq(variables._BuildConfig, 'Release'))
-  - ${{ if or(eq(variables['System.TeamProject'], 'public'), in(variables['Build.Reason'], 'PullRequest')) }}:
-    - task: PublishTestResults@2
-      displayName: Publish Test Results
-      inputs:
-        testResultsFormat: 'xUnit'
-        testResultsFiles: '*.xml'
-        searchFolder: '$(Build.SourcesDirectory)/artifacts/TestResults/$(_BuildConfig)'
-        mergeTestResults: true
-        testRunTitle: ${{ parameters.name }}-$(_BuildConfig)
       continueOnError: true
-      condition: always()
-  - task: CopyFiles@2
-    displayName: Prepare BuildLogs staging directory
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: |
-        **/*.log
-        **/*.binlog
-      TargetFolder: '$(Build.StagingDirectory)/BuildLogs'
-      CleanTargetFolder: true
-    continueOnError: true
-    condition: succeededOrFailed()
+      condition: succeededOrFailed()
