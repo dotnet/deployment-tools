@@ -104,8 +104,9 @@ void* GetExport(HMODULE h, const char* name)
         const size_t size = strlen(name) + 1;
         std::vector<WCHAR> wName;
         wName.resize(size);
-        errno_t convErr = mbstowcs_s(nullptr, wName.data(), size, name, size - 1);
-        if (convErr != 0)
+        size_t convertedChars = 0;
+        errno_t convErr = mbstowcs_s(&convertedChars, wName.data(), size, name, size - 1);
+        if (0 != convErr)
         {
             g_log->Log(TEXT("mbstowcs_s failed to convert library name, error = '%d'"), convErr);
         }
