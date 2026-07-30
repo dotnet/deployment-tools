@@ -108,11 +108,11 @@ void* GetExport(HMODULE h, const char* name)
         errno_t convErr = mbstowcs_s(&convertedChars, wName.data(), size, name, size - 1);
         if (0 != convErr)
         {
-            g_log->Log(TEXT("mbstowcs_s failed to convert library name, error = '%d'"), convErr);
+            g_log->Log(TEXT("mbstowcs_s failed to convert export name, error = '%d'"), convErr);
         }
         else
         {
-            g_log->Log(TEXT("Failed to load library '%s', error = '%d'"), wName.data(), err);
+            g_log->Log(TEXT("Failed to get export '%s', error = '%d'"), wName.data(), err);
         }
     }
     
