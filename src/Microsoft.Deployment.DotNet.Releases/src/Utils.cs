@@ -29,7 +29,7 @@ namespace Microsoft.Deployment.DotNet.Releases
         internal static async Task<bool> IsLatestFileAsync(string fileName, Uri address)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Head, address);
-            HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest).ConfigureAwait(false);
+            using HttpResponseMessage httpResponse = await s_httpClient.SendAsync(httpRequest).ConfigureAwait(false);
 
             httpResponse.EnsureSuccessStatusCode();
 
@@ -62,7 +62,7 @@ namespace Microsoft.Deployment.DotNet.Releases
             }
             else
             {
-                HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address).ConfigureAwait(false);
+                using HttpResponseMessage httpResponse = await s_httpClient.GetAsync(address).ConfigureAwait(false);
                 httpResponse.EnsureSuccessStatusCode();
 
                 using FileStream stream = File.Create(fileName);
@@ -150,7 +150,7 @@ namespace Microsoft.Deployment.DotNet.Releases
 
         static Utils()
         {
-            s_httpClient = new HttpClient();
+            s_httpClient = new HttpClient(new HttpClientHandler(), disposeHandler: true);
             s_httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue
             {
                 NoCache = true
